@@ -5,6 +5,8 @@
  * @format
  */
 
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import { NewAppScreen } from '@react-native/new-app-screen';
 import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
 import {
@@ -12,34 +14,46 @@ import {
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 
+import React,{useEffect} from "react";
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import Splash from '../ecommercedemo/src/screens/Splash';
+import Login from '../ecommercedemo/src/screens/Login';
+import Toast from 'react-native-toast-message';
+import {Provider} from 'react-redux';
+import Store from '../ecommercedemo/src/redu/store/Store';
+import Register from '../ecommercedemo/src/screens/Register';
+import Home from '../ecommercedemo/src/screens/Home';
+import Tabs from '../ecommercedemo/src/navigation/tabs/Tabs';
+import ProductInformation from '../ecommercedemo/src/screens/ProductInformation';
+
+const Stack = createNativeStackNavigator();
+
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
 
-  return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
-  );
-}
-
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
+  useEffect(()=>{
+    GoogleSignin.configure({
+      webClientId:"1090895766635-ns4ktunhl44fgujle6kuk0q8a3hr775m.apps.googleusercontent.com",
+      offlineAccess: true,
+      scopes: ['profile', 'email'],
+    });
+  },[]);
 
   return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
+    <Provider store={Store}>
+    <NavigationContainer>
+    <Stack.Navigator initialRouteName='SplashScreen' screenOptions={{headerShown:false}}>
+    <Stack.Screen name='SplashScreen' component={Splash}/>
+    <Stack.Screen name='LoginScreen' component={Login}/>
+    <Stack.Screen name='RegisterScreen' component={Register}/>
+    <Stack.Screen name='HomeScreen' component={Home}/>
+    <Stack.Screen name='Tabs' component={Tabs}/>
+    <Stack.Screen name='ProductInfo' component={ProductInformation}/>
+    </Stack.Navigator>
+    <Toast/>  
+    </NavigationContainer>      
+    </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default App;
