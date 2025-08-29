@@ -5,6 +5,8 @@ import {SafeAreaProvider,useSafeAreaInsets,SafeAreaView} from "react-native-safe
 import BackArrow from '../../assets/images/productinfoarrow.svg';
 import {fontFamilies} from "../constants/fonts";
 import FavourteIcon from '../../assets/images/homepagehearticon.svg';
+import LocationIcon from'../../assets/images/cartlocationicon.svg';
+import EditAddress from'../../assets/images/carteditaddress.svg';
 
 const Cart = ()=>{
 
@@ -36,7 +38,18 @@ const Cart = ()=>{
       </View>
       <ScrollView contentContainerStyle = {{flexGrow:1}}>
       <View style = {{flex:1,padding:2}}>
-        
+       <View style = {{backgroundColor:'#151515',borderWidth:1,borderColor:'#414141',padding:15,borderRadius:12,justifyContent:'center',alignItems:'center'}}>
+       <View style = {{flexDirection:'row'}}>
+       <LocationIcon width = {14} height = {20}/> 
+       <View>
+       <Text style = {{fontFamily:fontFamilies.INTER.medium,fontSize:13,color:'#FFFFFF'}}>
+       {`Deliver`}
+       </Text> 
+       </View>
+       </View>
+       <View>
+      </View> 
+       </View> 
       </View>
       </ScrollView>
       </SafeAreaView>  
