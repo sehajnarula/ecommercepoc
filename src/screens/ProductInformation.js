@@ -512,13 +512,32 @@ const ProductInformation = ({ route }) => {
                 style={{ position: 'absolute', right: 0 }}
                 onPress={() => setProductInfo(!productInfo)}
               >
-                <ProductInfoNewIcon
+                {/* <ProductInfoNewIcon
                   width={24}
                   height={24}
                   style={{
                     transform: [{ rotate: productInfo ? '0deg' : '180deg' }],
-                  }}
-                />
+                  }} */}
+
+                {productInfo ? (
+                  <ProductInfoNewIcon width={24} height={24} />
+                ) : (
+                  <View
+                    style={{
+                      width: 10,
+                      height: 10,
+                      marginTop: 7,
+                      marginRight: 8,
+                    }}
+                  >
+                    <Image
+                      source={require('../../assets/images/plusicontrsnp.png')}
+                      style={{ width: '100%', height: '100%' }}
+                    />
+                  </View>
+                )}
+
+                {/* /> */}
               </TouchableOpacity>
             </View>
             {productInfo ? (
