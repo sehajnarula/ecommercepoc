@@ -27,6 +27,7 @@ import QuantityMinus from '../../assets/images/quantityminusicon.svg';
 import QuantityPlus from '../../assets/images/quantityplusicon.svg';
 import SaveMoreWithBulk from '../../assets/images/savemorewithbulkicon.svg';
 import SearchIcon from '../../assets/images/searchinproductinfo.svg';
+import MoreFromBrandFlatList from '../components/MoreFromBrandFlatList';
 import { fontFamilies } from '../constants/fonts';
 
 const reducer = (state, changeState) => {
@@ -61,6 +62,54 @@ const ProductInformation = ({ route }) => {
   const reducedPriceNumber = Number(reducedPrice);
   const reducedNumber = originalPriceNumber - reducedPriceNumber;
   const [state, dispatch] = useReducer(reducer, { count: 0 });
+
+  // const brandArrayList = [
+  //   {
+  //     brandId: '1',
+  //     brandName: 'Trident',
+  //     brandProducts: [
+  //       {
+  //         brandProductId: '2',
+  //         brandLogo: require('../../assets/images/tridentbrandlogo.png'),
+  //         brandProductImg: require('../../assets/images/towelone.png'),
+  //         brandProductName: `Aroma 1 Pc Pillow, Lavender, White|650`,
+  //         brandProductOriginalPrice: `1499`,
+  //         brandProductReducedPrice: `1455`,
+  //         discountPercentsgr: `46`,
+  //       },
+  //       {
+  //         brandProductId: '2',
+  //         brandLogo: require('../../assets/images/tridentbrandlogo.png'),
+  //         brandProductImg: require('../../assets/images/towelone.png'),
+  //         brandProductName: `Aroma 1 Pc Pillow, Lavender, White|650`,
+  //         brandProductOriginalPrice: `1499`,
+  //         brandProductReducedPrice: `1455`,
+  //         discountPercentsgr: `46`,
+  //       },
+  //     ],
+  //   },
+  // ];
+
+  const brandProducts = [
+    {
+      brandProductId: '2',
+      brandLogo: require('../../assets/images/tridentbrandlogo.png'),
+      brandProductImg: require('../../assets/images/towelone.png'),
+      brandProductName: `Aroma 1 Pc Pillow, Lavender, White|650`,
+      brandProductOriginalPrice: `1499`,
+      brandProductReducedPrice: `1455`,
+      discountPercentsgr: `46`,
+    },
+    {
+      brandProductId: '3',
+      brandLogo: require('../../assets/images/tridentbrandlogo.png'),
+      brandProductImg: require('../../assets/images/towelone.png'),
+      brandProductName: `Aroma 1 Pc Pillow, Lavender, White|650`,
+      brandProductOriginalPrice: `1499`,
+      brandProductReducedPrice: `1455`,
+      discountPercentsgr: `46`,
+    },
+  ];
 
   return (
     <SafeAreaProvider>
@@ -685,6 +734,20 @@ const ProductInformation = ({ route }) => {
                 marginTop: 10,
               }}
             ></View>
+
+            <Text
+              style={{
+                color: '#D5D5D5',
+                fontSize: 14,
+                fontFamily: fontFamilies.INTER.regular,
+                marginLeft: 12,
+                marginTop: 15,
+              }}
+            >
+              {'MORE FROM TRIDENT'}
+            </Text>
+
+            <MoreFromBrandFlatList isHorizontal={false} data={brandProducts} />
 
             <View
               style={{
