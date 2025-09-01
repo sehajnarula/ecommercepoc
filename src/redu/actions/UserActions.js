@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
@@ -20,7 +21,19 @@ export const GOOGLE_SIGNIN_FAILURE = 'user/GOOGLE_SIGNIN_FAILURE';
 
 export const SIGNOUT = 'user/SIGNOUT';
 
-const formatError = (error) => {
+const saveUserLocally = async user => {
+  try {
+    await AsyncStorage.setItem('user', JSON.stringify(user));
+  } catch (error) {
+    console.log('userlocalsaveerror', error);
+  }
+};
+
+const removeUserLocally = () => {
+  AsyncStorage.removeItem('user');
+};
+
+const formatError = error => {
   let code = 'UNKNOWN_ERROR';
   let message = 'Something went wrong';
 
@@ -41,27 +54,57 @@ const formatError = (error) => {
 };
 
 const signInRequest = () => ({ type: SIGNIN_REQUEST });
-const signInSuccess = (user) => ({ type: SIGNIN_SUCCESS, payload: user });
-const signInFailure = (error) => ({ type: SIGNIN_FAILURE, payload: formatError(error) });
+// const signInSuccess = (user) => ({ type: SIGNIN_SUCCESS, payload: user });
+
+const signInSuccess = user => {
+  saveUserLocally(user);
+  return { type: SIGNIN_SUCCESS, payload: user };
+};
+
+const signInFailure = error => ({
+  type: SIGNIN_FAILURE,
+  payload: formatError(error),
+});
 
 const signUpRequest = () => ({ type: SIGNUP_REQUEST });
-const signUpSuccess = (user) => ({ type: SIGNUP_SUCCESS, payload: user });
-const signUpFailure = (error) => ({ type: SIGNUP_FAILURE, payload: formatError(error) });
+// const signUpSuccess = (user) => ({ type: SIGNUP_SUCCESS, payload: user });
+
+const signUpSuccess = user => {
+  saveUserLocally(user);
+  return { type: SIGNUP_SUCCESS, payload: user };
+};
+
+const signUpFailure = error => ({
+  type: SIGNUP_FAILURE,
+  payload: formatError(error),
+});
 
 const updateRequest = () => ({ type: UPDATE_REQUEST });
 const updateSuccess = () => ({ type: UPDATE_SUCCESS });
-const updateFailure = (error) => ({ type: UPDATE_FAILURE, payload: formatError(error) });
+const updateFailure = error => ({
+  type: UPDATE_FAILURE,
+  payload: formatError(error),
+});
 
 const googleSignInRequest = () => ({ type: GOOGLE_SIGNIN_REQUEST });
-const googleSignInSuccess = (user) => ({ type: GOOGLE_SIGNIN_SUCCESS, payload: user });
-const googleSignInFailure = (error) => ({ type: GOOGLE_SIGNIN_FAILURE, payload: formatError(error) });
+const googleSignInSuccess = user => ({
+  type: GOOGLE_SIGNIN_SUCCESS,
+  payload: user,
+});
+const googleSignInFailure = error => ({
+  type: GOOGLE_SIGNIN_FAILURE,
+  payload: formatError(error),
+});
 
 const signOutAction = () => ({ type: SIGNOUT });
 
-export const userSignIn = (email, password) => async (dispatch) => {
+export const userSignIn = (email, password) => async dispatch => {
   dispatch(signInRequest());
   try {
-    const userCredential = await auth().signInWithEmailAndPassword(email, password);
+    const userCredential = await auth().signInWithEmailAndPassword(
+      email,
+      password,
+    );
     const user = {
       uid: userCredential.user.uid,
       email: userCredential.user.email,
@@ -73,10 +116,13 @@ export const userSignIn = (email, password) => async (dispatch) => {
   }
 };
 
-export const userSignUp = (userName, email, password) => async (dispatch) => {
+export const userSignUp = (userName, email, password) => async dispatch => {
   dispatch(signUpRequest());
   try {
-    const userCredential = await auth().createUserWithEmailAndPassword(email, password);
+    const userCredential = await auth().createUserWithEmailAndPassword(
+      email,
+      password,
+    );
     const uid = userCredential.user.uid;
     const emailCredential = userCredential.user.email;
 
@@ -98,7 +144,7 @@ export const userSignUp = (userName, email, password) => async (dispatch) => {
   }
 };
 
-export const userUpdate = (userName, userId) => async (dispatch) => {
+export const userUpdate = (userName, userId) => async dispatch => {
   dispatch(updateRequest());
   try {
     await firestore().collection('users').doc(userId).update({
@@ -111,7 +157,7 @@ export const userUpdate = (userName, userId) => async (dispatch) => {
   }
 };
 
-export const userGoogleSignIn = () => async (dispatch) => {
+export const userGoogleSignIn = () => async dispatch => {
   dispatch(googleSignInRequest());
   try {
     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
@@ -129,12 +175,12 @@ export const userGoogleSignIn = () => async (dispatch) => {
     };
 
     const userSnapshot = await firestore().collection('users').get();
-    const users = userSnapshot.docs.map((doc) => ({
+    const users = userSnapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data(),
     }));
 
-    const userFound = users.some((user) => user.email === userEmail);
+    const userFound = users.some(user => user.email === userEmail);
 
     if (!userFound) {
       await firestore().collection('users').doc(uid).set({
@@ -147,14 +193,15 @@ export const userGoogleSignIn = () => async (dispatch) => {
 
     dispatch(googleSignInSuccess(user));
   } catch (error) {
-  console.log("googlesigninerror full:", JSON.stringify(error, null, 2));
-  dispatch(googleSignInFailure(error));
+    console.log('googlesigninerror full:', JSON.stringify(error, null, 2));
+    dispatch(googleSignInFailure(error));
   }
 };
 
-export const userSignOut = () => async (dispatch) => {
+export const userSignOut = () => async dispatch => {
   try {
     await auth().signOut();
+    await removeUserLocally();
     dispatch(signOutAction());
   } catch (error) {
     console.log('signouterror', error);
