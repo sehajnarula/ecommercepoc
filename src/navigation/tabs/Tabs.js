@@ -1,8 +1,8 @@
-import Home from '../../screens/Home';
-import Cart from '../../screens/Cart';
-import Store from '../../screens/Store';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Image } from 'react-native';
+import Cart from '../../screens/Cart';
+import Home from '../../screens/Home';
+import Store from '../../screens/Store';
 
 const Tab = createBottomTabNavigator();
 
