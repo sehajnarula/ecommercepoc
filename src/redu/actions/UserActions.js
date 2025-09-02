@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import axios from 'axios';
 
 export const SIGNIN_REQUEST = 'user/SIGNIN_REQUEST';
 export const SIGNIN_SUCCESS = 'user/SIGNIN_SUCCESS';
@@ -20,6 +21,8 @@ export const GOOGLE_SIGNIN_SUCCESS = 'user/GOOGLE_SIGNIN_SUCCESS';
 export const GOOGLE_SIGNIN_FAILURE = 'user/GOOGLE_SIGNIN_FAILURE';
 
 export const SIGNOUT = 'user/SIGNOUT';
+
+const baseUrl = `https://shoping-sk37.onrender.com/`;
 
 const saveUserLocally = async user => {
   try {
@@ -101,14 +104,29 @@ const signOutAction = () => ({ type: SIGNOUT });
 export const userSignIn = (email, password) => async dispatch => {
   dispatch(signInRequest());
   try {
-    const userCredential = await auth().signInWithEmailAndPassword(
-      email,
-      password,
+    const response = await axios.post(
+      `${baseUrl}api/auth/login`,
+      {
+        email: email,
+        password: password,
+      },
+      {
+        timeout: 5000,
+      },
     );
+
+    console.log('userloginapiresponse', response);
+
     const user = {
-      uid: userCredential.user.uid,
-      email: userCredential.user.email,
+      id: response.data.id,
+      name: response.data.name,
+      email: response.data.name,
+      phoneNumber: response.data.phone,
+      address: response.data.address,
+      userRole: response.data.role,
+      token: response.token,
     };
+
     dispatch(signInSuccess(user));
   } catch (error) {
     console.log('signinerror', error);
@@ -116,33 +134,43 @@ export const userSignIn = (email, password) => async dispatch => {
   }
 };
 
-export const userSignUp = (userName, email, password) => async dispatch => {
-  dispatch(signUpRequest());
-  try {
-    const userCredential = await auth().createUserWithEmailAndPassword(
-      email,
-      password,
-    );
-    const uid = userCredential.user.uid;
-    const emailCredential = userCredential.user.email;
+export const userSignUp =
+  (userName, email, password, phoneNumber, deliveryAddress) =>
+  async dispatch => {
+    dispatch(signUpRequest());
+    try {
+      const response = await axios.post(
+        `${baseUrl}api/auth/register`,
+        {
+          name: userName,
+          email: email,
+          password: password,
+          phone: phoneNumber,
+          address: deliveryAddress,
+        },
+        {
+          timeout: 5000,
+        },
+      );
 
-    await firestore().collection('users').doc(uid).set({
-      uid: uid,
-      name: userName,
-      email: emailCredential,
-      createdAt: firestore.FieldValue.serverTimestamp(),
-    });
+      console.log('userregisterapiresponse', response);
 
-    const user = {
-      uid: userCredential.user.uid,
-      email: userCredential.user.email,
-    };
-    dispatch(signUpSuccess(user));
-  } catch (error) {
-    console.log('signuperror', error);
-    dispatch(signUpFailure(error));
-  }
-};
+      const user = {
+        id: response.data.id,
+        name: response.data.name,
+        email: response.data.name,
+        phoneNumber: response.data.phone,
+        address: response.data.address,
+        userRole: response.data.role,
+        token: response.token,
+      };
+
+      dispatch(signUpSuccess(user));
+    } catch (error) {
+      console.log('signuperror', error);
+      dispatch(signUpFailure(error));
+    }
+  };
 
 export const userUpdate = (userName, userId) => async dispatch => {
   dispatch(updateRequest());
@@ -200,7 +228,6 @@ export const userGoogleSignIn = () => async dispatch => {
 
 export const userSignOut = () => async dispatch => {
   try {
-    await auth().signOut();
     await removeUserLocally();
     dispatch(signOutAction());
   } catch (error) {

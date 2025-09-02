@@ -1,30 +1,39 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import {
-  View,
-  StyleSheet,
   ScrollView,
   Text,
   TextInput,
-  Image,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import {
-  SafeAreaView,
   SafeAreaProvider,
+  SafeAreaView,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
-import { fontFamilies } from '../constants/fonts';
-import UserIcon from '../../assets/images/homepageusericon.svg';
+import { useDispatch, useSelector } from 'react-redux';
 import FavourteIcon from '../../assets/images/homepagehearticon.svg';
-import NotificationsIcon from '../../assets/images/homepagenotificationsicon.svg';
-import SearchIcon from '../../assets/images/homesearchicon.svg';
 import Microphone from '../../assets/images/homepagemicrophoneicon.svg';
-import ShowCategoryProductsOnHome from '../components/ShowCategoryProductsOnHome';
+import NotificationsIcon from '../../assets/images/homepagenotificationsicon.svg';
+import UserIcon from '../../assets/images/homepageusericon.svg';
+import SearchIcon from '../../assets/images/homesearchicon.svg';
 import HorizontalCategoriesHome from '../components/HorizontalCategoriesHome';
+import ShowCategoryProductsOnHome from '../components/ShowCategoryProductsOnHome';
+import { fontFamilies } from '../constants/fonts';
+import { userSignOut } from '../redu/actions/UserActions';
 
 const Home = () => {
   const [search, setSearch] = useState('');
   const insets = useSafeAreaInsets();
+  const dispatched = useDispatch();
+  const error = useSelector(state => state.user.error);
+  const navigation = useNavigation();
+
+  const signOutButtonPress = async () => {
+    await dispatched(userSignOut());
+    navigation.goBack();
+  };
 
   const allCategories = [
     {
@@ -218,7 +227,12 @@ const Home = () => {
               <TouchableOpacity activeOpacity={1}>
                 <FavourteIcon width={32} height={32} marginEnd={5} />
               </TouchableOpacity>
-              <TouchableOpacity activeOpacity={1}>
+              <TouchableOpacity
+                activeOpacity={1}
+                onPress={() => {
+                  signOutButtonPress();
+                }}
+              >
                 <UserIcon width={32} height={32} />
               </TouchableOpacity>
             </View>
