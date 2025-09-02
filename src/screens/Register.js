@@ -76,6 +76,15 @@ const Register = () => {
         position: 'bottom',
         visibilityTime: 3000,
       });
+    } else if (userNumber.length !== 10) {
+      setLoading(false);
+      Toast.show({
+        type: 'error',
+        text1: 'Phone Number should be of 10 digits.',
+        autoHide: true,
+        position: 'bottom',
+        visibilityTime: 3000,
+      });
     } else if (userDeliveryAddress === '') {
       setLoading(false);
       Toast.show({
