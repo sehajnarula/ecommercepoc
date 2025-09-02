@@ -57,7 +57,6 @@ const formatError = error => {
 };
 
 const signInRequest = () => ({ type: SIGNIN_REQUEST });
-// const signInSuccess = (user) => ({ type: SIGNIN_SUCCESS, payload: user });
 
 const signInSuccess = user => {
   saveUserLocally(user);
@@ -70,7 +69,6 @@ const signInFailure = error => ({
 });
 
 const signUpRequest = () => ({ type: SIGNUP_REQUEST });
-// const signUpSuccess = (user) => ({ type: SIGNUP_SUCCESS, payload: user });
 
 const signUpSuccess = user => {
   saveUserLocally(user);
@@ -83,7 +81,14 @@ const signUpFailure = error => ({
 });
 
 const updateRequest = () => ({ type: UPDATE_REQUEST });
-const updateSuccess = () => ({ type: UPDATE_SUCCESS });
+
+// const updateSuccess = () => ({ type: UPDATE_SUCCESS });
+
+const updateSuccess = user => {
+  saveUserLocally(user);
+  return { type: UPDATE_REQUEST, payload: user };
+};
+
 const updateFailure = error => ({
   type: UPDATE_FAILURE,
   payload: formatError(error),
@@ -118,13 +123,13 @@ export const userSignIn = (email, password) => async dispatch => {
     console.log('userloginapiresponse', response);
 
     const user = {
-      id: response.data.id,
-      name: response.data.name,
-      email: response.data.name,
-      phoneNumber: response.data.phone,
-      address: response.data.address,
-      userRole: response.data.role,
-      token: response.token,
+      id: response.data.data.id,
+      name: response.data.data.name,
+      email: response.data.data.email,
+      phoneNumber: response.data.data.phone,
+      address: response.data.data.address,
+      userRole: response.data.data.role,
+      token: response.data.token,
     };
 
     dispatch(signInSuccess(user));
@@ -156,13 +161,13 @@ export const userSignUp =
       console.log('userregisterapiresponse', response);
 
       const user = {
-        id: response.data.id,
-        name: response.data.name,
-        email: response.data.name,
-        phoneNumber: response.data.phone,
-        address: response.data.address,
-        userRole: response.data.role,
-        token: response.token,
+        id: response.data.data.id,
+        name: response.data.data.name,
+        email: response.data.data.email,
+        phoneNumber: response.data.data.phone,
+        address: response.data.data.address,
+        userRole: response.data.data.role,
+        token: response.data.token,
       };
 
       dispatch(signUpSuccess(user));
@@ -172,18 +177,40 @@ export const userSignUp =
     }
   };
 
-export const userUpdate = (userName, userId) => async dispatch => {
-  dispatch(updateRequest());
-  try {
-    await firestore().collection('users').doc(userId).update({
-      name: userName,
-    });
-    dispatch(updateSuccess());
-  } catch (error) {
-    console.log('userupdateerror', error);
-    dispatch(updateFailure(error));
-  }
-};
+export const userUpdate =
+  (userName, userAddress, userPhoneNumber, token) => async dispatch => {
+    dispatch(updateRequest());
+    try {
+      const response = await axios.put(
+        `${baseUrl}api/auth/profile`,
+        {
+          name: userName,
+          phone: userPhoneNumber,
+          address: userAddress,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          timeout: 5000,
+        },
+      );
+      console.log('showupdateuserapiresponse', response);
+      const user = {
+        id: response.data.data.id,
+        name: response.data.data.name,
+        email: response.data.data.email,
+        phoneNumber: response.data.data.phone,
+        address: response.data.data.address,
+        userRole: response.data.data.role,
+        token: token,
+      };
+      dispatch(updateSuccess(user));
+    } catch (error) {
+      console.log('userupdateerror', error);
+      dispatch(updateFailure(error));
+    }
+  };
 
 export const userGoogleSignIn = () => async dispatch => {
   dispatch(googleSignInRequest());

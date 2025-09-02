@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import EditAddress from '../../assets/images/cartaddressedit.svg';
@@ -34,6 +35,8 @@ const CartScreenTwo = () => {
       discountPercentsgr: `46`,
     },
   ];
+
+  const [dashArray, setDashArray] = useState([]);
 
   return (
     <SafeAreaProvider>
@@ -262,6 +265,284 @@ const CartScreenTwo = () => {
             </Text>
 
             <CompleteTheLookFlatList isHorizontal={false} data={cartArray} />
+
+            <Text
+              style={{
+                color: '#D5D5D5',
+                fontSize: 14,
+                marginLeft: 16,
+                marginTop: 10,
+                fontFamily: fontFamilies.INTER.medium,
+                includeFontPadding: false,
+              }}
+            >
+              {`Order Summary`}
+            </Text>
+
+            <View
+              style={{
+                padding: 16,
+                gap: 10,
+                borderRadius: 12,
+                borderWidth: 1,
+                marginHorizontal: 16,
+                marginTop: 10,
+                backgroundColor: '#151515',
+                borderColor: '#FFFFFF52',
+              }}
+            >
+              <View style={{ flexDirection: 'row' }}>
+                <Text
+                  style={{
+                    fontSize: 13,
+                    fontFamily: fontFamilies.INTER.regular,
+                    color: '#D5D5D5',
+                    includeFontPadding: false,
+                  }}
+                >
+                  {`Item Total`}
+                </Text>
+
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    position: 'absolute',
+                    right: 0,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      fontFamily: fontFamilies.INTER.regular,
+                      color: '#FFFFFF99',
+                      marginRight: 5,
+                      textDecorationLine: 'line-through',
+                      includeFontPadding: false,
+                    }}
+                  >
+                    {`₹2,998`}
+                  </Text>
+
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      fontFamily: fontFamilies.INTER.regular,
+                      color: '#FFFFFF',
+                      includeFontPadding: false,
+                    }}
+                  >
+                    {`₹2,910`}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={{ flexDirection: 'row' }}>
+                <Text
+                  style={{
+                    fontSize: 13,
+                    fontFamily: fontFamilies.INTER.regular,
+                    color: '#D5D5D5',
+                    includeFontPadding: false,
+                  }}
+                >
+                  {`Free cash for you`}
+                </Text>
+
+                <Text
+                  style={{
+                    position: 'absolute',
+                    right: 0,
+                    fontSize: 13,
+                    fontFamily: fontFamilies.INTER.regular,
+                    color: '#8FC8A8',
+                    includeFontPadding: false,
+                  }}
+                >
+                  {`-₹300`}
+                </Text>
+              </View>
+
+              <View style={{ flexDirection: 'row' }}>
+                <Text
+                  style={{
+                    fontSize: 13,
+                    fontFamily: fontFamilies.INTER.regular,
+                    color: '#D5D5D5',
+                    includeFontPadding: false,
+                  }}
+                >
+                  {`Handling Fee`}
+                </Text>
+
+                <Text
+                  style={{
+                    position: 'absolute',
+                    right: 0,
+                    fontSize: 13,
+                    fontFamily: fontFamilies.INTER.regular,
+                    color: '#FFFFFF',
+                    includeFontPadding: false,
+                  }}
+                >
+                  {`₹20`}
+                </Text>
+              </View>
+
+              <View
+                style={{
+                  width: '100%',
+                  height: 1,
+                  borderColor: '#6C6C6C',
+                  borderWidth: 1,
+                  marginTop: 5,
+                  borderStyle: 'dashed',
+                }}
+              ></View>
+
+              <View style={{ flexDirection: 'row', marginTop: 5 }}>
+                <Text
+                  style={{
+                    fontSize: 13,
+                    fontFamily: fontFamilies.INTER.regular,
+                    color: '#D5D5D5',
+                    includeFontPadding: false,
+                  }}
+                >
+                  {`Delivery Partner Fee`}
+                </Text>
+
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    position: 'absolute',
+                    right: 0,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      fontFamily: fontFamilies.INTER.regular,
+                      color: '#FFFFFF99',
+                      marginRight: 5,
+                      textDecorationLine: 'line-through',
+                      includeFontPadding: false,
+                    }}
+                  >
+                    {`₹2,998`}
+                  </Text>
+
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      fontFamily: fontFamilies.INTER.regular,
+                      color: '#8FC8A8',
+                      includeFontPadding: false,
+                    }}
+                  >
+                    {`Free`}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={{ flexDirection: 'row' }}>
+                <Text
+                  style={{
+                    fontSize: 13,
+                    fontFamily: fontFamilies.INTER.regular,
+                    color: '#D5D5D5',
+                    includeFontPadding: false,
+                  }}
+                >
+                  {`Free Cash for you`}
+                </Text>
+
+                <Text
+                  style={{
+                    position: 'absolute',
+                    right: 0,
+                    fontSize: 13,
+                    fontFamily: fontFamilies.INTER.regular,
+                    color: '#8FC8A8',
+                    includeFontPadding: false,
+                  }}
+                >
+                  {`₹2,688`}
+                </Text>
+              </View>
+
+              <View style={{ flexDirection: 'row' }}>
+                <Text
+                  style={{
+                    fontSize: 13,
+                    fontFamily: fontFamilies.INTER.regular,
+                    color: '#D5D5D5',
+                    includeFontPadding: false,
+                  }}
+                >
+                  {`Gst and Charges`}
+                </Text>
+
+                <Text
+                  style={{
+                    position: 'absolute',
+                    right: 0,
+                    fontSize: 13,
+                    fontFamily: fontFamilies.INTER.regular,
+                    color: '#FFFFFF',
+                    includeFontPadding: false,
+                  }}
+                >
+                  {`₹ 40`}
+                </Text>
+              </View>
+
+              <View
+                style={{
+                  width: '100%',
+                  height: 1,
+                  borderColor: '#6C6C6C',
+                  borderWidth: 1,
+                  marginTop: 5,
+                  borderStyle: 'dashed',
+                }}
+              ></View>
+
+              <View style={{ flexDirection: 'row' }}>
+                <Text
+                  style={{
+                    fontSize: 13,
+                    fontFamily: fontFamilies.INTER.medium,
+                    color: '#FFFFFF',
+                    includeFontPadding: false,
+                  }}
+                >
+                  {`To Pay:`}
+                </Text>
+
+                <Text
+                  style={{
+                    position: 'absolute',
+                    right: 0,
+                    fontSize: 13,
+                    fontFamily: fontFamilies.INTER.medium,
+                    color: '#FFFFFF',
+                    includeFontPadding: false,
+                  }}
+                >
+                  {`₹ 40`}
+                </Text>
+              </View>
+            </View>
+
+            <View
+              style={{
+                flexDirection: 'row',
+                backgroundColor: '#2A2929',
+                borderColor: '#4D4D4D',
+                padding: 16,
+                borderWidth: 1,
+              }}
+            ></View>
           </View>
         </ScrollView>
       </SafeAreaView>

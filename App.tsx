@@ -40,7 +40,7 @@ function App() {
     <Provider store={Store}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="SplashScreen"
+          initialRouteName="CartPreview"
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="SplashScreen" component={Splash} />

@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import {
+  Image,
   ScrollView,
   Text,
   TextInput,
@@ -32,7 +33,7 @@ const Home = () => {
 
   const signOutButtonPress = async () => {
     await dispatched(userSignOut());
-    navigation.goBack();
+    navigation.navigate('LoginScreen');
   };
 
   const allCategories = [
@@ -193,12 +194,10 @@ const Home = () => {
         <View
           style={{
             flexDirection: 'row',
-            marginHorizontal: 10,
-            marginTop: 10,
             backgroundColor: '#000000',
           }}
         >
-          <View>
+          <View style={{ marginLeft: 10 }}>
             <Text
               style={{
                 color: '#FFFFFF',
@@ -222,18 +221,27 @@ const Home = () => {
           <View style={{ position: 'absolute', right: 0, marginTop: 12 }}>
             <View style={{ flexDirection: 'row' }}>
               <TouchableOpacity activeOpacity={1}>
-                <NotificationsIcon width={32} height={32} marginEnd={5} />
+                <NotificationsIcon width={32} height={32} marginEnd={10} />
               </TouchableOpacity>
               <TouchableOpacity activeOpacity={1}>
-                <FavourteIcon width={32} height={32} marginEnd={5} />
+                <FavourteIcon width={32} height={32} marginEnd={10} />
               </TouchableOpacity>
+              <TouchableOpacity activeOpacity={1} style={{ marginRight: 10 }}>
+                <UserIcon width={32} height={32} />
+              </TouchableOpacity>
+
               <TouchableOpacity
-                activeOpacity={1}
+                style={{ marginRight: 10, marginTop: 8 }}
+                activeOpacity={0.9}
                 onPress={() => {
                   signOutButtonPress();
                 }}
               >
-                <UserIcon width={32} height={32} />
+                <Image
+                  width={24}
+                  height={24}
+                  source={require('../../assets/images/logouticonsmall.png')}
+                />
               </TouchableOpacity>
             </View>
           </View>
