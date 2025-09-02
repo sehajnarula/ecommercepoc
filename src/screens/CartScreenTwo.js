@@ -1,9 +1,13 @@
 import { useState } from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import EditAddress from '../../assets/images/cartaddressedit.svg';
 import LocationIcon from '../../assets/images/cartlocationicon.svg';
 import PercentageIcon from '../../assets/images/discountoffercart.svg';
+import ItemsInTrial from '../../assets/images/itemsaddedfortrial.svg';
+import SecureMyOrderArrow from '../../assets/images/securemyorderarrow.svg';
+import SellerLock from '../../assets/images/sellerlock.svg';
 import CartSelectionsFlatList from '../components/CartSelectionsFlatList';
 import CompleteTheLookFlatList from '../components/CompleteTheLookFlatList';
 import { fontFamilies } from '../constants/fonts';
@@ -539,10 +543,162 @@ const CartScreenTwo = () => {
                 flexDirection: 'row',
                 backgroundColor: '#2A2929',
                 borderColor: '#4D4D4D',
-                padding: 16,
+                padding: 5,
+                marginTop: 30,
                 borderWidth: 1,
               }}
-            ></View>
+            >
+              <LinearGradient
+                style={{
+                  width: 24,
+                  height: 24,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: 4,
+                  paddingLeft: 5,
+                  marginTop: 7,
+                  marginLeft: 5,
+                  paddingRight: 5,
+                  gap: 10,
+                }}
+                colors={['#F0DCBC', '#8A7F6C']}
+              >
+                <ItemsInTrial width={11} height={11} />
+              </LinearGradient>
+
+              <View style={{ flex: 1, marginHorizontal: 10, marginBottom: 3 }}>
+                <Text
+                  style={{
+                    fontSize: 13,
+                    fontFamily: fontFamilies.INTER.medium,
+                    color: '#FFFFFF',
+                  }}
+                >
+                  {`2 Items Added For Trial`}
+                </Text>
+
+                <Text
+                  style={{
+                    fontSize: 12,
+                    fontFamily: fontFamilies.INTER.regular,
+                    color: '#F0DCBC',
+                  }}
+                >
+                  {`Choose up to 3 items to try at home`}
+                </Text>
+              </View>
+
+              <TouchableOpacity
+                style={{
+                  position: 'absolute',
+                  right: 0,
+                  marginRight: 8,
+                  marginTop: 12,
+                }}
+                activeOpacity={0.9}
+              >
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    paddingTop: 5,
+                    paddingBottom: 5,
+                    paddingLeft: 12,
+                    paddingRight: 12,
+                    gap: 5,
+                    borderRadius: 4,
+                    backgroundColor: '#2A2929',
+                    borderWidth: 1,
+                    borderColor: '#F0DCBC',
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontFamily: fontFamilies.INTER.medium,
+                      color: '#F0DCBC',
+                      fontSize: 12,
+                    }}
+                  >
+                    {'Remove'}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+
+            <View
+              style={{
+                flexDirection: 'row',
+                paddingBottom: 24,
+                paddingLeft: 16,
+                paddingRight: 16,
+                paddingTop: 10,
+                justifyContent: 'space-between',
+                backgroundColor: '#171717',
+                // borderWidth: 1,
+                // borderColor: '#4D4D4DDD',
+              }}
+            >
+              <View>
+                <Text
+                  style={{
+                    fontSize: 17,
+                    fontFamily: fontFamilies.INTER.medium,
+                    color: '#FFFFFF',
+                    includeFontPadding: false,
+                  }}
+                >
+                  {`₹23,000`}
+                </Text>
+
+                <View
+                  style={{ flexDirection: 'row', marginTop: 5, marginLeft: 5 }}
+                >
+                  <SellerLock width={9} height={10} marginTop={2} />
+
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      fontFamily: fontFamilies.INTER.medium,
+                      color: '#F8CD77',
+                      marginLeft: 8,
+                      includeFontPadding: false,
+                    }}
+                  >
+                    {`Ramayan Handloom`}
+                  </Text>
+                </View>
+              </View>
+
+              <TouchableOpacity activeOpacity={0.9} style={{ marginTop: 7 }}>
+                <View
+                  style={{
+                    backgroundColor: '#F0DCBC',
+                    paddingTop: 10,
+                    flexDirection: 'row',
+                    paddingBottom: 10,
+                    paddingLeft: 12,
+                    paddingRight: 12,
+                    gap: 10,
+                    borderRadius: 4,
+                    alignItems: 'center',
+                    width: 174,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontFamily: fontFamilies.INTER.bold,
+                      color: '#000000',
+                      fontSize: 12,
+                      includeFontPadding: false,
+                    }}
+                  >
+                    {`SECURE MY ORDER`}
+                  </Text>
+
+                  <SecureMyOrderArrow width={14} height={14} />
+                </View>
+              </TouchableOpacity>
+            </View>
           </View>
         </ScrollView>
       </SafeAreaView>
