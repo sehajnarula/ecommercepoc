@@ -165,7 +165,7 @@ const Register = () => {
                 marginTop: 12,
               }}
             >
-              {'Welcome'}
+              {'Sign Up'}
             </Text>
             <Text
               style={{
