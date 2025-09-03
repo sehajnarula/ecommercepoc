@@ -64,33 +64,6 @@ const ProductInformation = ({ route }) => {
   const reducedNumber = originalPriceNumber - reducedPriceNumber;
   const [state, dispatch] = useReducer(reducer, { count: 0 });
 
-  // const brandArrayList = [
-  //   {
-  //     brandId: '1',
-  //     brandName: 'Trident',
-  //     brandProducts: [
-  //       {
-  //         brandProductId: '2',
-  //         brandLogo: require('../../assets/images/tridentbrandlogo.png'),
-  //         brandProductImg: require('../../assets/images/towelone.png'),
-  //         brandProductName: `Aroma 1 Pc Pillow, Lavender, White|650`,
-  //         brandProductOriginalPrice: `1499`,
-  //         brandProductReducedPrice: `1455`,
-  //         discountPercentsgr: `46`,
-  //       },
-  //       {
-  //         brandProductId: '2',
-  //         brandLogo: require('../../assets/images/tridentbrandlogo.png'),
-  //         brandProductImg: require('../../assets/images/towelone.png'),
-  //         brandProductName: `Aroma 1 Pc Pillow, Lavender, White|650`,
-  //         brandProductOriginalPrice: `1499`,
-  //         brandProductReducedPrice: `1455`,
-  //         discountPercentsgr: `46`,
-  //       },
-  //     ],
-  //   },
-  // ];
-
   const brandProducts = [
     {
       brandProductId: '2',
