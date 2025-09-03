@@ -226,7 +226,13 @@ const Home = () => {
               <TouchableOpacity activeOpacity={1}>
                 <FavourteIcon width={32} height={32} marginEnd={10} />
               </TouchableOpacity>
-              <TouchableOpacity activeOpacity={1} style={{ marginRight: 10 }}>
+              <TouchableOpacity
+                activeOpacity={1}
+                style={{ marginRight: 10 }}
+                onPress={() => {
+                  navigation.navigate('UserScreen');
+                }}
+              >
                 <UserIcon width={32} height={32} />
               </TouchableOpacity>
 

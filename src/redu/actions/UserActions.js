@@ -109,16 +109,10 @@ const signOutAction = () => ({ type: SIGNOUT });
 export const userSignIn = (email, password) => async dispatch => {
   dispatch(signInRequest());
   try {
-    const response = await axios.post(
-      `${baseUrl}api/auth/login`,
-      {
-        email: email,
-        password: password,
-      },
-      {
-        timeout: 5000,
-      },
-    );
+    const response = await axios.post(`${baseUrl}api/auth/login`, {
+      email: email,
+      password: password,
+    });
 
     console.log('userloginapiresponse', response);
 
@@ -144,19 +138,13 @@ export const userSignUp =
   async dispatch => {
     dispatch(signUpRequest());
     try {
-      const response = await axios.post(
-        `${baseUrl}api/auth/register`,
-        {
-          name: userName,
-          email: email,
-          password: password,
-          phone: phoneNumber,
-          address: deliveryAddress,
-        },
-        {
-          timeout: 5000,
-        },
-      );
+      const response = await axios.post(`${baseUrl}api/auth/register`, {
+        name: userName,
+        email: email,
+        password: password,
+        phone: phoneNumber,
+        address: deliveryAddress,
+      });
 
       console.log('userregisterapiresponse', response);
 
@@ -192,7 +180,6 @@ export const userUpdate =
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          timeout: 5000,
         },
       );
       console.log('showupdateuserapiresponse', response);

@@ -20,6 +20,7 @@ import Login from '../ecommercedemo/src/screens/Login';
 import ProductInformation from '../ecommercedemo/src/screens/ProductInformation';
 import Register from '../ecommercedemo/src/screens/Register';
 import Splash from '../ecommercedemo/src/screens/Splash';
+import User from '../ecommercedemo/src/screens/User';
 
 const Stack = createNativeStackNavigator();
 
@@ -46,6 +47,7 @@ function App() {
           <Stack.Screen name="LoginScreen" component={Login} />
           <Stack.Screen name="RegisterScreen" component={Register} />
           <Stack.Screen name="HomeScreen" component={Home} />
+          <Stack.Screen name="UserScreen" component={User} />
           <Stack.Screen name="Tabs" component={Tabs} />
           <Stack.Screen name="ProductInfo" component={ProductInformation} />
         </Stack.Navigator>

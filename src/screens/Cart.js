@@ -638,7 +638,7 @@ const Cart = () => {
                 // borderColor: '#4D4D4DDD',
               }}
             >
-              <View>
+              <View style={{ marginTop: 3 }}>
                 <Text
                   style={{
                     fontSize: 17,
