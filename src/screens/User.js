@@ -216,9 +216,9 @@ const User = () => {
                 <Image
                   width={24}
                   height={24}
-                  source={require('../../assets/images/user.png')}
+                  source={require('../../assets/images/emailsmall.png')}
                   tintColor={'#FFFFFF8F'}
-                  marginTop={17}
+                  marginTop={18}
                   marginLeft={5}
                 />
                 <TextInput
@@ -316,7 +316,7 @@ const User = () => {
                   height={24}
                   source={require('../../assets/images/addresssmall.png')}
                   tintColor={'#FFFFFF8F'}
-                  marginTop={17}
+                  marginTop={19}
                   marginLeft={5}
                 />
                 <TextInput
