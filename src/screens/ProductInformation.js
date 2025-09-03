@@ -3,6 +3,7 @@ import React, { useReducer, useState } from 'react';
 import {
   Image,
   ScrollView,
+  StatusBar,
   Text,
   TextInput,
   TouchableOpacity,
@@ -114,6 +115,7 @@ const ProductInformation = ({ route }) => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1, backgroundColor: '#0E0E0E' }}>
+        <StatusBar backgroundColor="#171717" />
         <View
           style={{
             backgroundColor: '#000000',
@@ -179,6 +181,7 @@ const ProductInformation = ({ route }) => {
           contentContainerStyle={{
             flexGrow: 1,
           }}
+          showsVerticalScrollIndicator={false}
         >
           <View
             style={{ flex: 1, padding: 2, marginBottom: insets.bottom + 15 }}
@@ -484,7 +487,7 @@ const ProductInformation = ({ route }) => {
                   }}
                 />
 
-                <View style={{ marginTop: -60 }}>
+                <View style={{ marginTop: -50 }}>
                   <BrandLogoCircular width={73} height={73} />
                 </View>
               </View>
@@ -495,7 +498,7 @@ const ProductInformation = ({ route }) => {
                 flexDirection: 'row',
                 marginLeft: 12,
                 marginRight: 12,
-                marginTop: 20,
+                marginTop: 45,
               }}
             >
               <Text
@@ -776,8 +779,7 @@ const ProductInformation = ({ route }) => {
                 paddingBottom: 8,
                 height: 32,
                 paddingTop: 8,
-                marginTop: 12,
-                marginBottom: insets.bottom + 20,
+                marginTop: 20,
               }}
             >
               <View style={{ flexDirection: 'row' }}>
@@ -817,7 +819,11 @@ const ProductInformation = ({ route }) => {
             </View>
 
             <View
-              style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-evenly',
+                marginTop: 30,
+              }}
             >
               <TouchableOpacity activeOpacity={0.9}>
                 <View

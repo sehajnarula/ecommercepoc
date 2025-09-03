@@ -1,8 +1,10 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
 import {
+  BackHandler,
   Image,
   ScrollView,
+  StatusBar,
   Text,
   TextInput,
   TouchableOpacity,
@@ -21,6 +23,7 @@ import UserIcon from '../../assets/images/homepageusericon.svg';
 import SearchIcon from '../../assets/images/homesearchicon.svg';
 import HorizontalCategoriesHome from '../components/HorizontalCategoriesHome';
 import ShowCategoryProductsOnHome from '../components/ShowCategoryProductsOnHome';
+import { closeApp } from '../constants/commonfunctions';
 import { fontFamilies } from '../constants/fonts';
 import { userSignOut } from '../redu/actions/UserActions';
 
@@ -35,6 +38,27 @@ const Home = () => {
     await dispatched(userSignOut());
     navigation.navigate('LoginScreen');
   };
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    let backHandlerCloseScreen;
+
+    if (isFocused) {
+      backHandlerCloseScreen = BackHandler.addEventListener(
+        'hardwareBackPress',
+        () => {
+          closeApp();
+          return true;
+        },
+      );
+    }
+    return () => {
+      if (backHandlerCloseScreen) {
+        backHandlerCloseScreen.remove();
+      }
+    };
+  }, [isFocused]);
 
   const allCategories = [
     {
@@ -191,13 +215,18 @@ const Home = () => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1, backgroundColor: '#0E0E0E' }}>
+        <StatusBar backgroundColor="#171717" />
         <View
           style={{
             flexDirection: 'row',
             backgroundColor: '#000000',
+            paddingTop: 10,
+            paddingBottom: 10,
+            paddingLeft: 16,
+            paddingRight: 16,
           }}
         >
-          <View style={{ marginLeft: 10 }}>
+          <View>
             <Text
               style={{
                 color: '#FFFFFF',
@@ -218,7 +247,14 @@ const Home = () => {
               {'Elitelivstyle'}
             </Text>
           </View>
-          <View style={{ position: 'absolute', right: 0, marginTop: 12 }}>
+          <View
+            style={{
+              position: 'absolute',
+              right: 0,
+              marginTop: 25,
+              marginRight: 5,
+            }}
+          >
             <View style={{ flexDirection: 'row' }}>
               <TouchableOpacity activeOpacity={1}>
                 <NotificationsIcon width={32} height={32} marginEnd={10} />
@@ -257,50 +293,52 @@ const Home = () => {
             flexGrow: 1,
             marginBottom: insets.bottom + 5,
           }}
+          showsVerticalScrollIndicator={false}
         >
           <View style={{ flex: 1, padding: 2 }}>
-            <View
-              style={{
-                backgroundColor: '#FFFFFF',
-                paddingTop: 4,
-                paddingBottom: 4,
-                borderRadius: 8,
-                marginHorizontal: 14,
-                marginTop: 6,
-              }}
-            >
-              <View style={{ flexDirection: 'row' }}>
-                <SearchIcon
-                  width={20}
-                  height={20}
-                  marginTop={10}
-                  marginLeft={10}
-                />
-                <TextInput
-                  onChangeText={text => setSearch(text)}
-                  value={search}
-                  multiline={true}
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  style={{
-                    color: '#171717',
-                    fontFamily: fontFamilies.INTER.medium,
-                    marginLeft: 10,
-                  }}
-                  placeholder="Search bedsheets"
-                  placeholderTextColor={'#171717'}
-                ></TextInput>
-                <TouchableOpacity
-                  style={{
-                    position: 'absolute',
-                    right: 0,
-                    marginTop: 11,
-                    marginRight: 10,
-                  }}
-                  activeOpacity={0.9}
-                >
-                  <Microphone width={15} height={20} />
-                </TouchableOpacity>
+            <View style={{ backgroundColor: '#000000' }}>
+              <View
+                style={{
+                  backgroundColor: '#FFFFFF',
+                  paddingTop: 4,
+                  paddingBottom: 4,
+                  borderRadius: 8,
+                  marginHorizontal: 14,
+                }}
+              >
+                <View style={{ flexDirection: 'row' }}>
+                  <SearchIcon
+                    width={20}
+                    height={20}
+                    marginTop={10}
+                    marginLeft={10}
+                  />
+                  <TextInput
+                    onChangeText={text => setSearch(text)}
+                    value={search}
+                    multiline={true}
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    style={{
+                      color: '#171717',
+                      fontFamily: fontFamilies.INTER.medium,
+                      marginLeft: 10,
+                    }}
+                    placeholder="Search bedsheets"
+                    placeholderTextColor={'#171717'}
+                  ></TextInput>
+                  <TouchableOpacity
+                    style={{
+                      position: 'absolute',
+                      right: 0,
+                      marginTop: 11,
+                      marginRight: 10,
+                    }}
+                    activeOpacity={0.9}
+                  >
+                    <Microphone width={15} height={20} />
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
             <HorizontalCategoriesHome

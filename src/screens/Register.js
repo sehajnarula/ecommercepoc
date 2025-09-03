@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import {
   Image,
   ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   TextInput,
@@ -10,11 +11,7 @@ import {
   View,
 } from 'react-native';
 import * as progress from 'react-native-progress';
-import {
-  SafeAreaProvider,
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
 import VisibilityOff from '../../assets/images/visibilityof.svg';
@@ -24,7 +21,6 @@ import { userSignUp } from '../redu/actions/UserActions';
 
 const Register = () => {
   const navigation = useNavigation();
-  const insets = useSafeAreaInsets();
   const [passwordVisibility, setPasswordVisibility] = useState(false);
   const [rePasswordVisibility, setRePasswordVisibility] = useState(false);
   const [userName, setUserName] = useState('');
@@ -146,6 +142,7 @@ const Register = () => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1, backgroundColor: '#171717' }}>
+        <StatusBar backgroundColor="#171717" />
         {loading && (
           <View style={RegisterStyle.progressLoaderOverlayBg}>
             <View style={RegisterStyle.progressLoaderContainer}>
@@ -502,9 +499,7 @@ const Register = () => {
             </View>
           </View>
         </ScrollView>
-        <View
-          style={{ flexDirection: 'column', marginBottom: insets.bottom + 10 }}
-        >
+        <View style={{ flexDirection: 'column' }}>
           <TouchableOpacity
             activeOpacity={0.9}
             onPress={() => {

@@ -1,10 +1,12 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Image } from 'react-native';
+import React from 'react';
+import { Dimensions, Image } from 'react-native';
 import Cart from '../../screens/Cart';
 import Home from '../../screens/Home';
 import Store from '../../screens/Store';
 
 const Tab = createBottomTabNavigator();
+const height = Dimensions.get('window').height;
 
 const Tabs = () => {
   return (
@@ -16,7 +18,7 @@ const Tabs = () => {
         tabBarActiveTintColor: '#F0DCBC',
         tabBarInactiveTintColor: '#FFFFFF',
         tabBarStyle: {
-          height: 60,
+          height: height * 0.12,
           backgroundColor: '#000000',
           borderTopWidth: 0,
           elevation: 0,

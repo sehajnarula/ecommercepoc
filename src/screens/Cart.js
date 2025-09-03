@@ -1,5 +1,11 @@
-import { useState } from 'react';
-import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Image,
+  ScrollView,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import EditAddress from '../../assets/images/cartaddressedit.svg';
@@ -40,12 +46,14 @@ const Cart = () => {
     },
   ];
 
-  const [dashArray, setDashArray] = useState([]);
-
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1, backgroundColor: '#0E0E0E' }}>
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <StatusBar backgroundColor="#171717" />
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          showsVerticalScrollIndicator={false}
+        >
           <View style={{ flex: 1 }}>
             <View
               style={{
@@ -215,29 +223,31 @@ const Cart = () => {
             >
               <PercentageIcon width={28} height={28} />
 
-              <Text
-                style={{
-                  color: '#F4A300',
-                  fontSize: 13,
-                  marginTop: 5,
-                  fontFamily: fontFamilies.INTER.regular,
-                  includeFontPadding: false,
-                }}
-              >
-                {`You Just Saved ₹500`}
-              </Text>
+              <View style={{ flexDirection: 'row', flex: 1 }}>
+                <Text
+                  style={{
+                    color: '#F4A300',
+                    fontSize: 13,
+                    marginTop: 5,
+                    fontFamily: fontFamilies.INTER.regular,
+                    includeFontPadding: false,
+                  }}
+                >
+                  {`You Just Saved ₹500`}
+                </Text>
 
-              <Text
-                style={{
-                  color: '#FFFFFF',
-                  fontSize: 13,
-                  marginTop: 5,
-                  fontFamily: fontFamilies.INTER.regular,
-                  includeFontPadding: false,
-                }}
-              >
-                {`- Add more, save more`}
-              </Text>
+                <Text
+                  style={{
+                    color: '#FFFFFF',
+                    fontSize: 13,
+                    marginTop: 5,
+                    fontFamily: fontFamilies.INTER.regular,
+                    includeFontPadding: false,
+                  }}
+                >
+                  {`- Add more, save more`}
+                </Text>
+              </View>
             </View>
 
             <Text

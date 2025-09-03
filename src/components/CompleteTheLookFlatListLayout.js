@@ -10,7 +10,8 @@ const CompleteTheLookFlatListLayout = props => {
         width: 161,
         paddingBottom: 12,
         gap: 13,
-        marginLeft: 20,
+        paddingHorizontal: 2,
+        marginLeft: 12,
       }}
     >
       <Image

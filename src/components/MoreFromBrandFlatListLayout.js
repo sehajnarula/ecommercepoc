@@ -3,7 +3,14 @@ import { fontFamilies } from '../constants/fonts';
 
 const MoreFromBrandFlatListLayout = props => {
   return (
-    <View style={{ width: 161, height: 270, marginLeft: 18 }}>
+    <View
+      style={{
+        width: 161,
+        // height: 263,
+        gap: 13,
+        marginLeft: 11,
+      }}
+    >
       <View style={{ width: 161, height: 180 }}>
         <Image
           style={{ width: '100%', height: '100%', borderRadius: 7 }}
@@ -20,7 +27,6 @@ const MoreFromBrandFlatListLayout = props => {
         style={{
           fontFamily: fontFamilies.INTER.regular,
           fontSize: 16,
-          marginTop: 5,
           marginHorizontal: 2,
           color: '#FFFFFF',
         }}

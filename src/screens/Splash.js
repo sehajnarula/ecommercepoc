@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useRef } from 'react';
-import { Animated, View } from 'react-native';
+import { Animated, StatusBar, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import SplashLogo from '../../assets/images/splashiconlogo.svg';
 
@@ -38,6 +38,7 @@ const Splash = () => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1, backgroundColor: '#171717' }}>
+        <StatusBar backgroundColor="#171717" />
         <View style={{ flex: 1 }}>
           <View
             style={{ top: 200, justifyContent: 'center', alignItems: 'center' }}

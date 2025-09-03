@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import {
   Image,
   ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   TextInput,
@@ -121,6 +122,7 @@ const User = () => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1, backgroundColor: '#171717' }}>
+        <StatusBar backgroundColor="#171717" />
         {loading && (
           <View style={UpdateUserStyle.progressLoaderOverlayBg}>
             <View style={UpdateUserStyle.progressLoaderContainer}>
