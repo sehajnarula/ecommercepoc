@@ -553,7 +553,7 @@ const Cart = () => {
                 flexDirection: 'row',
                 backgroundColor: '#2A2929',
                 borderColor: '#4D4D4D',
-                padding: 5,
+                padding: 10,
                 marginTop: 30,
                 borderWidth: 1,
               }}
@@ -603,7 +603,7 @@ const Cart = () => {
                   position: 'absolute',
                   right: 0,
                   marginRight: 8,
-                  marginTop: 12,
+                  marginTop: 15,
                 }}
                 activeOpacity={0.9}
               >

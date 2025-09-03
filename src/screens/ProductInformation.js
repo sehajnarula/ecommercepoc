@@ -483,18 +483,12 @@ const ProductInformation = ({ route }) => {
               >
                 {'Product Information'}
               </Text>
+
               <TouchableOpacity
                 activeOpacity={1}
                 style={{ position: 'absolute', right: 0 }}
                 onPress={() => setProductInfo(!productInfo)}
               >
-                {/* <ProductInfoNewIcon
-                  width={24}
-                  height={24}
-                  style={{
-                    transform: [{ rotate: productInfo ? '0deg' : '180deg' }],
-                  }} */}
-
                 {productInfo ? (
                   <ProductInfoNewIcon width={24} height={24} />
                 ) : (
@@ -512,8 +506,6 @@ const ProductInformation = ({ route }) => {
                     />
                   </View>
                 )}
-
-                {/* /> */}
               </TouchableOpacity>
             </View>
             {productInfo ? (

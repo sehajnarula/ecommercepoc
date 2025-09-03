@@ -218,7 +218,6 @@ const Home = () => {
         <StatusBar backgroundColor="#171717" />
         <View
           style={{
-            flexDirection: 'row',
             backgroundColor: '#000000',
             paddingTop: 10,
             paddingBottom: 10,
@@ -226,68 +225,124 @@ const Home = () => {
             paddingRight: 16,
           }}
         >
-          <View>
-            <Text
-              style={{
-                color: '#FFFFFF',
-                fontSize: 12,
-                fontFamily: fontFamilies.INTER.medium,
-              }}
-            >
-              {'Curated By'}
-            </Text>
-            <Text
-              style={{
-                color: '#FFFFFF',
-                fontSize: 24,
-                fontFamily: fontFamilies.INTER.bold,
-                marginTop: 3,
-              }}
-            >
-              {'Elitelivstyle'}
-            </Text>
-          </View>
-          <View
-            style={{
-              position: 'absolute',
-              right: 0,
-              marginTop: 25,
-              marginRight: 5,
-            }}
-          >
-            <View style={{ flexDirection: 'row' }}>
-              <TouchableOpacity activeOpacity={1}>
-                <NotificationsIcon width={32} height={32} marginEnd={10} />
-              </TouchableOpacity>
-              <TouchableOpacity activeOpacity={1}>
-                <FavourteIcon width={32} height={32} marginEnd={10} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                activeOpacity={1}
-                style={{ marginRight: 10 }}
-                onPress={() => {
-                  navigation.navigate('UserScreen');
+          <View style={{ flexDirection: 'row' }}>
+            <View>
+              <Text
+                style={{
+                  color: '#FFFFFF',
+                  fontSize: 12,
+                  fontFamily: fontFamilies.INTER.medium,
                 }}
               >
-                <UserIcon width={32} height={32} />
-              </TouchableOpacity>
+                {'Curated By'}
+              </Text>
+              <Text
+                style={{
+                  color: '#FFFFFF',
+                  fontSize: 24,
+                  fontFamily: fontFamilies.INTER.bold,
+                  marginTop: 3,
+                }}
+              >
+                {'Elitelivstyle'}
+              </Text>
+            </View>
+            <View
+              style={{
+                position: 'absolute',
+                right: 0,
+                marginTop: 20,
+                marginRight: 5,
+              }}
+            >
+              <View style={{ flexDirection: 'row' }}>
+                <TouchableOpacity activeOpacity={1}>
+                  <NotificationsIcon width={32} height={32} marginEnd={10} />
+                </TouchableOpacity>
+                <TouchableOpacity activeOpacity={1}>
+                  <FavourteIcon width={32} height={32} marginEnd={10} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  activeOpacity={1}
+                  style={{ marginRight: 10 }}
+                  onPress={() => {
+                    navigation.navigate('UserScreen');
+                  }}
+                >
+                  <UserIcon width={32} height={32} />
+                </TouchableOpacity>
 
-              <TouchableOpacity
-                style={{ marginRight: 10, marginTop: 8 }}
-                activeOpacity={0.9}
-                onPress={() => {
-                  signOutButtonPress();
-                }}
-              >
-                <Image
-                  width={24}
-                  height={24}
-                  source={require('../../assets/images/logouticonsmall.png')}
+                <TouchableOpacity
+                  style={{ marginRight: 5, marginTop: 8 }}
+                  activeOpacity={0.9}
+                  onPress={() => {
+                    signOutButtonPress();
+                  }}
+                >
+                  <Image
+                    width={24}
+                    height={24}
+                    source={require('../../assets/images/logouticonsmall.png')}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+
+          <View style={{ backgroundColor: '#000000' }}>
+            <View
+              style={{
+                backgroundColor: '#FFFFFF',
+                paddingTop: 4,
+                paddingBottom: 4,
+                borderRadius: 8,
+                marginTop: 10,
+              }}
+            >
+              <View style={{ flexDirection: 'row' }}>
+                <SearchIcon
+                  width={20}
+                  height={20}
+                  marginTop={10}
+                  marginLeft={10}
                 />
-              </TouchableOpacity>
+                <TextInput
+                  onChangeText={text => setSearch(text)}
+                  value={search}
+                  multiline={true}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  style={{
+                    color: '#171717',
+                    fontFamily: fontFamilies.INTER.medium,
+                    marginLeft: 10,
+                  }}
+                  placeholder="Search bedsheets"
+                  placeholderTextColor={'#171717'}
+                ></TextInput>
+                <TouchableOpacity
+                  style={{
+                    position: 'absolute',
+                    right: 0,
+                    marginTop: 11,
+                    marginRight: 10,
+                  }}
+                  activeOpacity={0.9}
+                >
+                  <Microphone width={15} height={20} />
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </View>
+
+        <View style={{ backgroundColor: '#000000' }}>
+          <HorizontalCategoriesHome
+            isHorizontal={true}
+            data={horizontalCategories}
+          />
+        </View>
+
         <ScrollView
           contentContainerStyle={{
             flexGrow: 1,
@@ -296,55 +351,6 @@ const Home = () => {
           showsVerticalScrollIndicator={false}
         >
           <View style={{ flex: 1, padding: 2 }}>
-            <View style={{ backgroundColor: '#000000' }}>
-              <View
-                style={{
-                  backgroundColor: '#FFFFFF',
-                  paddingTop: 4,
-                  paddingBottom: 4,
-                  borderRadius: 8,
-                  marginHorizontal: 14,
-                }}
-              >
-                <View style={{ flexDirection: 'row' }}>
-                  <SearchIcon
-                    width={20}
-                    height={20}
-                    marginTop={10}
-                    marginLeft={10}
-                  />
-                  <TextInput
-                    onChangeText={text => setSearch(text)}
-                    value={search}
-                    multiline={true}
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    style={{
-                      color: '#171717',
-                      fontFamily: fontFamilies.INTER.medium,
-                      marginLeft: 10,
-                    }}
-                    placeholder="Search bedsheets"
-                    placeholderTextColor={'#171717'}
-                  ></TextInput>
-                  <TouchableOpacity
-                    style={{
-                      position: 'absolute',
-                      right: 0,
-                      marginTop: 11,
-                      marginRight: 10,
-                    }}
-                    activeOpacity={0.9}
-                  >
-                    <Microphone width={15} height={20} />
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-            <HorizontalCategoriesHome
-              isHorizontal={true}
-              data={horizontalCategories}
-            />
             <ShowCategoryProductsOnHome
               isHorizontal={false}
               data={allCategories}
