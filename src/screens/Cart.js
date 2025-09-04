@@ -46,6 +46,8 @@ const Cart = () => {
     },
   ];
 
+  const cartTotalPrice = `5000`;
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1, backgroundColor: '#0E0E0E' }}>
@@ -657,7 +659,7 @@ const Cart = () => {
                     includeFontPadding: false,
                   }}
                 >
-                  {`₹23,000`}
+                  {`₹${cartTotalPrice}`}
                 </Text>
 
                 <View
