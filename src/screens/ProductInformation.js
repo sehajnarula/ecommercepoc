@@ -89,67 +89,6 @@ const ProductInformation = ({ route }) => {
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1, backgroundColor: '#0E0E0E' }}>
         <StatusBar backgroundColor="#171717" />
-        <View
-          style={{
-            backgroundColor: '#000000',
-            paddingBottom: 10,
-            paddingTop: 10,
-            paddingRight: 16,
-            paddingLeft: 10,
-          }}
-        >
-          <View style={{ flexDirection: 'row' }}>
-            <TouchableOpacity
-              activeOpacity={1}
-              style={{ marginTop: 10 }}
-              onPress={() => {
-                navigation.goBack();
-              }}
-            >
-              <BackArrow width={20} height={20} />
-            </TouchableOpacity>
-            <View
-              style={{
-                backgroundColor: '#323130',
-                paddingTop: 3,
-                paddingBottom: 3,
-                borderRadius: 8,
-                width: 203,
-                marginLeft: 25,
-              }}
-            >
-              <View style={{ flexDirection: 'row' }}>
-                <SearchIcon
-                  width={15}
-                  height={15}
-                  marginLeft={10}
-                  marginTop={10}
-                />
-                <TextInput
-                  onChangeText={text => setSearch(text)}
-                  autoCapitalize="none"
-                  multiline={true}
-                  style={{ color: '#FFFFFF8F', marginLeft: 3, width: 203 }}
-                  placeholderTextColor={'#FFFFFF8F'}
-                  placeholder="Search"
-                  value={search}
-                />
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                position: 'absolute',
-                right: 0,
-                marginRight: 5,
-                marginTop: 5,
-              }}
-            >
-              <FavourteIcon width={32} height={32} marginRight={10} />
-              <CartIcon width={32} height={32} />
-            </View>
-          </View>
-        </View>
         <ScrollView
           contentContainerStyle={{
             flexGrow: 1,
@@ -157,8 +96,71 @@ const ProductInformation = ({ route }) => {
           showsVerticalScrollIndicator={false}
         >
           <View
-            style={{ flex: 1, padding: 2, marginBottom: insets.bottom + 15 }}
+            style={{ flex: 1, padding: 1, marginBottom: insets.bottom + 15 }}
           >
+            <View
+              style={{
+                backgroundColor: '#000000',
+                paddingBottom: 10,
+                paddingTop: 10,
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingRight: 16,
+                paddingLeft: 16,
+              }}
+            >
+              <TouchableOpacity
+                activeOpacity={1}
+                onPress={() => {
+                  navigation.goBack();
+                }}
+              >
+                <BackArrow width={20} height={20} />
+              </TouchableOpacity>
+              <View
+                style={{
+                  backgroundColor: '#323130',
+                  paddingHorizontal: 8,
+                  flexDirection: 'row',
+                  borderRadius: 8,
+                  alignItems: 'center',
+                  width: 203,
+                  marginTop: 1,
+                  marginLeft: 15,
+                  height: 39,
+                }}
+              >
+                <SearchIcon width={15} height={15} />
+                <TextInput
+                  onChangeText={text => setSearch(text)}
+                  autoCapitalize="none"
+                  style={{
+                    color: '#FFFFFF8F',
+                    paddingVertical: 0,
+                    flex: 1,
+                    marginTop: 3,
+                    height: '100%',
+                    paddingHorizontal: 6,
+                  }}
+                  placeholderTextColor={'#FFFFFF8F'}
+                  placeholder="Search"
+                  value={search}
+                />
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  position: 'absolute',
+                  right: 0,
+                  marginRight: 15,
+                  // marginTop: 5,
+                }}
+              >
+                <FavourteIcon width={32} height={32} marginRight={10} />
+                <CartIcon width={32} height={32} />
+              </View>
+            </View>
+
             <View
               style={{
                 width: '100%',
