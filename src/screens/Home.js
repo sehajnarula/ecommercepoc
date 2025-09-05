@@ -340,7 +340,7 @@ const Home = () => {
                 style={{
                   color: '#171717',
                   fontFamily: fontFamilies.INTER.medium,
-                  marginLeft: 10,
+                  marginLeft: 9,
                   flex: 1,
                 }}
                 placeholder="Search bedsheets"
