@@ -5,11 +5,13 @@ import {
   Image,
   ScrollView,
   StatusBar,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
+import * as progress from 'react-native-progress';
 import {
   SafeAreaProvider,
   SafeAreaView,
@@ -25,10 +27,12 @@ import HorizontalCategoriesHome from '../components/HorizontalCategoriesHome';
 import ShowCategoryProductsOnHome from '../components/ShowCategoryProductsOnHome';
 import { closeApp } from '../constants/commonfunctions';
 import { fontFamilies } from '../constants/fonts';
+import { shiprocketAuthCall } from '../redu/actions/ShipRocketActions';
 import { userSignOut } from '../redu/actions/UserActions';
 
 const Home = () => {
   const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(false);
   const insets = useSafeAreaInsets();
   const dispatched = useDispatch();
   const error = useSelector(state => state.user.error);
@@ -40,6 +44,16 @@ const Home = () => {
   };
 
   const isFocused = useIsFocused();
+
+  const getTokenShipRocketOnScreen = async () => {
+    setLoading(true);
+    await dispatched(shiprocketAuthCall());
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    getTokenShipRocketOnScreen();
+  }, []);
 
   useEffect(() => {
     let backHandlerCloseScreen;
@@ -216,6 +230,15 @@ const Home = () => {
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1, backgroundColor: '#0E0E0E' }}>
         <StatusBar backgroundColor="#171717" />
+
+        {loading && (
+          <View style={HomeStyle.progressLoaderOverlayBg}>
+            <View style={HomeStyle.progressLoaderContainer}>
+              <progress.Circle indeterminate size={50} color="#F0DCBC" />
+            </View>
+          </View>
+        )}
+
         <View
           style={{
             backgroundColor: '#000000',
@@ -361,5 +384,32 @@ const Home = () => {
     </SafeAreaProvider>
   );
 };
+
+const HomeStyle = StyleSheet.create({
+  progressLoaderOverlayBg: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    zIndex: 999,
+  },
+  progressLoaderContainer: {
+    elevation: 5,
+    shadowColor: '#000',
+    borderRadius: 10,
+    backgroundColor: '#FFFFFF',
+    width: 100,
+    height: 100,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 export default Home;

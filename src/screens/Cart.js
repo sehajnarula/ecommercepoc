@@ -1,13 +1,21 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
 import {
   Image,
   ScrollView,
   StatusBar,
+  StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import * as progress from 'react-native-progress';
+import RazorpayCheckout from 'react-native-razorpay';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
+import { useDispatch, useSelector } from 'react-redux';
 import EditAddress from '../../assets/images/cartaddressedit.svg';
 import LocationIcon from '../../assets/images/cartlocationicon.svg';
 import PercentageIcon from '../../assets/images/discountoffercart.svg';
@@ -17,8 +25,90 @@ import SellerLock from '../../assets/images/sellerlock.svg';
 import CartSelectionsFlatList from '../components/CartSelectionsFlatList';
 import CompleteTheLookFlatList from '../components/CompleteTheLookFlatList';
 import { fontFamilies } from '../constants/fonts';
+import keys from '../constants/keys';
+import { shiprocketAddOrderApiCall } from '../redu/actions/ShipRocketActions';
 
 const Cart = () => {
+  const [deliveryToken, setDeliveryToken] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [cartArrayLocal, setCartArrayLocal] = useState([]);
+  const isFocused = useIsFocused();
+  const dispatched = useDispatch();
+  const error = useSelector(state => state.user.error);
+  const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [userNumber, setUserNumber] = useState('');
+  const [userToken, setUserToken] = useState('');
+  const [userDeliveryAddress, setUserDeliveryAddress] = useState('');
+
+  const getShipRocketTockenLocally = async () => {
+    setLoading(true);
+    try {
+      const getToken = await AsyncStorage.getItem('shiprockettoken');
+      if (getToken !== null) {
+        setDeliveryToken(getToken);
+      }
+      setLoading(false);
+      console.log('showshiprockettoken', getToken);
+    } catch (error) {
+      setLoading(false);
+      console.log('getlocalshiprockettokenerror', error);
+    }
+  };
+
+  const getUserStateLocally = async () => {
+    try {
+      const userJson = await AsyncStorage.getItem('user');
+      if (userJson !== null) {
+        const user = JSON.parse(userJson);
+
+        let userSavedNumber = user.phoneNumber;
+
+        if (userSavedNumber.startsWith('+91')) {
+          userSavedNumber = userSavedNumber.substring(3);
+        }
+
+        setUserEmail(user.email);
+        setUserName(user.name);
+        setUserNumber(userSavedNumber);
+        setUserDeliveryAddress(user.address);
+        setUserToken(user.token);
+        console.log('showuser', user);
+      }
+    } catch (error) {
+      console.log('getuserlocallyerror', error);
+    }
+  };
+
+  const getLocalCart = async () => {
+    try {
+      const getlocalCartItems = await AsyncStorage.getItem('saveditemsincart');
+      const savedCart = getlocalCartItems ? JSON.parse(getlocalCartItems) : [];
+      const savedCartWithoutId = savedCart.map(({ id, ...rest }) => rest);
+      setCartArrayLocal(savedCartWithoutId);
+      console.log('showlocalcartinscreen', savedCartWithoutId);
+    } catch (error) {
+      console.log('getlocalcarterror', error);
+    }
+  };
+
+  const presentMoment = new Date();
+
+  const year = presentMoment.getFullYear();
+  const month = String(presentMoment.getMonth() + 1).padStart(2, '0');
+  const day = String(presentMoment.getDate()).padStart(2, '0');
+  const hours = String(presentMoment.getHours()).padStart(2, '0');
+  const minutes = String(presentMoment.getMinutes()).padStart(2, '0');
+
+  const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}`;
+
+  useEffect(() => {
+    getShipRocketTockenLocally();
+    getUserStateLocally();
+    getLocalCart();
+    console.log('showshiprocketdate', formattedDate);
+  }, [isFocused]);
+
   const cartArray = [
     {
       cartItemId: '1',
@@ -46,12 +136,92 @@ const Cart = () => {
     },
   ];
 
-  const cartTotalPrice = `5000`;
+  const cartTotalPrice = 2100;
+  const min = 10000;
+  const max = 99999;
+  const randomOrderId = Math.floor(Math.random() * (max - min + 1)) + min; // date format for shiprocket api
+
+  const orderDetails = {
+    order_id: `${randomOrderId}`,
+    order_date: formattedDate,
+    pickup_location: 'Home',
+    billing_customer_name: userName,
+    billing_last_name: 'Narula',
+    billing_address: userDeliveryAddress,
+    billing_city: 'Patiala',
+    billing_pincode: '147001',
+    billing_state: 'Punjab',
+    billing_country: 'India',
+    billing_email: userEmail,
+    billing_phone: userNumber,
+    shipping_is_billing: true,
+    order_items: cartArrayLocal,
+    payment_method: 'Prepaid',
+    sub_total: `2100`,
+    length: 10,
+    breadth: 15,
+    height: 5,
+    weight: 0.5,
+  };
+
+  const addOrderInVendorDashboard = async () => {
+    setLoading(true);
+    await dispatched(shiprocketAddOrderApiCall(deliveryToken, orderDetails));
+    setLoading(false);
+    Toast.show({
+      type: 'success',
+      text1: 'Order Placed To Vendor For Delivery.',
+      autoHide: true,
+      position: 'bottom',
+      visibilityTime: 3000,
+    });
+  };
+
+  const logo = Image.resolveAssetSource(
+    require('../../assets/images/user.png'),
+  ).uri;
+
+  const startPayment = () => {
+    var options = {
+      description: 'Payment for order #12345',
+      image: logo,
+      currency: 'INR',
+      key: keys.razorPayTestKey, // Test key
+      amount: `${cartTotalPrice * 100}`,
+      name: 'ecommercedemo',
+      prefill: {
+        email: 'sehajbir54@gmail.com',
+        contact: '8872299999',
+        name: 'Sehaj Bir Singh Narula',
+      },
+      theme: { color: '#000000' },
+      method: 'upi',
+    };
+    RazorpayCheckout.open(options)
+      .then(data => {
+        // success callback
+        addOrderInVendorDashboard();
+        // alert(`Success: ${data.razorpay_payment_id}`);
+      })
+      .catch(error => {
+        // failure callback
+        alert(`Error: ${error.code} | ${error.description}`);
+      });
+  };
 
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1, backgroundColor: '#0E0E0E' }}>
         <StatusBar backgroundColor="#171717" />
+
+        {loading && (
+          <View style={CartStyle.progressLoaderOverlayBg}>
+            <View style={CartStyle.progressLoaderContainer}>
+              <progress.Circle indeterminate size={50} color="#F0DCBC" />
+            </View>
+          </View>
+        )}
+
         <ScrollView
           contentContainerStyle={{ flexGrow: 1 }}
           showsVerticalScrollIndicator={false}
@@ -681,7 +851,13 @@ const Cart = () => {
                 </View>
               </View>
 
-              <TouchableOpacity activeOpacity={0.9} style={{ marginTop: 7 }}>
+              <TouchableOpacity
+                activeOpacity={0.9}
+                style={{ marginTop: 7 }}
+                onPress={() => {
+                  startPayment();
+                }}
+              >
                 <View
                   style={{
                     backgroundColor: '#F0DCBC',
@@ -717,5 +893,32 @@ const Cart = () => {
     </SafeAreaProvider>
   );
 };
+
+const CartStyle = StyleSheet.create({
+  progressLoaderOverlayBg: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    zIndex: 999,
+  },
+  progressLoaderContainer: {
+    elevation: 5,
+    shadowColor: '#000',
+    borderRadius: 10,
+    backgroundColor: '#FFFFFF',
+    width: 100,
+    height: 100,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 export default Cart;

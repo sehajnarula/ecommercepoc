@@ -18,7 +18,7 @@ const ShowCategoryProductsOnHome = props => {
         showsVerticalScrollIndicator={false}
         data={props.data}
         keyExtractor={category => category.categoryId}
-        renderItem={({ item }) => (
+        renderItem={({ item: category }) => (
           <View style={{ marginTop: 11 }}>
             <View
               style={{
@@ -35,7 +35,7 @@ const ShowCategoryProductsOnHome = props => {
                   color: '#FFFFFF',
                 }}
               >
-                {item.categoryName}
+                {category.categoryName}
               </Text>
               <TouchableOpacity
                 activeOpacity={1}
@@ -61,7 +61,7 @@ const ShowCategoryProductsOnHome = props => {
               horizontal={false}
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
-              data={item.products}
+              data={category.products}
               keyExtractor={product => product.productId}
               numColumns={2}
               renderItem={({ item }) => (
@@ -69,6 +69,8 @@ const ShowCategoryProductsOnHome = props => {
                   activeOpacity={0.9}
                   onPress={() => {
                     navigation.navigate('ProductInfo', {
+                      categoryName: category.categoryName,
+                      productId: item.productId,
                       productImage: item.image,
                       productName: item.productName,
                       originalPrice: item.productOriginalPrice,

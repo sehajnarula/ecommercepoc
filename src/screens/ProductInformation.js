@@ -4,17 +4,21 @@ import {
   Image,
   ScrollView,
   StatusBar,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import * as progress from 'react-native-progress';
 import {
   SafeAreaProvider,
   SafeAreaView,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
+import { useDispatch, useSelector } from 'react-redux';
 import AddressArrow from '../../assets/images/addressproductarrow.svg';
 import BrandLogoCircular from '../../assets/images/brandlogoone.svg';
 import ProductInfoNewIcon from '../../assets/images/closeproductinfonew.svg';
@@ -30,6 +34,7 @@ import SaveMoreWithBulk from '../../assets/images/savemorewithbulkicon.svg';
 import SearchIcon from '../../assets/images/searchinproductinfo.svg';
 import MoreFromBrandFlatList from '../components/MoreFromBrandFlatList';
 import { fontFamilies } from '../constants/fonts';
+import { addItemsInCart } from '../redu/actions/CartActions';
 
 const reducer = (state, changeState) => {
   switch (changeState.type) {
@@ -46,15 +51,18 @@ const reducer = (state, changeState) => {
 };
 
 const ProductInformation = ({ route }) => {
+  const dispatched = useDispatch();
+  const error = useSelector(state => state.user.error);
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
   const [search, setSearch] = useState('');
-  const [quantity, setQuantity] = useState(0);
   const [productInfo, setProductInfo] = useState(true);
   const {
+    categoryName,
     productName,
     productImage,
     originalPrice,
+    productId,
     reducedPrice,
     rating,
     reviewCount,
@@ -63,6 +71,39 @@ const ProductInformation = ({ route }) => {
   const reducedPriceNumber = Number(reducedPrice);
   const reducedNumber = originalPriceNumber - reducedPriceNumber;
   const [state, dispatch] = useReducer(reducer, { count: 0 });
+  const [loading, setLoading] = useState(false);
+
+  const addInCartBtn = async () => {
+    setLoading(true);
+    if (state.count !== 0) {
+      await dispatched(
+        addItemsInCart(
+          productId,
+          productName,
+          categoryName,
+          state.count,
+          reducedPrice,
+        ),
+      );
+      setLoading(false);
+      Toast.show({
+        type: 'success',
+        text1: 'Added To Cart.',
+        autoHide: true,
+        position: 'bottom',
+        visibilityTime: 3000,
+      });
+    } else {
+      setLoading(false);
+      Toast.show({
+        type: 'error',
+        text1: 'Add at least one quantity of the product.',
+        autoHide: true,
+        position: 'bottom',
+        visibilityTime: 3000,
+      });
+    }
+  };
 
   const brandProducts = [
     {
@@ -89,6 +130,13 @@ const ProductInformation = ({ route }) => {
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1, backgroundColor: '#0E0E0E' }}>
         <StatusBar backgroundColor="#171717" />
+        {loading && (
+          <View style={ProductInfoStyle.progressLoaderOverlayBg}>
+            <View style={ProductInfoStyle.progressLoaderContainer}>
+              <progress.Circle indeterminate size={50} color="#F0DCBC" />
+            </View>
+          </View>
+        )}
         <ScrollView
           contentContainerStyle={{
             flexGrow: 1,
@@ -819,6 +867,9 @@ const ProductInformation = ({ route }) => {
                   backgroundColor: '#F0DCBC',
                   padding: 10,
                 }}
+                onPress={() => {
+                  addInCartBtn();
+                }}
               >
                 <View
                   style={{ justifyContent: 'center', alignItems: 'center' }}
@@ -868,5 +919,32 @@ const ProductInformation = ({ route }) => {
     </SafeAreaProvider>
   );
 };
+
+const ProductInfoStyle = StyleSheet.create({
+  progressLoaderOverlayBg: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    zIndex: 999,
+  },
+  progressLoaderContainer: {
+    elevation: 5,
+    shadowColor: '#000',
+    borderRadius: 10,
+    backgroundColor: '#FFFFFF',
+    width: 100,
+    height: 100,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 export default ProductInformation;
