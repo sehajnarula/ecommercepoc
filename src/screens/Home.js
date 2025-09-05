@@ -316,45 +316,47 @@ const Home = () => {
             <View
               style={{
                 backgroundColor: '#FFFFFF',
+                flexDirection: 'row',
                 paddingTop: 4,
                 paddingBottom: 4,
+                paddingRight: 30,
+                paddingLeft: 10,
                 borderRadius: 8,
                 marginTop: 10,
               }}
             >
-              <View style={{ flexDirection: 'row' }}>
-                <SearchIcon
-                  width={20}
-                  height={20}
-                  marginTop={10}
-                  marginLeft={10}
-                />
-                <TextInput
-                  onChangeText={text => setSearch(text)}
-                  value={search}
-                  multiline={true}
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  style={{
-                    color: '#171717',
-                    fontFamily: fontFamilies.INTER.medium,
-                    marginLeft: 10,
-                  }}
-                  placeholder="Search bedsheets"
-                  placeholderTextColor={'#171717'}
-                ></TextInput>
-                <TouchableOpacity
-                  style={{
-                    position: 'absolute',
-                    right: 0,
-                    marginTop: 11,
-                    marginRight: 10,
-                  }}
-                  activeOpacity={0.9}
-                >
-                  <Microphone width={15} height={20} />
-                </TouchableOpacity>
-              </View>
+              <SearchIcon
+                width={20}
+                height={20}
+                marginTop={10}
+                marginLeft={10}
+              />
+
+              <TextInput
+                onChangeText={text => setSearch(text)}
+                value={search}
+                autoCapitalize="none"
+                autoCorrect={false}
+                style={{
+                  color: '#171717',
+                  fontFamily: fontFamilies.INTER.medium,
+                  marginLeft: 10,
+                  flex: 1,
+                }}
+                placeholder="Search bedsheets"
+                placeholderTextColor={'#171717'}
+              ></TextInput>
+              <TouchableOpacity
+                style={{
+                  position: 'absolute',
+                  right: 0,
+                  marginTop: 13,
+                  marginRight: 12,
+                }}
+                activeOpacity={0.9}
+              >
+                <Microphone width={15} height={20} />
+              </TouchableOpacity>
             </View>
           </View>
         </View>
