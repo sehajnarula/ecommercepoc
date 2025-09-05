@@ -12,9 +12,11 @@ const MoreFromBrandFlatList = props => {
         data={props.data}
         keyExtractor={brand => brand.brandProductId}
         renderItem={({ item }) => (
-          <TouchableOpacity activeOpacity={0.9}>
-            <MoreFromBrandFlatListLayout sendData={item} />
-          </TouchableOpacity>
+          <View>
+            <TouchableOpacity activeOpacity={0.9}>
+              <MoreFromBrandFlatListLayout sendData={item} />
+            </TouchableOpacity>
+          </View>
         )}
       ></FlatList>
     </View>

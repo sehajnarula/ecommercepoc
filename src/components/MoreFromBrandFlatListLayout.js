@@ -8,7 +8,7 @@ const MoreFromBrandFlatListLayout = props => {
         width: 161,
         // height: 263,
         gap: 13,
-        marginLeft: 11,
+        marginLeft: 13,
       }}
     >
       <View style={{ width: 161, height: 180 }}>

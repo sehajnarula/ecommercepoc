@@ -6,7 +6,13 @@ import { fontFamilies } from '../constants/fonts';
 const ShowCategoryProductsOnHomeLayout = props => {
   return (
     <View
-      style={{ marginTop: 8, marginLeft: 1, width: 174, padding: 6, gap: 10 }}
+      style={{
+        marginTop: 8,
+        marginLeft: 3,
+        width: 174,
+        padding: 6,
+        gap: 10,
+      }}
     >
       <Image
         width={163}

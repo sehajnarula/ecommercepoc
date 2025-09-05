@@ -57,7 +57,8 @@ const ShowCategoryProductsOnHome = props => {
               </TouchableOpacity>
             </View>
             <FlatList
-              style={{ marginLeft: 3 }}
+              // style={{ marginLeft: 3 }}
+              style={{ gap: 16 }}
               horizontal={false}
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}

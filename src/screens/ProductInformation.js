@@ -386,6 +386,7 @@ const ProductInformation = ({ route }) => {
                 borderRadius: 8,
                 paddingTop: 10,
                 paddingBottom: 10,
+                gap: 10,
                 justifyContent: 'center',
                 alignItems: 'center',
                 marginTop: 20,

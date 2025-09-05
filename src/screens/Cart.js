@@ -19,7 +19,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import EditAddress from '../../assets/images/cartaddressedit.svg';
 import LocationIcon from '../../assets/images/cartlocationicon.svg';
 import PercentageIcon from '../../assets/images/discountoffercart.svg';
+import FavouriteWhiteIconOnly from '../../assets/images/favoritewhiteonlyicon.svg';
 import ItemsInTrial from '../../assets/images/itemsaddedfortrial.svg';
+import BackArrow from '../../assets/images/navigatebacktoprevious.svg';
 import SecureMyOrderArrow from '../../assets/images/securemyorderarrow.svg';
 import SellerLock from '../../assets/images/sellerlock.svg';
 import CartSelectionsFlatList from '../components/CartSelectionsFlatList';
@@ -229,6 +231,44 @@ const Cart = () => {
           <View style={{ flex: 1 }}>
             <View
               style={{
+                paddingTop: 10,
+                paddingBottom: 10,
+                paddingRight: 16,
+                paddingLeft: 16,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                backgroundColor: '#000000',
+              }}
+            >
+              <TouchableOpacity activeOpacity={1}>
+                <BackArrow width={18} height={18} />
+              </TouchableOpacity>
+
+              <Text
+                style={{
+                  color: '#FFFFFF',
+                  fontFamily: fontFamilies.INTER.medium,
+                  fontSize: 16,
+                }}
+              >{`Cart`}</Text>
+
+              <TouchableOpacity
+                activeOpacity={0.9}
+                style={{
+                  backgroundColor: '#F0EDE533',
+                  width: 32,
+                  height: 32,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: 96,
+                }}
+              >
+                <FavouriteWhiteIconOnly width={18} height={18} />
+              </TouchableOpacity>
+            </View>
+            <View
+              style={{
                 paddingTop: 15,
                 paddingBottom: 15,
                 paddingLeft: 16,
@@ -351,6 +391,7 @@ const Cart = () => {
                   marginEnd: 15,
                   marginTop: 20,
                 }}
+                activeOpacity={0.7}
               >
                 <View
                   style={{
