@@ -201,7 +201,6 @@ const ProductInformation = ({ route }) => {
                   position: 'absolute',
                   right: 0,
                   marginRight: 15,
-                  // marginTop: 5,
                 }}
               >
                 <FavourteIcon width={32} height={32} marginRight={10} />

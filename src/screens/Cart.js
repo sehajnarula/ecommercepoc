@@ -24,6 +24,7 @@ import ItemsInTrial from '../../assets/images/itemsaddedfortrial.svg';
 import BackArrow from '../../assets/images/navigatebacktoprevious.svg';
 import SecureMyOrderArrow from '../../assets/images/securemyorderarrow.svg';
 import SellerLock from '../../assets/images/sellerlock.svg';
+import AddedTick from '../../assets/images/trynowaddedtick.svg';
 import CartSelectionsFlatList from '../components/CartSelectionsFlatList';
 import CompleteTheLookFlatList from '../components/CompleteTheLookFlatList';
 import { fontFamilies } from '../constants/fonts';
@@ -102,7 +103,7 @@ const Cart = () => {
   const hours = String(presentMoment.getHours()).padStart(2, '0');
   const minutes = String(presentMoment.getMinutes()).padStart(2, '0');
 
-  const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}`;
+  const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}`; // date format for shiprocket api
 
   useEffect(() => {
     getShipRocketTockenLocally();
@@ -141,7 +142,7 @@ const Cart = () => {
   const cartTotalPrice = 2100;
   const min = 10000;
   const max = 99999;
-  const randomOrderId = Math.floor(Math.random() * (max - min + 1)) + min; // date format for shiprocket api
+  const randomOrderId = Math.floor(Math.random() * (max - min + 1)) + min; //id generated for order
 
   const orderDetails = {
     order_id: `${randomOrderId}`,
@@ -398,6 +399,7 @@ const Cart = () => {
                     paddingTop: 8,
                     backgroundColor: '#000000',
                     gap: 9,
+                    flexDirection: 'row',
                     borderRadius: 8,
                     alignItems: 'center',
                     paddingBottom: 8,
@@ -405,6 +407,8 @@ const Cart = () => {
                     paddingRight: 12,
                   }}
                 >
+                  <AddedTick width={12} height={17} />
+
                   <Text
                     style={{
                       color: '#F0DCBC',

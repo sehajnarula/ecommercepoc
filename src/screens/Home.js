@@ -11,6 +11,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {
+  checkMultiple,
+  PERMISSIONS,
+  requestMultiple,
+  RESULTS,
+} from 'react-native-permissions';
 import * as progress from 'react-native-progress';
 import {
   SafeAreaProvider,
@@ -30,17 +36,76 @@ import { fontFamilies } from '../constants/fonts';
 import { shiprocketAuthCall } from '../redu/actions/ShipRocketActions';
 import { userSignOut } from '../redu/actions/UserActions';
 
+import GeoLocation from 'react-native-geolocation-service';
+
 const Home = () => {
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
   const insets = useSafeAreaInsets();
   const dispatched = useDispatch();
+  const [deviceLocation, setDeviceLocation] = useState({
+    latitude: null,
+    longitude: null,
+  });
   const error = useSelector(state => state.user.error);
   const navigation = useNavigation();
 
   const signOutButtonPress = async () => {
     await dispatched(userSignOut());
     navigation.navigate('LoginScreen');
+  };
+
+  const locationPermissionsArray = [
+    PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+    PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION,
+    PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+  ];
+
+  const handleLocationAccess = async () => {
+    try {
+      const statuses = await checkMultiple(locationPermissionsArray);
+
+      const allGranted = locationPermissionsArray.every(
+        permission => statuses[permission] === RESULTS.GRANTED,
+      );
+
+      if (!allGranted) {
+        const result = await requestMultiple(locationPermissionsArray);
+        const allNowGranted = locationPermissionsArray.every(
+          permission => result[permission] === RESULTS.GRANTED,
+        );
+
+        if (!allNowGranted) {
+          Alert.alert(
+            'Permission Required',
+            'Location access is required to use this feature.',
+            [{ text: 'OK' }],
+          );
+          return;
+        }
+      }
+
+      GeoLocation.getCurrentPosition(
+        async position => {
+          const { latitude, longitude } = position.coords;
+          setDeviceLocation({ latitude, longitude });
+          console.log('Latitude:', latitude, 'Longitude:', longitude);
+        },
+        error => {
+          console.warn('Geolocation error:', error);
+          Alert.alert('Error', 'Failed to get current location.');
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 15000, // time to fetch device location
+          maximumAge: 10000, // useful to fetch the same location via cache instead of fetching same location again and again
+          forceRequestLocation: true,
+          showLocationDialog: true,
+        },
+      );
+    } catch (error) {
+      console.warn('Permission check failed', error);
+    }
   };
 
   const isFocused = useIsFocused();
@@ -50,10 +115,6 @@ const Home = () => {
     await dispatched(shiprocketAuthCall());
     setLoading(false);
   };
-
-  useEffect(() => {
-    getTokenShipRocketOnScreen();
-  }, []);
 
   useEffect(() => {
     let backHandlerCloseScreen;
@@ -66,6 +127,8 @@ const Home = () => {
           return true;
         },
       );
+      handleLocationAccess();
+      getTokenShipRocketOnScreen();
     }
     return () => {
       if (backHandlerCloseScreen) {
