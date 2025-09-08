@@ -1,7 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import PremiumCollectionArrow from '../../assets/images/premiumcollectionarrow.svg';
 import RightArrow from '../../assets/images/seeallrightarrow.svg';
 import ShowCategoryProductsOnHomeLayout from '../components/ShowCategoryProductsOnHomeLayout';
 import { fontFamilies } from '../constants/fonts';
@@ -85,6 +86,58 @@ const ShowCategoryProductsOnHome = props => {
                 </TouchableOpacity>
               )}
             ></FlatList>
+
+            <View
+              style={{
+                backgroundColor: '#2C2C2C',
+                paddingTop: 16,
+                paddingBottom: 16,
+                paddingLeft: 12,
+                paddingRight: 12,
+                gap: 14,
+                marginHorizontal: 11,
+                marginTop: 10,
+                borderRadius: 12,
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: fontFamilies.INTER.regular,
+                  fontSize: 14,
+                  color: '#7A7A7A',
+                  includeFontPadding: false,
+                }}
+              >{`Collection`}</Text>
+
+              <Text
+                style={{
+                  color: '#FFFFFF',
+                  fontFamily: fontFamilies.INTER.regular,
+                  fontSize: 16,
+                  includeFontPadding: false,
+                }}
+              >
+                {`Premium ${category.categoryName} 2025 Collection.`}
+              </Text>
+
+              <Text
+                style={{
+                  color: '#FFFFFF',
+                  fontFamily: fontFamilies.INTER.regular,
+                  fontSize: 16,
+                  includeFontPadding: false,
+                }}
+              >
+                {`Buy Today`}
+              </Text>
+              <TouchableOpacity activeOpacity={0.9}>
+                <PremiumCollectionArrow width={32} height={32} />
+              </TouchableOpacity>
+              <Image
+                style={{ width: '100%', height: 255, borderRadius: 12 }}
+                source={category.premiumCollection.image}
+              />
+            </View>
           </View>
         )}
       />

@@ -1,8 +1,10 @@
+import Voice from '@react-native-voice/voice';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import {
   BackHandler,
   Image,
+  Platform,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -11,12 +13,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {
-  checkMultiple,
-  PERMISSIONS,
-  requestMultiple,
-  RESULTS,
-} from 'react-native-permissions';
+import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 import * as progress from 'react-native-progress';
 import {
   SafeAreaProvider,
@@ -36,17 +33,12 @@ import { fontFamilies } from '../constants/fonts';
 import { shiprocketAuthCall } from '../redu/actions/ShipRocketActions';
 import { userSignOut } from '../redu/actions/UserActions';
 
-import GeoLocation from 'react-native-geolocation-service';
-
 const Home = () => {
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isListening, setIsListening] = useState(false);
   const insets = useSafeAreaInsets();
   const dispatched = useDispatch();
-  const [deviceLocation, setDeviceLocation] = useState({
-    latitude: null,
-    longitude: null,
-  });
   const error = useSelector(state => state.user.error);
   const navigation = useNavigation();
 
@@ -55,57 +47,15 @@ const Home = () => {
     navigation.navigate('LoginScreen');
   };
 
-  const locationPermissionsArray = [
-    PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-    PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION,
-    PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
-  ];
+  const recordAudioDevicePermission = async () => {
+    const permission =
+      Platform.OS === 'android'
+        ? PERMISSIONS.ANDROID.RECORD_AUDIO
+        : PERMISSIONS.IOS.MICROPHONE;
 
-  const handleLocationAccess = async () => {
-    try {
-      const statuses = await checkMultiple(locationPermissionsArray);
+    const result = await request(permission);
 
-      const allGranted = locationPermissionsArray.every(
-        permission => statuses[permission] === RESULTS.GRANTED,
-      );
-
-      if (!allGranted) {
-        const result = await requestMultiple(locationPermissionsArray);
-        const allNowGranted = locationPermissionsArray.every(
-          permission => result[permission] === RESULTS.GRANTED,
-        );
-
-        if (!allNowGranted) {
-          Alert.alert(
-            'Permission Required',
-            'Location access is required to use this feature.',
-            [{ text: 'OK' }],
-          );
-          return;
-        }
-      }
-
-      GeoLocation.getCurrentPosition(
-        async position => {
-          const { latitude, longitude } = position.coords;
-          setDeviceLocation({ latitude, longitude });
-          console.log('Latitude:', latitude, 'Longitude:', longitude);
-        },
-        error => {
-          console.warn('Geolocation error:', error);
-          Alert.alert('Error', 'Failed to get current location.');
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 15000, // time to fetch device location
-          maximumAge: 10000, // useful to fetch the same location via cache instead of fetching same location again and again
-          forceRequestLocation: true,
-          showLocationDialog: true,
-        },
-      );
-    } catch (error) {
-      console.warn('Permission check failed', error);
-    }
+    return result === RESULTS.GRANTED;
   };
 
   const isFocused = useIsFocused();
@@ -114,6 +64,45 @@ const Home = () => {
     setLoading(true);
     await dispatched(shiprocketAuthCall());
     setLoading(false);
+  };
+
+  useEffect(() => {
+    Voice.onSpeechResults = onSpeechResults; // results after getting voice input
+    Voice.onSpeechError = onSpeechError; //showerror
+
+    return () => {
+      Voice.destroy().then(Voice.removeAllListeners);
+    };
+  }, []);
+
+  const onSpeechResults = event => {
+    if (event.value && event.value.length > 0) {
+      setSearch(event.value[0]); // identify voice text
+    }
+  };
+
+  const onSpeechError = event => {
+    console.log('Speech error:', event.error); //api error
+    setIsListening(false);
+  };
+
+  const handleMicPress = async () => {
+    try {
+      if (isListening) {
+        await Voice.stop();
+        setIsListening(false);
+      } else {
+        const hasPermission = await recordAudioDevicePermission();
+        if (hasPermission) {
+          await Voice.start('en-US');
+          setIsListening(true);
+        } else {
+          console.log('Microphone permission denied');
+        }
+      }
+    } catch (e) {
+      console.error('Voice error:', e);
+    }
   };
 
   useEffect(() => {
@@ -127,7 +116,6 @@ const Home = () => {
           return true;
         },
       );
-      handleLocationAccess();
       getTokenShipRocketOnScreen();
     }
     return () => {
@@ -183,18 +171,16 @@ const Home = () => {
           bulkEligible: true,
         },
       ],
-      premiumCollection: [
-        {
-          premiumProductId: '9',
-          productName: 'Home Essential Vasant King Bedsheet Gift Set',
-          productOriginalPrice: '2300',
-          productReducedPrice: '2100',
-          rating: '4.3',
-          image: require('../../assets/images/bedsheetfour.png'),
-          reviewCount: '2000',
-          bulkEligible: true,
-        },
-      ],
+      premiumCollection: {
+        premiumProductId: '9',
+        productName: 'Home Essential Vasant King Bedsheet Gift Set',
+        productOriginalPrice: '2300',
+        productReducedPrice: '2100',
+        rating: '4.3',
+        image: require('../../assets/images/bedsheetfour.png'),
+        reviewCount: '2000',
+        bulkEligible: true,
+      },
     },
     {
       categoryId: '2',
@@ -241,18 +227,16 @@ const Home = () => {
           bulkEligible: true,
         },
       ],
-      premiumCollection: [
-        {
-          premiumProductId: '10',
-          productName: 'Home Essential Vasant King Bedsheet Gift Set',
-          productOriginalPrice: '2300',
-          productReducedPrice: '2100',
-          rating: '4.3',
-          image: require('../../assets/images/bedsheetfour.png'),
-          reviewCount: '2000',
-          bulkEligible: true,
-        },
-      ],
+      premiumCollection: {
+        premiumProductId: '10',
+        productName: 'Home Essential Vasant King Bedsheet Gift Set',
+        productOriginalPrice: '2300',
+        productReducedPrice: '2100',
+        rating: '4.3',
+        image: require('../../assets/images/towelthree.png'),
+        reviewCount: '2000',
+        bulkEligible: true,
+      },
     },
   ];
 
@@ -417,6 +401,9 @@ const Home = () => {
                   marginRight: 12,
                 }}
                 activeOpacity={0.9}
+                onLongPress={() => {
+                  handleMicPress();
+                }}
               >
                 <Microphone width={15} height={20} />
               </TouchableOpacity>
