@@ -1,9 +1,8 @@
-import Voice from '@react-native-voice/voice';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import {
   BackHandler,
-  Image,
+  Dimensions,
   Platform,
   ScrollView,
   StatusBar,
@@ -20,6 +19,7 @@ import {
   SafeAreaView,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
+import { startSpeechToText } from 'react-native-voice-to-text';
 import { useDispatch, useSelector } from 'react-redux';
 import FavourteIcon from '../../assets/images/homepagehearticon.svg';
 import Microphone from '../../assets/images/homepagemicrophoneicon.svg';
@@ -41,6 +41,14 @@ const Home = () => {
   const dispatched = useDispatch();
   const error = useSelector(state => state.user.error);
   const navigation = useNavigation();
+  const [hideTab, setHideTab] = useState(false);
+  const [recognized, setRecognized] = useState('');
+  const [pitch, setPitch] = useState('');
+  const [errorVoice, setError] = useState('');
+  const [end, setEnd] = useState('');
+  const [started, setStarted] = useState('');
+  const [results, setResults] = useState([]);
+  const [partialResults, setPartialResults] = useState([]);
 
   const signOutButtonPress = async () => {
     await dispatched(userSignOut());
@@ -66,43 +74,127 @@ const Home = () => {
     setLoading(false);
   };
 
-  useEffect(() => {
-    Voice.onSpeechResults = onSpeechResults; // results after getting voice input
-    Voice.onSpeechError = onSpeechError; //showerror
+  // useEffect(() => {
+  //   Voice.onSpeechResults = onSpeechResults; // results after getting voice input
+  //   Voice.onSpeechError = onSpeechError; //showerror
 
-    return () => {
-      Voice.destroy().then(Voice.removeAllListeners);
-    };
-  }, []);
+  //   return () => {
+  //     Voice.destroy().then(Voice.removeAllListeners);
+  //   };
+  // }, []);
 
-  const onSpeechResults = event => {
-    if (event.value && event.value.length > 0) {
-      setSearch(event.value[0]); // identify voice text
-    }
-  };
+  // useEffect(() => {
+  //   Voice.onSpeechStart = e => {
+  //     console.log('onSpeechStart: ', e);
+  //     setStarted('√');
+  //   };
 
-  const onSpeechError = event => {
-    console.log('Speech error:', event.error); //api error
-    setIsListening(false);
-  };
+  //   Voice.onSpeechRecognized = e => {
+  //     console.log('onSpeechRecognized: ', e);
+  //     setRecognized('√');
+  //   };
 
-  const handleMicPress = async () => {
-    try {
-      if (isListening) {
-        await Voice.stop();
-        setIsListening(false);
-      } else {
-        const hasPermission = await recordAudioDevicePermission();
-        if (hasPermission) {
-          await Voice.start('en-US');
-          setIsListening(true);
-        } else {
-          console.log('Microphone permission denied');
-        }
-      }
-    } catch (e) {
-      console.error('Voice error:', e);
-    }
+  //   Voice.onSpeechEnd = e => {
+  //     console.log('onSpeechEnd: ', e);
+  //     setEnd('√');
+  //   };
+
+  //   Voice.onSpeechError = e => {
+  //     console.log('onSpeechError: ', e);
+  //     setError(JSON.stringify(e.error));
+  //   };
+
+  //   Voice.onSpeechResults = e => {
+  //     console.log('onSpeechResults: ', e);
+  //     setResults(e.value);
+  //   };
+
+  //   Voice.onSpeechPartialResults = e => {
+  //     console.log('onSpeechPartialResults: ', e);
+  //     setPartialResults(e.value);
+  //   };
+
+  //   Voice.onSpeechVolumeChanged = e => {
+  //     console.log('onSpeechVolumeChanged: ', e);
+  //     setPitch(e.value);
+  //   };
+
+  //   return () => {
+  //     Voice.destroy().then(Voice.removeAllListeners);
+  //   };
+  // }, []);
+
+  // const onSpeechResults = event => {
+  //   if (event.value && event.value.length > 0) {
+  //     setSearch(event.value[0]); // identify voice text
+  //   }
+  // };
+
+  // const onSpeechError = event => {
+  //   console.log('Speech error:', event.error); //api error
+  //   setIsListening(false);
+  // };
+
+  // const handleMicPress = async () => {
+  //   try {
+  //     if (isListening) {
+  //       await Voice.stop();
+  //       setIsListening(false);
+  //     } else {
+  //       const hasPermission = await recordAudioDevicePermission();
+  //       if (hasPermission) {
+  //         await Voice.start('en-US');
+  //         setIsListening(true);
+  //       } else {
+  //         console.log('Microphone permission denied');
+  //       }
+  //     }
+  //   } catch (e) {
+  //     console.error('Voice error:', e);
+  //   }
+  // };
+
+  // const startRecognizing = async () => {
+  //   try {
+  //     await Voice.start('en-US');
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // };
+
+  // const stopRecognizing = async () => {
+  //   try {
+  //     await Voice.stop();
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // };
+
+  // const cancelRecognizing = async () => {
+  //   try {
+  //     await Voice.cancel();
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // };
+
+  // const destroyRecognizer = async () => {
+  //   try {
+  //     await Voice.destroy();
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  //   resetStates();
+  // };
+
+  const resetStates = () => {
+    setRecognized('');
+    setPitch('');
+    setError('');
+    setStarted('');
+    setResults([]);
+    setPartialResults([]);
+    setEnd('');
   };
 
   useEffect(() => {
@@ -124,6 +216,25 @@ const Home = () => {
       }
     };
   }, [isFocused]);
+
+  useEffect(() => {
+    navigation.setOptions({
+      tabBarStyle: hideTab
+        ? { display: 'none' }
+        : {
+            height: Dimensions.get('window').height * 0.12,
+            backgroundColor: '#000',
+            borderTopWidth: 0,
+            elevation: 0,
+          },
+    });
+  }, [hideTab]);
+
+  const handleScroll = currentOffset => {
+    const isScrollingDown = currentOffset > lastOffset.current;
+    setHideTab(isScrollingDown);
+    lastOffset.current = currentOffset;
+  };
 
   const allCategories = [
     {
@@ -334,7 +445,7 @@ const Home = () => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   activeOpacity={1}
-                  style={{ marginRight: 10 }}
+                  style={{ marginRight: 5 }}
                   onPress={() => {
                     navigation.navigate('UserScreen');
                   }}
@@ -342,7 +453,7 @@ const Home = () => {
                   <UserIcon width={32} height={32} />
                 </TouchableOpacity>
 
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   style={{ marginRight: 5, marginTop: 8 }}
                   activeOpacity={0.9}
                   onPress={() => {
@@ -354,7 +465,7 @@ const Home = () => {
                     height={24}
                     source={require('../../assets/images/logouticonsmall.png')}
                   />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </View>
             </View>
           </View>
@@ -401,9 +512,30 @@ const Home = () => {
                   marginRight: 12,
                 }}
                 activeOpacity={0.9}
-                onLongPress={() => {
-                  handleMicPress();
+                onLongPress={async () => {
+                  const hasPermission = await recordAudioDevicePermission();
+                  console.log('Permission granted?', hasPermission);
+                  if (hasPermission) {
+                    console.log('Starting voice');
+                    try {
+                      const text = await startSpeechToText();
+                      setSearch(`${text}`);
+                      console.log('Speech result', text);
+                    } catch (error) {
+                      console.log('errorvoice', error);
+                    }
+                  }
                 }}
+                // onPressOut={async () => {
+                //   try {
+                //     console.log('Stopping');
+                //     const text = await startSpeechToText.stopVoice();
+                //     console.log('Speech result', text);
+                //     setResult(text);
+                //   } catch (error) {
+                //     console.log('stopgettingaudioerror', error);
+                //   }
+                // }}
               >
                 <Microphone width={15} height={20} />
               </TouchableOpacity>
@@ -415,6 +547,7 @@ const Home = () => {
           <HorizontalCategoriesHome
             isHorizontal={true}
             data={horizontalCategories}
+            onScrollChange={handleScroll}
           />
         </View>
 

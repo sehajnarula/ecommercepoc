@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import {
   Image,
@@ -41,8 +41,10 @@ const Cart = () => {
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userNumber, setUserNumber] = useState('');
-  const [userToken, setUserToken] = useState('');
+  const [trialRemove, setTrialRemove] = useState(false);
+  const [trialOfferAdded, setTrialOfferAdded] = useState(false);
   const [userDeliveryAddress, setUserDeliveryAddress] = useState('');
+  const navigation = useNavigation();
 
   const getShipRocketTockenLocally = async () => {
     setLoading(true);
@@ -75,7 +77,6 @@ const Cart = () => {
         setUserName(user.name);
         setUserNumber(userSavedNumber);
         setUserDeliveryAddress(user.address);
-        setUserToken(user.token);
         console.log('showuser', user);
       }
     } catch (error) {
@@ -225,49 +226,55 @@ const Cart = () => {
           </View>
         )}
 
+        <View
+          style={{
+            paddingTop: 10,
+            paddingBottom: 10,
+            paddingRight: 16,
+            paddingLeft: 16,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            backgroundColor: '#000000',
+          }}
+        >
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <BackArrow width={18} height={18} />
+          </TouchableOpacity>
+
+          <Text
+            style={{
+              color: '#FFFFFF',
+              fontFamily: fontFamilies.INTER.medium,
+              fontSize: 16,
+            }}
+          >{`Cart`}</Text>
+
+          <TouchableOpacity
+            activeOpacity={0.9}
+            style={{
+              backgroundColor: '#F0EDE533',
+              width: 32,
+              height: 32,
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 96,
+            }}
+          >
+            <FavouriteWhiteIconOnly width={18} height={18} />
+          </TouchableOpacity>
+        </View>
+
         <ScrollView
           contentContainerStyle={{ flexGrow: 1 }}
           showsVerticalScrollIndicator={false}
         >
           <View style={{ flex: 1 }}>
-            <View
-              style={{
-                paddingTop: 10,
-                paddingBottom: 10,
-                paddingRight: 16,
-                paddingLeft: 16,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                backgroundColor: '#000000',
-              }}
-            >
-              <TouchableOpacity activeOpacity={1}>
-                <BackArrow width={18} height={18} />
-              </TouchableOpacity>
-
-              <Text
-                style={{
-                  color: '#FFFFFF',
-                  fontFamily: fontFamilies.INTER.medium,
-                  fontSize: 16,
-                }}
-              >{`Cart`}</Text>
-
-              <TouchableOpacity
-                activeOpacity={0.9}
-                style={{
-                  backgroundColor: '#F0EDE533',
-                  width: 32,
-                  height: 32,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderRadius: 96,
-                }}
-              >
-                <FavouriteWhiteIconOnly width={18} height={18} />
-              </TouchableOpacity>
-            </View>
             <View
               style={{
                 paddingTop: 15,
@@ -393,32 +400,60 @@ const Cart = () => {
                   marginTop: 20,
                 }}
                 activeOpacity={0.7}
+                onPress={() => {
+                  setTrialOfferAdded(!trialOfferAdded);
+                }}
               >
-                <View
-                  style={{
-                    paddingTop: 8,
-                    backgroundColor: '#000000',
-                    gap: 9,
-                    flexDirection: 'row',
-                    borderRadius: 8,
-                    alignItems: 'center',
-                    paddingBottom: 8,
-                    paddingLeft: 12,
-                    paddingRight: 12,
-                  }}
-                >
-                  <AddedTick width={12} height={17} />
-
-                  <Text
+                {trialOfferAdded ? (
+                  <View
                     style={{
-                      color: '#F0DCBC',
-                      fontSize: 12,
-                      fontFamily: fontFamilies.INTER.medium,
+                      paddingTop: 8,
+                      backgroundColor: '#000000',
+                      gap: 9,
+                      flexDirection: 'row',
+                      borderRadius: 8,
+                      alignItems: 'center',
+                      paddingBottom: 8,
+                      paddingLeft: 12,
+                      paddingRight: 12,
                     }}
                   >
-                    {'Added'}
-                  </Text>
-                </View>
+                    <AddedTick width={12} height={17} />
+
+                    <Text
+                      style={{
+                        color: '#F0DCBC',
+                        fontSize: 12,
+                        fontFamily: fontFamilies.INTER.medium,
+                      }}
+                    >
+                      {'Added'}
+                    </Text>
+                  </View>
+                ) : (
+                  <View
+                    style={{
+                      paddingTop: 8,
+                      backgroundColor: '#000000',
+                      gap: 9,
+                      borderRadius: 8,
+                      alignItems: 'center',
+                      paddingBottom: 8,
+                      paddingLeft: 12,
+                      paddingRight: 12,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: '#F0DCBC',
+                        fontSize: 12,
+                        fontFamily: fontFamilies.INTER.medium,
+                      }}
+                    >
+                      {'Add'}
+                    </Text>
+                  </View>
+                )}
               </TouchableOpacity>
             </View>
 
@@ -765,7 +800,7 @@ const Cart = () => {
               </View>
             </View>
 
-            <View
+            {/* <View
               style={{
                 flexDirection: 'row',
                 backgroundColor: '#2A2929',
@@ -931,9 +966,181 @@ const Cart = () => {
                   <SecureMyOrderArrow width={14} height={14} />
                 </View>
               </TouchableOpacity>
-            </View>
+            </View> */}
           </View>
         </ScrollView>
+        <View style={{ flexDirection: 'column' }}>
+          {trialRemove ? null : (
+            <View
+              style={{
+                flexDirection: 'row',
+                backgroundColor: '#2A2929',
+                borderColor: '#4D4D4D',
+                padding: 10,
+                marginTop: 10,
+                borderWidth: 1,
+              }}
+            >
+              <LinearGradient
+                style={{
+                  width: 24,
+                  height: 24,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: 4,
+                  paddingLeft: 5,
+                  marginTop: 7,
+                  marginLeft: 5,
+                  paddingRight: 5,
+                  gap: 10,
+                }}
+                colors={['#F0DCBC', '#8A7F6C']}
+              >
+                <ItemsInTrial width={11} height={11} />
+              </LinearGradient>
+
+              <View style={{ flex: 1, marginHorizontal: 10, marginBottom: 3 }}>
+                <Text
+                  style={{
+                    fontSize: 13,
+                    fontFamily: fontFamilies.INTER.medium,
+                    color: '#FFFFFF',
+                  }}
+                >
+                  {`2 Items Added For Trial`}
+                </Text>
+
+                <Text
+                  style={{
+                    fontSize: 12,
+                    fontFamily: fontFamilies.INTER.regular,
+                    color: '#F0DCBC',
+                  }}
+                >
+                  {`Choose up to 3 items to try at home`}
+                </Text>
+              </View>
+
+              <TouchableOpacity
+                style={{
+                  position: 'absolute',
+                  right: 0,
+                  marginRight: 8,
+                  marginTop: 15,
+                }}
+                activeOpacity={0.9}
+                onPress={() => setTrialRemove(!trialRemove)}
+              >
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    paddingTop: 5,
+                    paddingBottom: 5,
+                    paddingLeft: 12,
+                    paddingRight: 12,
+                    gap: 5,
+                    borderRadius: 4,
+                    backgroundColor: '#2A2929',
+                    borderWidth: 1,
+                    borderColor: '#F0DCBC',
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontFamily: fontFamilies.INTER.medium,
+                      color: '#F0DCBC',
+                      fontSize: 12,
+                    }}
+                  >
+                    {'Remove'}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          )}
+
+          <View
+            style={{
+              flexDirection: 'row',
+              paddingBottom: 24,
+              paddingLeft: 16,
+              paddingRight: 16,
+              paddingTop: 10,
+              justifyContent: 'space-between',
+              backgroundColor: '#171717',
+              // borderWidth: 1,
+              // borderColor: '#4D4D4DDD',
+            }}
+          >
+            <View style={{ marginTop: 3 }}>
+              <Text
+                style={{
+                  fontSize: 17,
+                  fontFamily: fontFamilies.INTER.medium,
+                  color: '#FFFFFF',
+                  includeFontPadding: false,
+                }}
+              >
+                {`₹${cartTotalPrice}`}
+              </Text>
+
+              <View
+                style={{ flexDirection: 'row', marginTop: 5, marginLeft: 5 }}
+              >
+                <SellerLock width={9} height={10} marginTop={2} />
+
+                <Text
+                  style={{
+                    fontSize: 12,
+                    fontFamily: fontFamilies.INTER.medium,
+                    color: '#F8CD77',
+                    marginLeft: 8,
+                    includeFontPadding: false,
+                  }}
+                >
+                  {`Ramayan Handloom`}
+                </Text>
+              </View>
+            </View>
+
+            <TouchableOpacity
+              activeOpacity={0.9}
+              style={{ marginTop: 7 }}
+              onPress={() => {
+                startPayment();
+              }}
+            >
+              <View
+                style={{
+                  backgroundColor: '#F0DCBC',
+                  paddingTop: 10,
+                  flexDirection: 'row',
+                  paddingBottom: 10,
+                  paddingLeft: 12,
+                  paddingRight: 12,
+                  gap: 10,
+                  borderRadius: 4,
+                  alignItems: 'center',
+                  width: 174,
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: fontFamilies.INTER.bold,
+                    color: '#000000',
+                    fontSize: 12,
+                    includeFontPadding: false,
+                  }}
+                >
+                  {`SECURE MY ORDER`}
+                </Text>
+
+                <SecureMyOrderArrow width={14} height={14} />
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
       </SafeAreaView>
     </SafeAreaProvider>
   );

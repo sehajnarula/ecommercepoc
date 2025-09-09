@@ -204,7 +204,14 @@ const ProductInformation = ({ route }) => {
                 }}
               >
                 <FavourteIcon width={32} height={32} marginRight={10} />
-                <CartIcon width={32} height={32} />
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={() => {
+                    navigation.navigate('Cart');
+                  }}
+                >
+                  <CartIcon width={32} height={32} />
+                </TouchableOpacity>
               </View>
             </View>
 

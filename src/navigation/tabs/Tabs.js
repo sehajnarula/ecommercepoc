@@ -1,7 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { Dimensions, Image } from 'react-native';
-import Cart from '../../screens/Cart';
 import Home from '../../screens/Home';
 import Store from '../../screens/Store';
 
@@ -35,15 +34,15 @@ const Tabs = () => {
                   source={require('../../../assets/images/ellitebottomtabicon.png')}
                 />
               );
-            case 'Cart':
-              return (
-                <Image
-                  width={20}
-                  height={20}
-                  tintColor={fillColor}
-                  source={require('../../../assets/images/bottomtabcarticon.png')}
-                />
-              );
+            // case 'Cart':
+            //   return (
+            //     <Image
+            //       width={20}
+            //       height={20}
+            //       tintColor={fillColor}
+            //       source={require('../../../assets/images/bottomtabcarticon.png')}
+            //     />
+            //   );
             case 'Store':
               return (
                 <Image
@@ -60,7 +59,7 @@ const Tabs = () => {
       })}
     >
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Cart" component={Cart} />
+      {/* <Tab.Screen name="Cart" component={Cart} /> */}
       <Tab.Screen name="Store" component={Store} />
     </Tab.Navigator>
   );

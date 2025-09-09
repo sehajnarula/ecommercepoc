@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import {
   Image,
@@ -16,10 +17,9 @@ import {
   SafeAreaView,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
-import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
+import BackArrow from '../../assets/images/navigatebacktoprevious.svg';
 import { fontFamilies } from '../constants/fonts';
-import { userUpdate } from '../redu/actions/UserActions';
 
 const User = () => {
   const [userName, setUserName] = useState('');
@@ -31,65 +31,66 @@ const User = () => {
   const dispatched = useDispatch();
   const error = useSelector(state => state.user.error);
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation();
 
-  const updateUserButton = async () => {
-    setLoading(true);
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (userName === '') {
-      setLoading(false);
-      Toast.show({
-        type: 'error',
-        text1: 'Enter Your Name.',
-        autoHide: true,
-        position: 'bottom',
-        visibilityTime: 3000,
-      });
-    } else if (userNumber === '') {
-      setLoading(false);
-      Toast.show({
-        type: 'error',
-        text1: 'Enter Number.',
-        autoHide: true,
-        position: 'bottom',
-        visibilityTime: 3000,
-      });
-    } else if (userNumber.length !== 10) {
-      setLoading(false);
-      Toast.show({
-        type: 'error',
-        text1: 'Phone Number should be of 10 digits.',
-        autoHide: true,
-        position: 'bottom',
-        visibilityTime: 3000,
-      });
-    } else if (userDeliveryAddress === '') {
-      setLoading(false);
-      Toast.show({
-        type: 'error',
-        text1: 'Enter Delivery Address.',
-        autoHide: true,
-        position: 'bottom',
-        visibilityTime: 3000,
-      });
-    } else {
-      await dispatched(
-        userUpdate(
-          userName,
-          userDeliveryAddress,
-          `+91${userNumber}`,
-          userToken,
-        ),
-      );
-      setLoading(false);
-      Toast.show({
-        type: 'success',
-        text1: 'Updated Successfully.',
-        autoHide: true,
-        position: 'bottom',
-        visibilityTime: 3000,
-      });
-    }
-  };
+  // const updateUserButton = async () => {
+  //   setLoading(true);
+  //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  //   if (userName === '') {
+  //     setLoading(false);
+  //     Toast.show({
+  //       type: 'error',
+  //       text1: 'Enter Your Name.',
+  //       autoHide: true,
+  //       position: 'bottom',
+  //       visibilityTime: 3000,
+  //     });
+  //   } else if (userNumber === '') {
+  //     setLoading(false);
+  //     Toast.show({
+  //       type: 'error',
+  //       text1: 'Enter Number.',
+  //       autoHide: true,
+  //       position: 'bottom',
+  //       visibilityTime: 3000,
+  //     });
+  //   } else if (userNumber.length !== 10) {
+  //     setLoading(false);
+  //     Toast.show({
+  //       type: 'error',
+  //       text1: 'Phone Number should be of 10 digits.',
+  //       autoHide: true,
+  //       position: 'bottom',
+  //       visibilityTime: 3000,
+  //     });
+  //   } else if (userDeliveryAddress === '') {
+  //     setLoading(false);
+  //     Toast.show({
+  //       type: 'error',
+  //       text1: 'Enter Delivery Address.',
+  //       autoHide: true,
+  //       position: 'bottom',
+  //       visibilityTime: 3000,
+  //     });
+  //   } else {
+  //     await dispatched(
+  //       userUpdate(
+  //         userName,
+  //         userDeliveryAddress,
+  //         `+91${userNumber}`,
+  //         userToken,
+  //       ),
+  //     );
+  //     setLoading(false);
+  //     Toast.show({
+  //       type: 'success',
+  //       text1: 'Updated Successfully.',
+  //       autoHide: true,
+  //       position: 'bottom',
+  //       visibilityTime: 3000,
+  //     });
+  //   }
+  // };
 
   const getUserStateLocally = async () => {
     try {
@@ -107,7 +108,6 @@ const User = () => {
         setUserName(user.name);
         setUserNumber(userSavedNumber);
         setUserDeliveryAddress(user.address);
-        setUserToken(user.token);
         console.log('showuser', user);
       }
     } catch (error) {
@@ -130,20 +130,32 @@ const User = () => {
             </View>
           </View>
         )}
+
+        <View style={{ flexDirection: 'row' }}>
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <BackArrow width={18} height={18} marginTop={25} marginLeft={10} />
+          </TouchableOpacity>
+          <Text
+            style={{
+              fontFamily: fontFamilies.INTER.bold,
+              color: '#FFFFFF',
+              fontSize: 36,
+              marginLeft: 10,
+              includeFontPadding: false,
+              marginTop: 12,
+            }}
+          >
+            {'Profile'}
+          </Text>
+        </View>
+
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
           <View style={{ flex: 1, padding: 4 }}>
-            <Text
-              style={{
-                fontFamily: fontFamilies.INTER.bold,
-                color: '#FFFFFF',
-                fontSize: 36,
-                marginLeft: 8,
-                includeFontPadding: false,
-                marginTop: 12,
-              }}
-            >
-              {'Profile'}
-            </Text>
             <Text
               style={{
                 color: '#FFFFFF',
@@ -344,9 +356,6 @@ const User = () => {
         >
           <TouchableOpacity
             activeOpacity={0.9}
-            onPress={() => {
-              updateUserButton();
-            }}
             style={{
               backgroundColor: '#F0DCBC',
               marginHorizontal: 12,

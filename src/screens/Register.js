@@ -1,3 +1,4 @@
+import firestore from '@react-native-firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import {
@@ -14,10 +15,11 @@ import * as progress from 'react-native-progress';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
+import BackArrow from '../../assets/images/navigatebacktoprevious.svg';
 import VisibilityOff from '../../assets/images/visibilityof.svg';
 import VisibilityOn from '../../assets/images/visibilityon.svg';
 import { fontFamilies } from '../constants/fonts';
-import { userSignUp } from '../redu/actions/UserActions';
+import { firebaseSignUp, userSignUp } from '../redu/actions/UserActions';
 
 const Register = () => {
   const navigation = useNavigation();
@@ -32,6 +34,128 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const dispatched = useDispatch();
   const error = useSelector(state => state.user.error);
+
+  const registerButtonFirebaseClick = async () => {
+    setLoading(true);
+    const userSnapshot = await firestore().collection('users').get();
+    const users = userSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    const userFound = users.some(user => user.email === userEmail);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (userName === '') {
+      setLoading(false);
+      Toast.show({
+        type: 'error',
+        text1: 'Enter Your Name.',
+        autoHide: true,
+        position: 'bottom',
+        visibilityTime: 3000,
+      });
+    } else if (userEmail === '') {
+      setLoading(false);
+      Toast.show({
+        type: 'error',
+        text1: 'Enter Email.',
+        autoHide: true,
+        position: 'bottom',
+        visibilityTime: 3000,
+      });
+    } else if (!emailRegex.test(userEmail)) {
+      setLoading(false);
+      Toast.show({
+        type: 'error',
+        text1: 'Enter Valid Email.',
+        autoHide: true,
+        position: 'bottom',
+        visibilityTime: 3000,
+      });
+    } else if (userNumber === '') {
+      setLoading(false);
+      Toast.show({
+        type: 'error',
+        text1: 'Enter Number.',
+        autoHide: true,
+        position: 'bottom',
+        visibilityTime: 3000,
+      });
+    } else if (userNumber.length !== 10) {
+      setLoading(false);
+      Toast.show({
+        type: 'error',
+        text1: 'Phone Number should be of 10 digits.',
+        autoHide: true,
+        position: 'bottom',
+        visibilityTime: 3000,
+      });
+    } else if (userDeliveryAddress === '') {
+      setLoading(false);
+      Toast.show({
+        type: 'error',
+        text1: 'Enter Delivery Address.',
+        autoHide: true,
+        position: 'bottom',
+        visibilityTime: 3000,
+      });
+    } else if (userPassword === '') {
+      setLoading(false);
+      Toast.show({
+        type: 'error',
+        text1: 'Enter Password.',
+        autoHide: true,
+        position: 'bottom',
+        visibilityTime: 3000,
+      });
+    } else if (userRePassword === '') {
+      setLoading(false);
+      Toast.show({
+        type: 'error',
+        text1: 'Enter Same Password Once More.',
+        autoHide: true,
+        position: 'bottom',
+        visibilityTime: 3000,
+      });
+    } else if (userPassword !== userRePassword) {
+      setLoading(false);
+      Toast.show({
+        type: 'error',
+        text1: 'Passwords Do Not Match.',
+        autoHide: true,
+        position: 'bottom',
+        visibilityTime: 3000,
+      });
+    } else if (userFound) {
+      setLoading(false);
+      Toast.show({
+        type: 'error',
+        text1: 'User already exists',
+        autoHide: true,
+        position: 'bottom',
+        visibilityTime: 3000,
+      });
+    } else {
+      await dispatched(
+        firebaseSignUp(
+          userName,
+          userEmail,
+          userRePassword,
+          `+91${userNumber}`,
+          userDeliveryAddress,
+          'user',
+        ),
+      );
+      setLoading(false);
+      Toast.show({
+        type: `success`,
+        text1: 'User already exists',
+        autoHide: true,
+        position: 'bottom',
+        visibilityTime: 3000,
+      });
+      navigation.navigate('Tabs');
+    }
+  };
 
   const registerButtonClick = async () => {
     setLoading(true);
@@ -150,9 +274,33 @@ const Register = () => {
             </View>
           </View>
         )}
+
+        <View style={{ flexDirection: 'row' }}>
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <BackArrow width={18} height={18} marginTop={25} marginLeft={10} />
+          </TouchableOpacity>
+          <Text
+            style={{
+              fontFamily: fontFamilies.INTER.bold,
+              color: '#FFFFFF',
+              fontSize: 36,
+              marginLeft: 10,
+              includeFontPadding: false,
+              marginTop: 12,
+            }}
+          >
+            {'Sign Up'}
+          </Text>
+        </View>
+
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
           <View style={{ flex: 1, padding: 4 }}>
-            <Text
+            {/* <Text
               style={{
                 fontFamily: fontFamilies.INTER.bold,
                 color: '#FFFFFF',
@@ -163,7 +311,7 @@ const Register = () => {
               }}
             >
               {'Sign Up'}
-            </Text>
+            </Text> */}
             <Text
               style={{
                 color: '#FFFFFF',
@@ -497,13 +645,41 @@ const Register = () => {
                 </TouchableOpacity>
               </View>
             </View>
+
+            <TouchableOpacity
+              activeOpacity={0.9}
+              onPress={() => {
+                registerButtonFirebaseClick();
+              }}
+              style={{
+                backgroundColor: '#F0DCBC',
+                marginHorizontal: 10,
+                marginTop: 5,
+                borderRadius: 4,
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: 10,
+              }}
+            >
+              <Text
+                style={{
+                  textAlign: 'center',
+                  color: '#000000',
+                  fontSize: 16,
+                  fontFamily: fontFamilies.INTER.medium,
+                  includeFontPadding: false,
+                }}
+              >
+                {'Register'}
+              </Text>
+            </TouchableOpacity>
           </View>
         </ScrollView>
-        <View style={{ flexDirection: 'column' }}>
+        {/* <View style={{ flexDirection: 'column' }}>
           <TouchableOpacity
             activeOpacity={0.9}
             onPress={() => {
-              registerButtonClick();
+              registerButtonFirebaseClick();
             }}
             style={{
               backgroundColor: '#F0DCBC',
@@ -526,7 +702,7 @@ const Register = () => {
               {'Register'}
             </Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
       </SafeAreaView>
     </SafeAreaProvider>
   );

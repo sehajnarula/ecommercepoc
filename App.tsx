@@ -15,6 +15,7 @@ import Toast from 'react-native-toast-message';
 import { Provider } from 'react-redux';
 import Tabs from '../ecommercedemo/src/navigation/tabs/Tabs';
 import Store from '../ecommercedemo/src/redu/store/Store';
+import Cart from '../ecommercedemo/src/screens/Cart';
 import Home from '../ecommercedemo/src/screens/Home';
 import Login from '../ecommercedemo/src/screens/Login';
 import ProductInformation from '../ecommercedemo/src/screens/ProductInformation';
@@ -49,6 +50,7 @@ function App() {
           <Stack.Screen name="HomeScreen" component={Home} />
           <Stack.Screen name="UserScreen" component={User} />
           <Stack.Screen name="Tabs" component={Tabs} />
+          <Stack.Screen name="Cart" component={Cart} />
           <Stack.Screen name="ProductInfo" component={ProductInformation} />
         </Stack.Navigator>
         <Toast />

@@ -248,3 +248,85 @@ export const userSignOut = () => async dispatch => {
     console.log('signouterror', error);
   }
 };
+
+export const firebaseSignIn =
+  (userEnteredEmail, userEnteredPassword) => async dispatch => {
+    dispatch(signInRequest());
+    try {
+      const userCredential = await auth().signInWithEmailAndPassword(
+        userEnteredEmail,
+        userEnteredPassword,
+      );
+      // const userSnapshot = await firestore().collection('users').get();
+      // const users = userSnapshot.docs.map(doc => ({
+      //   id: doc.id,
+      //   ...doc.data(),
+      // }));
+      const userDoc = await firestore()
+        .collection('users')
+        .where('email', '==', userEnteredEmail)
+        .limit(1)
+        .get();
+
+      let userData = {};
+      if (!userDoc.empty) {
+        userData = { id: userDoc.docs[0].id, ...userDoc.docs[0].data() };
+      }
+
+      const user = {
+        id: userCredential.user.uid,
+        name: userData.name || '',
+        email: userEnteredEmail,
+        phoneNumber: userData.number || '',
+        address: userData.address || '',
+        userRole: userData.role || '',
+      };
+      dispatch(signInSuccess(user));
+    } catch (error) {
+      dispatch(signInFailure(error));
+      console.log('firebasesigninerror', error);
+    }
+  };
+
+export const firebaseSignUp =
+  (userName, email, password, phoneNumber, deliveryAddress, role) =>
+  async dispatch => {
+    dispatch(signInRequest());
+    try {
+      const userCredential = await auth().createUserWithEmailAndPassword(
+        email,
+        password,
+      );
+      const uid = userCredential.user.uid;
+      const userEmail = userCredential.user.email;
+      await firestore().collection('users').doc(uid).set({
+        name: userName,
+        email: userEmail,
+        number: phoneNumber,
+        address: deliveryAddress,
+        role: role,
+      });
+      const user = {
+        id: userCredential.user.uid,
+        name: userName,
+        email: userEmail,
+        phoneNumber: phoneNumber,
+        address: deliveryAddress,
+        userRole: role,
+      };
+      dispatch(signUpSuccess(user));
+    } catch (error) {
+      dispatch(signUpFailure(error));
+      console.log('firebasesignuperror', error);
+    }
+  };
+
+export const firebaseUserSignOut = async dispatch => {
+  try {
+    await auth().signOut();
+    await removeUserLocally();
+    dispatch(signOutAction());
+  } catch (error) {
+    console.log('showfirebaselogouterror', error);
+  }
+};

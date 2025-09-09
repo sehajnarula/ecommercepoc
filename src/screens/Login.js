@@ -21,7 +21,11 @@ import VisibilityOff from '../../assets/images/visibilityof.svg';
 import VisibilityOn from '../../assets/images/visibilityon.svg';
 import { closeApp } from '../constants/commonfunctions';
 import { fontFamilies } from '../constants/fonts';
-import { userGoogleSignIn, userSignIn } from '../redu/actions/UserActions';
+import {
+  firebaseSignIn,
+  userGoogleSignIn,
+  userSignIn,
+} from '../redu/actions/UserActions';
 
 const Login = () => {
   const navigation = useNavigation();
@@ -64,6 +68,50 @@ const Login = () => {
       });
     } else {
       await dispatched(userSignIn(userEmail, userPassword));
+      setLoading(false);
+      Toast.show({
+        type: 'success',
+        text1: 'Login Successful.',
+        autoHide: true,
+        position: 'bottom',
+        visibilityTime: 3000,
+      });
+      navigation.navigate('Tabs');
+    }
+  };
+
+  const userFirebaseSignIn = async () => {
+    setLoading(true);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (userEmail === '') {
+      setLoading(false);
+      Toast.show({
+        type: 'error',
+        text1: 'Enter Email.',
+        autoHide: true,
+        position: 'bottom',
+        visibilityTime: 3000,
+      });
+    } else if (!emailRegex.test(userEmail)) {
+      setLoading(false);
+      Toast.show({
+        type: 'error',
+        text1: 'Enter Valid Email.',
+        autoHide: true,
+        position: 'bottom',
+        visibilityTime: 3000,
+      });
+    } else if (userPassword === '') {
+      setLoading(false);
+      Toast.show({
+        type: 'error',
+        text1: 'Enter Password.',
+        autoHide: true,
+        position: 'bottom',
+        visibilityTime: 3000,
+      });
+    } else {
+      await dispatched(firebaseSignIn(userEmail, userPassword));
       setLoading(false);
       Toast.show({
         type: 'success',
@@ -267,7 +315,7 @@ const Login = () => {
                 padding: 10,
               }}
               onPress={() => {
-                loginButtonPress();
+                userFirebaseSignIn();
               }}
             >
               <Text

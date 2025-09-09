@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useRef } from 'react';
 import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PremiumCollectionArrow from '../../assets/images/premiumcollectionarrow.svg';
@@ -10,6 +10,13 @@ import { fontFamilies } from '../constants/fonts';
 const ShowCategoryProductsOnHome = props => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
+  const lastOffset = useRef(0);
+
+  const handleScroll = event => {
+    const currentOffset = event.nativeEvent.contentOffset.y;
+    props.onScrollChange(currentOffset);
+    lastOffset.current = currentOffset;
+  };
 
   return (
     <View style={{ marginTop: 3, marginBottom: insets.bottom + 10 }}>
@@ -18,6 +25,8 @@ const ShowCategoryProductsOnHome = props => {
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
         data={props.data}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
         keyExtractor={category => category.categoryId}
         renderItem={({ item: category }) => (
           <View style={{ marginTop: 11 }}>
@@ -66,6 +75,7 @@ const ShowCategoryProductsOnHome = props => {
               data={category.products}
               keyExtractor={product => product.productId}
               numColumns={2}
+              scrollEnabled={false}
               renderItem={({ item }) => (
                 <TouchableOpacity
                   activeOpacity={0.9}
