@@ -50,9 +50,13 @@ const Home = ({ setShowTab }) => {
 
   const handleScroll = event => {
     const offsetY = event.nativeEvent.contentOffset.y;
-
+    const contentHeight = event.nativeEvent.contentSize.height;
+    const layoutHeight = event.nativeEvent.layoutMeasurement.height;
     if (offsetY <= 0) {
       // always show when user is at very top
+      setShowTab(true);
+    } else if (offsetY + layoutHeight >= contentHeight - 20) {
+      // after scroll ends
       setShowTab(true);
     } else if (offsetY > lastOffsetY.current) {
       // scrolling down
