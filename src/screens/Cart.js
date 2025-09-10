@@ -45,6 +45,12 @@ const Cart = () => {
   const [trialOfferAdded, setTrialOfferAdded] = useState(false);
   const [userDeliveryAddress, setUserDeliveryAddress] = useState('');
   const navigation = useNavigation();
+  const saveSpendingCost = 1000;
+  const spendingCost = 300;
+  const totalSpendingCost = 1300;
+  const savedAmount = saveSpendingCost - spendingCost;
+  // const saveSpendAmountProgress = (savedAmount / saveSpendingCost) * 100;
+  const saveSpendAmountProgress = savedAmount / saveSpendingCost;
 
   const getShipRocketTockenLocally = async () => {
     setLoading(true);
@@ -520,6 +526,61 @@ const Cart = () => {
             </Text>
 
             <CartSelectionsFlatList isHorizontal={false} data={cartArray} />
+
+            <View
+              style={{
+                backgroundColor: '#151515',
+                borderColor: '#414141',
+                borderWidth: 1,
+                borderRadius: 12,
+                paddingTop: 15,
+                paddingBottom: 15,
+                alignItems: 'center',
+                paddingLeft: 16,
+                paddingRight: 16,
+                marginHorizontal: 16,
+                marginTop: 5,
+                flexDirection: 'row',
+              }}
+            >
+              <PercentageIcon width={28} height={28} />
+
+              <View style={{ flex: 1, marginLeft: 5 }}>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text
+                    style={{
+                      color: '#F4A300',
+                      fontFamily: fontFamilies.INTER.regular,
+                      fontSize: 14,
+                    }}
+                  >
+                    {`Spend ₹300`}
+                  </Text>
+                  <Text
+                    style={{
+                      color: '#FFFFFF',
+                      fontFamily: fontFamilies.INTER.regular,
+                      fontSize: 14,
+                      marginLeft: 5,
+                    }}
+                  >
+                    {`more -> Save ₹1000`}
+                  </Text>
+                </View>
+
+                <View style={{ marginTop: 8, width: '95%' }}>
+                  <progress.Bar
+                    progress={saveSpendAmountProgress}
+                    width={null}
+                    height={5}
+                    color="#F4A300"
+                    borderRadius={5}
+                    borderWidth={0}
+                    unfilledColor="#4D4D4D"
+                  />
+                </View>
+              </View>
+            </View>
 
             <Text
               style={{

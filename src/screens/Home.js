@@ -13,11 +13,7 @@ import {
 } from 'react-native';
 import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 import * as progress from 'react-native-progress';
-import {
-  SafeAreaProvider,
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { startSpeechToText } from 'react-native-voice-to-text';
 import { useDispatch, useSelector } from 'react-redux';
 import FavourteIcon from '../../assets/images/homepagehearticon.svg';
@@ -35,7 +31,6 @@ import { userSignOut } from '../redu/actions/UserActions';
 const Home = ({ setShowTab }) => {
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
-  const insets = useSafeAreaInsets();
   const dispatched = useDispatch();
   const error = useSelector(state => state.user.error);
   const navigation = useNavigation();
@@ -277,7 +272,7 @@ const Home = ({ setShowTab }) => {
             paddingRight: 16,
           }}
         >
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'row', marginTop: 5 }}>
             <View>
               <Text
                 style={{
