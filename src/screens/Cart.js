@@ -607,7 +607,7 @@ const Cart = () => {
                 <View style={{ marginTop: 8, width: '95%' }}>
                   <progress.Bar
                     progress={saveSpendAmountProgress}
-                    width={null} // take full wrapper width
+                    width={null}
                     height={5}
                     color="#F4A300"
                     borderRadius={5}
