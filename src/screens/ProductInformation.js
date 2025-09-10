@@ -10,7 +10,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import * as progress from 'react-native-progress';
 import {
   SafeAreaProvider,
@@ -322,7 +321,7 @@ const ProductInformation = ({ route }) => {
                 {`₹ ${reducedNumber} Off`}
               </Text>
             </View>
-            <LinearGradient
+            {/* <LinearGradient
               colors={['#FFFFFF33', '#FFFFFF']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
@@ -385,7 +384,73 @@ const ProductInformation = ({ route }) => {
                   </TouchableOpacity>
                 </View>
               </View>
-            </LinearGradient>
+            </LinearGradient> */}
+            <View
+              style={{
+                width: '32%',
+                paddingTop: 8,
+                paddingBottom: 8,
+                // paddingRight: 5,
+                // paddingLeft: 5,
+                borderLeftColor: '#FFFFFF33',
+                borderRightColor: '#ffffffa7',
+                borderBottomColor: '#ffffff65',
+                borderTopColor: '#ffffff65',
+                borderRadius: 8,
+                borderWidth: 0.56,
+                flexDirection: 'row',
+                justifyContent: 'space-evenly',
+                alignItems: 'center',
+                marginLeft: 12,
+                backgroundColor: '#212121',
+                marginTop: 10,
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  backgroundColor: '#424242',
+                  width: 22,
+                  height: 22,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: 3,
+                }}
+                activeOpacity={0.8}
+                onPress={() => {
+                  dispatch({ type: 'Decrease', value: 1 });
+                }}
+              >
+                <QuantityMinus width={13} hieght={13} />
+              </TouchableOpacity>
+
+              <Text
+                style={{
+                  color: '#FFFFFF',
+                  fontFamily: fontFamilies.INTER.bold,
+                  includeFontPadding: false,
+                  fontSize: 17,
+                }}
+              >
+                {`${state.count}`}
+              </Text>
+
+              <TouchableOpacity
+                style={{
+                  backgroundColor: '#424242',
+                  width: 22,
+                  height: 22,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: 3,
+                }}
+                activeOpacity={0.8}
+                onPress={() => {
+                  dispatch({ type: 'Increase', value: 1 });
+                }}
+              >
+                <QuantityPlus width={13} hieght={13} />
+              </TouchableOpacity>
+            </View>
             <TouchableOpacity
               activeOpacity={0.9}
               style={{
