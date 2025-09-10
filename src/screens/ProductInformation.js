@@ -324,7 +324,7 @@ const ProductInformation = ({ route }) => {
             {/* <LinearGradient
               colors={['#FFFFFF33', '#FFFFFF']}
               start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
+              end={{ x: 1, y: 1 }}
               style={{
                 padding: 0.56,
                 width: 113,
