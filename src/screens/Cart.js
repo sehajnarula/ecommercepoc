@@ -477,15 +477,17 @@ const Cart = () => {
                 borderColor: '#414141',
                 borderWidth: 1,
                 borderRadius: 12,
-                gap: 8,
-                marginHorizontal: 16,
+                // alignItems: 'stretch',
+                // gap: 8,
+                marginRight: 16,
+                marginLeft: 16,
                 marginTop: 20,
                 flexDirection: 'row',
               }}
             >
               <PercentageIcon width={28} height={28} />
 
-              <View style={{ flexDirection: 'row', flex: 1 }}>
+              {/* <View style={{ flexDirection: 'row', flex: 1 }}>
                 <Text
                   style={{
                     color: '#F4A300',
@@ -507,7 +509,41 @@ const Cart = () => {
                     includeFontPadding: false,
                   }}
                 >
-                  {`- Add more, save more`}
+                  {` - Add more, save more`}
+                </Text>
+              </View> */}
+
+              <View
+                style={{
+                  flexDirection: 'row',
+                  flex: 1,
+                  marginLeft: 5,
+                  alignItems: 'flex-start',
+                  justifyContent: 'flex-end',
+                }}
+              >
+                <Text
+                  style={{
+                    color: '#F4A300',
+                    fontSize: 13,
+                    marginTop: 5,
+                    fontFamily: fontFamilies.INTER.regular,
+                    includeFontPadding: false,
+                  }}
+                >
+                  {`You Just Saved ₹500`}
+                </Text>
+
+                <Text
+                  style={{
+                    color: '#FFFFFF',
+                    fontSize: 13,
+                    marginTop: 5,
+                    fontFamily: fontFamilies.INTER.regular,
+                    includeFontPadding: false,
+                  }}
+                >
+                  {` - Add more, save more!`}
                 </Text>
               </View>
             </View>
@@ -546,7 +582,7 @@ const Cart = () => {
               <PercentageIcon width={28} height={28} />
 
               <View style={{ flex: 1, marginLeft: 5 }}>
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', marginLeft: 3 }}>
                   <Text
                     style={{
                       color: '#F4A300',
@@ -571,11 +607,12 @@ const Cart = () => {
                 <View style={{ marginTop: 8, width: '95%' }}>
                   <progress.Bar
                     progress={saveSpendAmountProgress}
-                    width={null}
+                    width={null} // take full wrapper width
                     height={5}
                     color="#F4A300"
                     borderRadius={5}
                     borderWidth={0}
+                    marginLeft={4}
                     unfilledColor="#4D4D4D"
                   />
                 </View>
