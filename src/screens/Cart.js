@@ -298,8 +298,9 @@ const Cart = () => {
               <View style={{ flex: 1, marginHorizontal: 5 }}>
                 <Text
                   style={{
-                    fontFamily: fontFamilies.INTER.medium,
+                    fontFamily: fontFamilies.INTER.semiBold,
                     fontSize: 13,
+                    includeFontPadding: false,
                     color: '#FFFFFF',
                   }}
                 >
@@ -308,9 +309,11 @@ const Cart = () => {
 
                 <Text
                   style={{
-                    fontFamily: fontFamilies.INTER.medium,
+                    fontFamily: fontFamilies.INTER.regular,
                     fontSize: 13,
-                    color: '#FFFFFF',
+                    marginTop: 5,
+                    includeFontPadding: false,
+                    color: '#C3C9D1',
                   }}
                   numberOfLines={1}
                 >
@@ -330,6 +333,7 @@ const Cart = () => {
                       color: '#F0DCBC',
                       fontFamily: fontFamilies.INTER.medium,
                       fontSize: 12,
+                      includeFontPadding: false,
                     }}
                   >{`Change`}</Text>
                 </View>
@@ -424,7 +428,7 @@ const Cart = () => {
                       style={{
                         color: '#F0DCBC',
                         fontSize: 12,
-                        fontFamily: fontFamilies.INTER.medium,
+                        fontFamily: fontFamilies.INTER.semiBold,
                       }}
                     >
                       {'Added'}
@@ -447,7 +451,7 @@ const Cart = () => {
                       style={{
                         color: '#F0DCBC',
                         fontSize: 12,
-                        fontFamily: fontFamilies.INTER.medium,
+                        fontFamily: fontFamilies.INTER.semiBold,
                       }}
                     >
                       {'Add'}
@@ -777,7 +781,7 @@ const Cart = () => {
                 <Text
                   style={{
                     fontSize: 13,
-                    fontFamily: fontFamilies.INTER.medium,
+                    fontFamily: fontFamilies.INTER.semiBold,
                     color: '#FFFFFF',
                     includeFontPadding: false,
                   }}
@@ -790,7 +794,7 @@ const Cart = () => {
                     position: 'absolute',
                     right: 0,
                     fontSize: 13,
-                    fontFamily: fontFamilies.INTER.medium,
+                    fontFamily: fontFamilies.INTER.semiBold,
                     color: '#FFFFFF',
                     includeFontPadding: false,
                   }}

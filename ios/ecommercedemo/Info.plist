@@ -57,6 +57,17 @@
 		<string>Inter18ptRegular.ttf</string>
 		<string>Inter18ptSemiBold.ttf</string>
 		<string>Inter18ptSemiBoldItalic.ttf</string>
+		<string>PlayfairDisplayBlack.ttf</string>
+		<string>PlayfairDisplayBold.ttf</string>
+		<string>PlayfairDisplayBoldItalic.ttf</string>
+		<string>PlayfairDisplayExtraBold.ttf</string>
+		<string>PlayfairDisplayExtraBoldItalic.ttf</string>
+		<string>PlayfairDisplayItalic.ttf</string>
+		<string>PlayfairDisplayMedium.ttf</string>
+		<string>PlayfairDisplayRegular.ttf</string>
+		<string>PlayfairDisplaySemiBold.ttf</string>
+		<string>PlayfairDisplaySemiBoldItalic.ttf</string>
+		<string>Inter18ptMedium.ttf</string>
 	</array>
 </dict>
 </plist>

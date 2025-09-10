@@ -24,7 +24,7 @@ const ShowCategoryProductsOnHomeLayout = props => {
         style={{
           fontSize: 12,
           color: '#FFFFFF',
-          fontFamily: fontFamilies.INTER.medium,
+          fontFamily: fontFamilies.INTER.semiBold,
           marginTop: 10,
           includeFontPadding: false,
         }}

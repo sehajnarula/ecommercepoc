@@ -2,7 +2,6 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   BackHandler,
-  NativeModules,
   Platform,
   ScrollView,
   StatusBar,
@@ -87,10 +86,6 @@ const Home = ({ setShowTab }) => {
     await dispatched(shiprocketAuthCall());
     setLoading(false);
   };
-
-  useEffect(() => {
-    console.log('shownativemethods', NativeModules.VoiceToText);
-  }, []);
 
   useEffect(() => {
     let backHandlerCloseScreen;
@@ -288,6 +283,7 @@ const Home = ({ setShowTab }) => {
                 style={{
                   color: '#FFFFFF',
                   fontSize: 12,
+                  includeFontPadding: false,
                   fontFamily: fontFamilies.INTER.medium,
                 }}
               >
@@ -297,7 +293,8 @@ const Home = ({ setShowTab }) => {
                 style={{
                   color: '#FFFFFF',
                   fontSize: 24,
-                  fontFamily: fontFamilies.INTER.bold,
+                  includeFontPadding: false,
+                  fontFamily: fontFamilies.PLAYFAIR.semiBold,
                   marginTop: 3,
                 }}
               >
@@ -308,8 +305,7 @@ const Home = ({ setShowTab }) => {
               style={{
                 position: 'absolute',
                 right: 0,
-                marginTop: 20,
-                marginRight: 5,
+                marginTop: 15,
               }}
             >
               <View style={{ flexDirection: 'row' }}>

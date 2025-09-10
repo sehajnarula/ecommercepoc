@@ -91,8 +91,9 @@ const CompleteTheLookFlatListLayout = props => {
 
           <Text
             style={{
-              fontFamily: fontFamilies.INTER.medium,
+              fontFamily: fontFamilies.INTER.semiBold,
               color: '#FFFFFF',
+              includeFontPadding: false,
               fontSize: 12,
             }}
           >

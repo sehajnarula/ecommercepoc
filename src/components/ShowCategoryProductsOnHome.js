@@ -33,7 +33,8 @@ const ShowCategoryProductsOnHome = props => {
               <Text
                 style={{
                   fontSize: 18,
-                  fontFamily: fontFamilies.INTER.bold,
+                  includeFontPadding: false,
+                  fontFamily: fontFamilies.PLAYFAIR.bold,
                   color: '#FFFFFF',
                 }}
               >
@@ -48,6 +49,7 @@ const ShowCategoryProductsOnHome = props => {
                     style={{
                       fontSize: 12,
                       color: '#FFFFFF',
+                      includeFontPadding: false,
                       fontFamily: fontFamilies.INTER.medium,
                       marginRight: 5,
                     }}

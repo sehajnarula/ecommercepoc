@@ -273,8 +273,9 @@ const ProductInformation = ({ route }) => {
             </View>
             <Text
               style={{
-                fontFamily: fontFamilies.INTER.medium,
+                fontFamily: fontFamilies.PLAYFAIR.medium,
                 color: '#D5D5D5',
+                includeFontPadding: false,
                 fontSize: 24,
                 marginTop: 10,
                 marginHorizontal: 12,
@@ -282,7 +283,9 @@ const ProductInformation = ({ route }) => {
             >
               {productName}
             </Text>
-            <View style={{ flexDirection: 'row', marginLeft: 12 }}>
+            <View
+              style={{ flexDirection: 'row', marginLeft: 12, marginTop: 5 }}
+            >
               <Text
                 style={{
                   color: '#D5D5D5',
@@ -422,7 +425,7 @@ const ProductInformation = ({ route }) => {
                 style={{
                   color: '#D5D5D5',
                   fontSize: 14,
-                  fontFamily: fontFamilies.INTER.medium,
+                  fontFamily: fontFamilies.INTER.semiBold,
                   includeFontPadding: false,
                 }}
               >
@@ -448,7 +451,7 @@ const ProductInformation = ({ route }) => {
                 style={{
                   color: '#D5D5D5',
                   fontSize: 14,
-                  fontFamily: fontFamilies.INTER.medium,
+                  fontFamily: fontFamilies.INTER.semiBold,
                   includeFontPadding: false,
                 }}
               >
