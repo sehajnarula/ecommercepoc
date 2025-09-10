@@ -148,7 +148,7 @@ const Register = () => {
       setLoading(false);
       Toast.show({
         type: `success`,
-        text1: 'User already exists',
+        text1: 'Reggistered Successfully.',
         autoHide: true,
         position: 'bottom',
         visibilityTime: 3000,
@@ -343,7 +343,7 @@ const Register = () => {
                   marginLeft={5}
                 />
                 <TextInput
-                  onChangeText={text => setUserName(text)}
+                  onChangeText={text => setUserName(text.trim())}
                   style={{
                     color: '#FFFFFF8F',
                     fontFamily: fontFamilies.INTER.regular,
@@ -390,7 +390,7 @@ const Register = () => {
                   marginLeft={5}
                 />
                 <TextInput
-                  onChangeText={text => setUserEmail(text)}
+                  onChangeText={text => setUserEmail(text.trim())}
                   style={{
                     color: '#FFFFFF8F',
                     fontFamily: fontFamilies.INTER.regular,
@@ -438,7 +438,7 @@ const Register = () => {
                   marginLeft={5}
                 />
                 <TextInput
-                  onChangeText={text => setUserNumber(text)}
+                  onChangeText={text => setUserNumber(text.trim())}
                   style={{
                     color: '#FFFFFF8F',
                     fontFamily: fontFamilies.INTER.regular,
@@ -487,7 +487,7 @@ const Register = () => {
                   marginLeft={5}
                 />
                 <TextInput
-                  onChangeText={text => setUserDeliveryAddress(text)}
+                  onChangeText={text => setUserDeliveryAddress(text.trim())}
                   style={{
                     color: '#FFFFFF8F',
                     fontFamily: fontFamilies.INTER.regular,
@@ -536,7 +536,7 @@ const Register = () => {
                   marginLeft={8}
                 />
                 <TextInput
-                  onChangeText={text => setUserPassword(text)}
+                  onChangeText={text => setUserPassword(text.trim())}
                   value={userPassword}
                   style={{
                     color: '#FFFFFF8F',
@@ -606,7 +606,7 @@ const Register = () => {
                   marginLeft={8}
                 />
                 <TextInput
-                  onChangeText={text => setUserRePassword(text)}
+                  onChangeText={text => setUserRePassword(text.trim())}
                   value={userRePassword}
                   style={{
                     color: '#FFFFFF8F',

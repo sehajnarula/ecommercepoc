@@ -8,7 +8,7 @@ const ShowCategoryProductsOnHomeLayout = props => {
     <View
       style={{
         marginTop: 8,
-        marginLeft: 3,
+        marginLeft: 3.5,
         width: 174,
         padding: 6,
         gap: 10,

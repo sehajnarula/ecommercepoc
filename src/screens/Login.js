@@ -205,7 +205,7 @@ const Login = () => {
                   marginLeft={5}
                 />
                 <TextInput
-                  onChangeText={text => setUserEmail(text)}
+                  onChangeText={text => setUserEmail(text.trim())}
                   style={{
                     color: '#FFFFFF8F',
                     fontFamily: fontFamilies.INTER.regular,
@@ -252,7 +252,7 @@ const Login = () => {
                   marginLeft={8}
                 />
                 <TextInput
-                  onChangeText={text => setUserPassword(text)}
+                  onChangeText={text => setUserPassword(text.trim())}
                   value={userPassword}
                   style={{
                     color: '#FFFFFF8F',

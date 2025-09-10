@@ -180,7 +180,7 @@ const ProductInformation = ({ route }) => {
               >
                 <SearchIcon width={15} height={15} />
                 <TextInput
-                  onChangeText={text => setSearch(text)}
+                  onChangeText={text => setSearch(text.trim())}
                   autoCapitalize="none"
                   style={{
                     color: '#FFFFFF8F',

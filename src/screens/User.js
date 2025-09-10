@@ -187,7 +187,7 @@ const User = () => {
                   marginLeft={5}
                 />
                 <TextInput
-                  onChangeText={text => setUserName(text)}
+                  onChangeText={text => setUserName(text.trim())}
                   style={{
                     color: '#FFFFFF8F',
                     fontFamily: fontFamilies.INTER.regular,
@@ -234,7 +234,7 @@ const User = () => {
                   marginLeft={5}
                 />
                 <TextInput
-                  onChangeText={text => setUserEmail(text)}
+                  onChangeText={text => setUserEmail(text.trim())}
                   style={{
                     color: '#FFFFFF8F',
                     fontFamily: fontFamilies.INTER.regular,
@@ -283,7 +283,7 @@ const User = () => {
                   marginLeft={5}
                 />
                 <TextInput
-                  onChangeText={text => setUserNumber(text)}
+                  onChangeText={text => setUserNumber(text.trim())}
                   style={{
                     color: '#FFFFFF8F',
                     fontFamily: fontFamilies.INTER.regular,
@@ -332,7 +332,7 @@ const User = () => {
                   marginLeft={5}
                 />
                 <TextInput
-                  onChangeText={text => setUserDeliveryAddress(text)}
+                  onChangeText={text => setUserDeliveryAddress(text.trim())}
                   style={{
                     color: '#FFFFFF8F',
                     fontFamily: fontFamilies.INTER.regular,
