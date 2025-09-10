@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React, { useState } from 'react';
-import { Dimensions, Image } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Animated, Dimensions, Image } from 'react-native';
 import Home from '../../screens/Home';
 import Store from '../../screens/Store';
 
@@ -9,6 +9,15 @@ const height = Dimensions.get('window').height;
 
 const Tabs = () => {
   const [showTab, setShowTab] = useState(true);
+  const fadeAnim = useRef(new Animated.Value(1)).current; // controls opacity
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: showTab ? 1 : 0, // fade in if true, fade out if false
+      duration: showTab ? 700 : 500,
+      useNativeDriver: true,
+    }).start();
+  }, [showTab]);
 
   return (
     <Tab.Navigator
@@ -18,18 +27,6 @@ const Tabs = () => {
         tabBarActiveTintColor: '#F0DCBC',
         tabBarInactiveTintColor: '#FFFFFF',
         tabBarStyle: {
-          // height: height * 0.12,
-          // backgroundColor: '#000000',
-          // borderTopWidth: 0,
-          // elevation: 0,
-          // transform: [{ translateY: showTab ? 0 : height * 0.12 }],
-
-          // height: showTab ? height * 0.12 : 0,
-          // backgroundColor: '#000000',
-          // borderTopWidth: 0,
-          // elevation: 0,
-          // overflow: 'hidden', // so content doesn’t peek
-
           position: 'absolute',
           bottom: 0,
           left: 0,
@@ -40,6 +37,7 @@ const Tabs = () => {
           elevation: 0,
           overflow: 'hidden',
           display: showTab ? 'flex' : 'none',
+          opacity: fadeAnim, // 👈 animated fade effect
         },
         tabBarIcon: ({ focused }) => {
           const fillColor = focused ? '#F0DCBC' : '#FFFFFF';
