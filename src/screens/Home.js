@@ -2,6 +2,8 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   BackHandler,
+  Dimensions,
+  Image,
   Platform,
   ScrollView,
   StatusBar,
@@ -34,6 +36,8 @@ const Home = ({ setShowTab }) => {
   const dispatched = useDispatch();
   const error = useSelector(state => state.user.error);
   const navigation = useNavigation();
+  const width = Dimensions.get('window').width;
+  const height = Dimensions.get('window').height;
 
   const signOutButtonPress = async () => {
     await dispatched(userSignOut());
@@ -101,6 +105,23 @@ const Home = ({ setShowTab }) => {
       }
     };
   }, [isFocused]);
+
+  const animatedFlatListArray = [
+    {
+      dataId: '1',
+      image: require('../../assets/images/animatedslideshowimageone.jpg'),
+      textOne: `Buy Together`,
+      textTwo: `Save big`,
+      textThree: `Get exclusive prices by teaming up with neighbours.`,
+    },
+    {
+      dataId: '2',
+      image: require('../../assets/images/animatedslideshowimagetwo.jpg'),
+      textOne: `Buy Together`,
+      textTwo: `Save big`,
+      textThree: `Get exclusive prices by teaming up with neighbours.`,
+    },
+  ];
 
   const allCategories = [
     {
@@ -413,6 +434,68 @@ const Home = ({ setShowTab }) => {
           scrollEventThrottle={16}
         >
           <View style={{ flex: 1 }}>
+            <View
+              style={{
+                width: width * 0.9,
+                alignSelf: 'center',
+                position: 'relative',
+                height: 407,
+                marginTop: 5,
+              }}
+            >
+              <Image
+                style={{ width: '100%', height: '100%', borderRadius: 11 }}
+                source={require('../../assets/images/animatedslideshowimageone.jpg')}
+              />
+
+              <View
+                style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  marginBottom: 15,
+                  alignSelf: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <View style={{ flexDirection: 'row', marginLeft: 22 }}>
+                  <Text
+                    style={{
+                      fontFamily: fontFamilies.PLAYFAIR.medium,
+                      fontSize: 22,
+                      includeFontPadding: false,
+                      color: '#FFFFFF',
+                    }}
+                  >
+                    {`Buy Together.`}
+                  </Text>
+
+                  <Text
+                    style={{
+                      fontFamily: fontFamilies.PLAYFAIR.medium,
+                      fontSize: 22,
+                      marginLeft: 3,
+                      includeFontPadding: false,
+                      color: '#F0DCBC',
+                    }}
+                  >
+                    {`Save Big.`}
+                  </Text>
+                </View>
+
+                <Text
+                  style={{
+                    fontFamily: fontFamilies.INTER.medium,
+                    fontSize: 11,
+                    marginTop: 5,
+                    includeFontPadding: false,
+                    color: '#FFFFFF',
+                    // textAlign: 'center',
+                  }}
+                >
+                  {`Get exclusive prices by teaming up with neighbours.`}
+                </Text>
+              </View>
+            </View>
             <ShowCategoryProductsOnHome
               isHorizontal={false}
               data={allCategories}

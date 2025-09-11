@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useReducer, useState } from 'react';
 import {
+  Dimensions,
   Image,
   ScrollView,
   StatusBar,
@@ -56,6 +57,8 @@ const ProductInformation = ({ route }) => {
   const navigation = useNavigation();
   const [search, setSearch] = useState('');
   const [productInfo, setProductInfo] = useState(true);
+  const width = Dimensions.get('window').width;
+  const height = Dimensions.get('window').height;
   const {
     categoryName,
     productName,
@@ -136,6 +139,76 @@ const ProductInformation = ({ route }) => {
             </View>
           </View>
         )}
+
+        <View
+          style={{
+            backgroundColor: '#000000',
+            paddingBottom: 10,
+            paddingTop: 10,
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingRight: 16,
+            paddingLeft: 16,
+          }}
+        >
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <BackArrow width={20} height={20} />
+          </TouchableOpacity>
+          <View
+            style={{
+              backgroundColor: '#323130',
+              paddingHorizontal: 8,
+              flexDirection: 'row',
+              borderRadius: 8,
+              alignItems: 'center',
+              width: 203,
+              marginTop: 1,
+              marginLeft: 15,
+              height: 39,
+            }}
+          >
+            <SearchIcon width={15} height={15} />
+            <TextInput
+              onChangeText={text => setSearch(text.trim())}
+              autoCapitalize="none"
+              style={{
+                color: '#FFFFFF8F',
+                paddingVertical: 0,
+                flex: 1,
+                marginTop: 3,
+                height: '100%',
+                paddingHorizontal: 6,
+              }}
+              placeholderTextColor={'#FFFFFF8F'}
+              placeholder="Search"
+              value={search}
+            />
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              position: 'absolute',
+              right: 0,
+              marginRight: 15,
+            }}
+          >
+            <FavourteIcon width={32} height={32} marginRight={10} />
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => {
+                navigation.navigate('Cart');
+              }}
+            >
+              <CartIcon width={32} height={32} />
+            </TouchableOpacity>
+          </View>
+        </View>
+
         <ScrollView
           contentContainerStyle={{
             flexGrow: 1,
@@ -143,77 +216,8 @@ const ProductInformation = ({ route }) => {
           showsVerticalScrollIndicator={false}
         >
           <View
-            style={{ flex: 1, padding: 1, marginBottom: insets.bottom + 15 }}
+            style={{ flex: 1, padding: 1, marginBottom: insets.bottom + 10 }}
           >
-            <View
-              style={{
-                backgroundColor: '#000000',
-                paddingBottom: 10,
-                paddingTop: 10,
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingRight: 16,
-                paddingLeft: 16,
-              }}
-            >
-              <TouchableOpacity
-                activeOpacity={1}
-                onPress={() => {
-                  navigation.goBack();
-                }}
-              >
-                <BackArrow width={20} height={20} />
-              </TouchableOpacity>
-              <View
-                style={{
-                  backgroundColor: '#323130',
-                  paddingHorizontal: 8,
-                  flexDirection: 'row',
-                  borderRadius: 8,
-                  alignItems: 'center',
-                  width: 203,
-                  marginTop: 1,
-                  marginLeft: 15,
-                  height: 39,
-                }}
-              >
-                <SearchIcon width={15} height={15} />
-                <TextInput
-                  onChangeText={text => setSearch(text.trim())}
-                  autoCapitalize="none"
-                  style={{
-                    color: '#FFFFFF8F',
-                    paddingVertical: 0,
-                    flex: 1,
-                    marginTop: 3,
-                    height: '100%',
-                    paddingHorizontal: 6,
-                  }}
-                  placeholderTextColor={'#FFFFFF8F'}
-                  placeholder="Search"
-                  value={search}
-                />
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  position: 'absolute',
-                  right: 0,
-                  marginRight: 15,
-                }}
-              >
-                <FavourteIcon width={32} height={32} marginRight={10} />
-                <TouchableOpacity
-                  activeOpacity={0.8}
-                  onPress={() => {
-                    navigation.navigate('Cart');
-                  }}
-                >
-                  <CartIcon width={32} height={32} />
-                </TouchableOpacity>
-              </View>
-            </View>
-
             <View
               style={{
                 width: '100%',
@@ -387,9 +391,10 @@ const ProductInformation = ({ route }) => {
             </LinearGradient> */}
             <View
               style={{
-                width: '32%',
+                // width: '32%',
+                width: width * 0.32,
                 paddingTop: 8,
-                paddingBottom: 8,
+                paddingBottom: 10,
                 // paddingRight: 5,
                 // paddingLeft: 5,
                 borderLeftColor: '#FFFFFF33',
@@ -861,7 +866,7 @@ const ProductInformation = ({ route }) => {
 
             <MoreFromBrandFlatList isHorizontal={false} data={brandProducts} />
 
-            <View
+            {/* <View
               style={{
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -987,9 +992,129 @@ const ProductInformation = ({ route }) => {
                   </Text>
                 </View>
               </TouchableOpacity>
-            </View>
+            </View> */}
           </View>
         </ScrollView>
+        <View style={{ flexDirection: 'column' }}>
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#2A2929',
+              paddingBottom: 8,
+              height: 32,
+              paddingTop: 8,
+            }}
+          >
+            <View style={{ flexDirection: 'row' }}>
+              <AddressIconNew width={10} height={8} marginTop={2} />
+              <Text
+                style={{
+                  fontSize: 10,
+                  fontFamily: fontFamilies.INTER.regular,
+                  includeFontPadding: false,
+                  color: '#FFFFFFCC',
+                  marginLeft: 5,
+                }}
+              >
+                {'Deliver in 30 min,'}
+              </Text>
+
+              <Text
+                style={{
+                  fontSize: 10,
+                  fontFamily: fontFamilies.INTER.regular,
+                  includeFontPadding: false,
+                  color: '#FFFFFF',
+                  marginTop: 1,
+                  marginLeft: 3,
+                }}
+              >
+                {'Others 133001'}
+              </Text>
+
+              <AddressArrow width={6} height={4} marginTop={5} marginLeft={5} />
+            </View>
+          </View>
+
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-evenly',
+              marginTop: 15,
+              marginBottom: insets.bottom + 5,
+            }}
+          >
+            <TouchableOpacity activeOpacity={0.9}>
+              <View
+                style={{
+                  width: 45,
+                  height: 45,
+                  padding: 12,
+                  borderRadius: 12,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderColor: '#F0DCBC',
+                  borderWidth: 0.56,
+                  backgroundColor: '#171717',
+                }}
+              >
+                <FavouriteOnBottom width={20} height={20} />
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              activeOpacity={0.9}
+              style={{
+                width: 139,
+                height: 45,
+                borderRadius: 12,
+                backgroundColor: '#F0DCBC',
+                padding: 10,
+              }}
+              onPress={() => {
+                addInCartBtn();
+              }}
+            >
+              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <Text
+                  style={{
+                    color: '#000000',
+                    fontSize: 14,
+                    fontFamily: fontFamilies.INTER.bold,
+                  }}
+                >
+                  {'ADD TO CART'}
+                </Text>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              activeOpacity={0.9}
+              style={{
+                width: 139,
+                height: 45,
+                borderRadius: 12,
+                backgroundColor: '#171717',
+                borderWidth: 1,
+                borderColor: '#F0DCBC',
+                padding: 10,
+              }}
+            >
+              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <Text
+                  style={{
+                    color: '#F0DCBC',
+                    fontSize: 14,
+                    fontFamily: fontFamilies.INTER.bold,
+                  }}
+                >
+                  {'BUY NOW'}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
       </SafeAreaView>
     </SafeAreaProvider>
   );

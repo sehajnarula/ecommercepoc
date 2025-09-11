@@ -517,9 +517,8 @@ const Cart = () => {
                 style={{
                   flexDirection: 'row',
                   flex: 1,
-                  marginLeft: 5,
-                  alignItems: 'flex-start',
-                  justifyContent: 'flex-end',
+                  marginLeft: 2,
+                  // alignItems: 'flex-start',
                 }}
               >
                 <Text
