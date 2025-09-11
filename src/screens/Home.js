@@ -237,14 +237,14 @@ const Home = ({ setShowTab }) => {
     {
       dataId: '1',
       image: require('../../assets/images/animatedslideshowimageone.jpg'),
-      textOne: `Buy Together`,
-      textTwo: `Save big`,
+      textOne: `Buy Together.`,
+      textTwo: `Save big.`,
       textThree: `Get exclusive prices by teaming up with neighbours.`,
     },
     {
       dataId: '2',
       image: require('../../assets/images/animatedslideshowimagetwo.jpg'),
-      textOne: `Buy Together.`,
+      textOne: `Buy Big.`,
       textTwo: `Sell big.`,
       textThree: `Get exclusive prices by teaming up with neighbours.`,
     },
@@ -563,9 +563,9 @@ const Home = ({ setShowTab }) => {
           <View style={{ flex: 1 }}>
             <View
               style={{
-                width: width * 0.9,
+                width: width * 0.91,
+                marginLeft: 3.5,
                 alignSelf: 'center',
-                position: 'relative',
                 height: 407,
                 marginTop: 5,
               }}
