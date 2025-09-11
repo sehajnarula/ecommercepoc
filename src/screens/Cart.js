@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Image,
   ScrollView,
@@ -51,6 +51,7 @@ const Cart = () => {
   const savedAmount = saveSpendingCost - spendingCost;
   // const saveSpendAmountProgress = (savedAmount / saveSpendingCost) * 100;
   const saveSpendAmountProgress = savedAmount / saveSpendingCost;
+  const lastOffsetY = useRef(0);
 
   const getShipRocketTockenLocally = async () => {
     setLoading(true);

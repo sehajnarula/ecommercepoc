@@ -13,7 +13,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
+import Geolocation from 'react-native-geolocation-service';
+import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 import * as progress from 'react-native-progress';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { startSpeechToText } from 'react-native-voice-to-text';
@@ -34,6 +35,10 @@ const Home = ({ setShowTab }) => {
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
   const dispatched = useDispatch();
+  const [deviceLocation, setDeviceLocation] = useState({
+    latitude: null,
+    longitude: null,
+  });
   const error = useSelector(state => state.user.error);
   const navigation = useNavigation();
   const width = Dimensions.get('window').width;
@@ -63,7 +68,6 @@ const Home = ({ setShowTab }) => {
       // scrolling up
       setShowTab(false);
     }
-
     lastOffsetY.current = offsetY;
   };
 
@@ -76,6 +80,128 @@ const Home = ({ setShowTab }) => {
     const result = await request(permission);
 
     return result === RESULTS.GRANTED;
+  };
+
+  const requestLocationPermissions = async () => {
+    // try {
+    //   if (Platform.OS === 'android') {
+    //     // First check coarse location
+    //     const coarse = await check(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION);
+    //     if (coarse !== RESULTS.GRANTED) {
+    //       await request(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION);
+    //     }
+
+    //     // Then check fine location
+    //     const fine = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+    //     if (fine !== RESULTS.GRANTED) {
+    //       await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+    //     }
+
+    //     // Finally check background location (Android 10+)
+    //     const background = await check(
+    //       PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION,
+    //     );
+    //     if (background !== RESULTS.GRANTED) {
+    //       await request(PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION);
+    //     }
+    //   } else if (Platform.OS === 'ios') {
+    //     // iOS uses locationWhenInUse / locationAlways
+    //     const whenInUse = await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+    //     if (whenInUse !== RESULTS.GRANTED) {
+    //       await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+    //     }
+
+    //     const always = await check(PERMISSIONS.IOS.LOCATION_ALWAYS);
+    //     if (always !== RESULTS.GRANTED) {
+    //       await request(PERMISSIONS.IOS.LOCATION_ALWAYS);
+    //     }
+    //   }
+    // } catch (error) {
+    //   console.warn('Permission check/request error:', error);
+    // }
+
+    try {
+      if (Platform.OS === 'android') {
+        // 1. Request FINE location for android
+        let fineStatus = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+        if (fineStatus !== RESULTS.GRANTED) {
+          fineStatus = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+        }
+
+        if (fineStatus === RESULTS.GRANTED) {
+          // 2. Request BACKGROUND location (only Android 10+ shows dialog)
+          let backgroundStatus = await check(
+            PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION,
+          );
+          if (backgroundStatus !== RESULTS.GRANTED) {
+            backgroundStatus = await request(
+              PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION,
+            );
+          }
+
+          Geolocation.getCurrentPosition(
+            position => {
+              setDeviceLocation({
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+              });
+
+              console.log('showlatlong', position.coords.latitude);
+              console.log('showlatlong', position.coords.longitude);
+            },
+            error => {
+              console.warn('Location error:', error);
+            },
+            { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
+          );
+
+          return {
+            fine: fineStatus,
+            background: backgroundStatus,
+          };
+        } else {
+          return {
+            fine: fineStatus,
+            background: RESULTS.DENIED,
+          };
+        }
+      } else if (Platform.OS === 'ios') {
+        // iOS permission check
+        let whenInUse = await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+        if (whenInUse !== RESULTS.GRANTED) {
+          whenInUse = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+        }
+
+        let always = RESULTS.DENIED;
+        if (whenInUse === RESULTS.GRANTED) {
+          always = await check(PERMISSIONS.IOS.LOCATION_ALWAYS);
+          if (always !== RESULTS.GRANTED) {
+            always = await request(PERMISSIONS.IOS.LOCATION_ALWAYS);
+          }
+
+          Geolocation.getCurrentPosition(
+            position => {
+              setDeviceLocation({
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+              });
+            },
+            error => {
+              console.warn('Location error:', error);
+            },
+            { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
+          );
+        }
+
+        return {
+          whenInUse,
+          always,
+        };
+      }
+    } catch (error) {
+      console.warn('Permission check/request error:', error);
+      return null;
+    }
   };
 
   const isFocused = useIsFocused();
@@ -98,6 +224,7 @@ const Home = ({ setShowTab }) => {
         },
       );
       getTokenShipRocketOnScreen();
+      requestLocationPermissions();
     }
     return () => {
       if (backHandlerCloseScreen) {
@@ -117,8 +244,8 @@ const Home = ({ setShowTab }) => {
     {
       dataId: '2',
       image: require('../../assets/images/animatedslideshowimagetwo.jpg'),
-      textOne: `Buy Together`,
-      textTwo: `Save big`,
+      textOne: `Buy Together.`,
+      textTwo: `Sell big.`,
       textThree: `Get exclusive prices by teaming up with neighbours.`,
     },
   ];
