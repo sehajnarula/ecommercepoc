@@ -75,10 +75,10 @@ const CartAnimation = props => {
             loop={false}
             style={{ width: 250, height: 250 }}
             onAnimationFinish={() => {
-              thisLottieRef.current?.play(0, 50);
+              // thisLottieRef.current?.play(0, 50);
               onLottieFinish();
             }}
-            ref={thisLottieRef}
+            // ref={thisLottieRef}
           />
         )}
       </View>

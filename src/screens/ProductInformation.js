@@ -1091,13 +1091,14 @@ const ProductInformation = ({ route }) => {
               onPress={() => {
                 addInCartBtn();
               }}
+              disabled={state.count == 0}
             >
               <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                 <Text
                   style={{
                     color: '#000000',
                     fontSize: 14,
-                    includeFontPadding: false,
+                    // includeFontPadding: false,
                     fontFamily: fontFamilies.INTER.bold,
                   }}
                 >
@@ -1108,6 +1109,7 @@ const ProductInformation = ({ route }) => {
 
             <TouchableOpacity
               activeOpacity={0.9}
+              disabled={state.count == 0}
               style={{
                 width: 139,
                 height: 45,
