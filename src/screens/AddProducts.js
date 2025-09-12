@@ -1,12 +1,19 @@
 // import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Modal from 'react-native-modal';
 import * as progress from 'react-native-progress';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import {
+  SafeAreaProvider,
+  SafeAreaView,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
+import ProductAnimation from '../components/ProductAnimation';
 import colors from '../constants/colors';
+import { fontFamilies } from '../constants/fonts';
 
 const AddProducts = () => {
   const [productName, setProductName] = useState('');
@@ -24,6 +31,10 @@ const AddProducts = () => {
   const isFocused = useIsFocused();
   const dispatched = useDispatch();
   const error = useSelector(state => state.user.error);
+  const insets = useSafeAreaInsets();
+  const [showAddProductAnimation, setAddProductAnimation] = useState(false);
+  const navigation = useNavigation();
+  const productAnimationMessage = `Product Added Successfully`;
 
   // const getUserStateLocally = async () => {
   //   try {
@@ -160,13 +171,66 @@ const AddProducts = () => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1, backgroundColor: colors.screenBgColor }}>
+        {showAddProductAnimation && (
+          <Modal
+            isVisible={true}
+            onBackdropPress={() => setAddProductAnimation(false)}
+            animationIn="slideInUp"
+            animationOut="slideOutDown"
+            backdropTransitionOutTiming={0}
+            useNativeDriver
+            hideModalContentWhileAnimating
+            style={{ margin: 0, justifyContent: 'center' }}
+          >
+            <ProductAnimation
+              onCompletion={() => setAddProductAnimation(false)}
+              message={productAnimationMessage}
+            />
+          </Modal>
+        )}
+
         {loading && (
           <View style={AddProductStyle.progressLoaderOverlayBg}>
             <View style={AddProductStyle.progressLoaderContainer}>
-              <progress.Circle indeterminate size={50} color="#F0DCBC" />
+              <progress.Circle
+                indeterminate
+                size={50}
+                color={colors.appYelowColor}
+              />
             </View>
           </View>
         )}
+
+        <View
+          style={{ flexDirection: 'column', marginBottom: insets.bottom + 10 }}
+        >
+          <TouchableOpacity
+            activeOpacity={0.9}
+            style={{
+              backgroundColor: colors.appYelowColor,
+              marginHorizontal: 12,
+              borderRadius: 4,
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: 10,
+            }}
+            onPress={() => {
+              setAddProductAnimation(true);
+            }}
+          >
+            <Text
+              style={{
+                textAlign: 'center',
+                color: colors.black,
+                fontSize: 16,
+                fontFamily: fontFamilies.INTER.medium,
+                includeFontPadding: false,
+              }}
+            >
+              {'Add Product'}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </SafeAreaView>
     </SafeAreaProvider>
   );

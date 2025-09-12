@@ -15,8 +15,8 @@ import Toast from 'react-native-toast-message';
 import { Provider } from 'react-redux';
 import Tabs from '../ecommercedemo/src/navigation/tabs/Tabs';
 import Store from '../ecommercedemo/src/redu/store/Store';
+import AddProducts from '../ecommercedemo/src/screens/AddProducts';
 import Cart from '../ecommercedemo/src/screens/Cart';
-import Home from '../ecommercedemo/src/screens/Home';
 import Login from '../ecommercedemo/src/screens/Login';
 import ProductInformation from '../ecommercedemo/src/screens/ProductInformation';
 import Register from '../ecommercedemo/src/screens/Register';
@@ -41,17 +41,18 @@ function App() {
     <Provider store={Store}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="SplashScreen"
+          initialRouteName="AddProductScreen"
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="SplashScreen" component={Splash} />
           <Stack.Screen name="LoginScreen" component={Login} />
           <Stack.Screen name="RegisterScreen" component={Register} />
-          <Stack.Screen name="HomeScreen" component={Home} />
+          {/* <Stack.Screen name="HomeScreen" component={Home} /> */}
           <Stack.Screen name="UserScreen" component={User} />
           <Stack.Screen name="Tabs" component={Tabs} />
           <Stack.Screen name="Cart" component={Cart} />
           <Stack.Screen name="ProductInfo" component={ProductInformation} />
+          <Stack.Screen name="AddProductScreen" component={AddProducts} />
         </Stack.Navigator>
         <Toast />
       </NavigationContainer>
