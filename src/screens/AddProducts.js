@@ -5,6 +5,8 @@ import { StyleSheet } from 'react-native';
 import * as progress from 'react-native-progress';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
+import { useDispatch, useSelector } from 'react-redux';
+import colors from '../constants/colors';
 
 const AddProducts = () => {
   const [productName, setProductName] = useState('');
@@ -20,6 +22,8 @@ const AddProducts = () => {
   const [loading, setLoading] = useState(false);
   const [adminToken, setAdminToken] = useState('');
   const isFocused = useIsFocused();
+  const dispatched = useDispatch();
+  const error = useSelector(state => state.user.error);
 
   const getUserStateLocally = async () => {
     try {
@@ -155,7 +159,7 @@ const AddProducts = () => {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.screenBgColor }}>
         {loading && (
           <View style={AddProductStyle.progressLoaderOverlayBg}>
             <View style={AddProductStyle.progressLoaderContainer}>

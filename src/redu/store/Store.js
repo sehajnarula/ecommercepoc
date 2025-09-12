@@ -1,5 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import CartReducer from '../reducer/CartReducer';
+import ProductReducer from '../reducer/ProductReducer';
 import ShipRocketReducer from '../reducer/ShipRocketReducer';
 import UserReducer from '../reducer/UserReducer';
 
@@ -7,6 +8,7 @@ const reducerCombined = combineReducers({
   user: UserReducer,
   shiprocket: ShipRocketReducer,
   cart: CartReducer,
+  product: ProductReducer,
 });
 
 const Store = configureStore({
