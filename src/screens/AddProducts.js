@@ -1,4 +1,4 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
@@ -25,29 +25,29 @@ const AddProducts = () => {
   const dispatched = useDispatch();
   const error = useSelector(state => state.user.error);
 
-  const getUserStateLocally = async () => {
-    try {
-      const userJson = await AsyncStorage.getItem('user');
-      if (userJson !== null) {
-        const user = JSON.parse(userJson);
+  // const getUserStateLocally = async () => {
+  //   try {
+  //     const userJson = await AsyncStorage.getItem('user');
+  //     if (userJson !== null) {
+  //       const user = JSON.parse(userJson);
 
-        // let userSavedNumber = user.phoneNumber;
+  //       // let userSavedNumber = user.phoneNumber;
 
-        // if (userSavedNumber.startsWith('+91')) {
-        //   userSavedNumber = userSavedNumber.substring(3);
-        // }
+  //       // if (userSavedNumber.startsWith('+91')) {
+  //       //   userSavedNumber = userSavedNumber.substring(3);
+  //       // }
 
-        // setUserEmail(user.email);
-        // setUserName(user.name);
-        // setUserNumber(userSavedNumber);
-        // setUserDeliveryAddress(user.address);
-        setAdminToken(user.token);
-        console.log('showuser', user);
-      }
-    } catch (error) {
-      console.log('getuserlocallyerror', error);
-    }
-  };
+  //       // setUserEmail(user.email);
+  //       // setUserName(user.name);
+  //       // setUserNumber(userSavedNumber);
+  //       // setUserDeliveryAddress(user.address);
+  //       setAdminToken(user.token);
+  //       console.log('showuser', user);
+  //     }
+  //   } catch (error) {
+  //     console.log('getuserlocallyerror', error);
+  //   }
+  // };
 
   const productDetails = {
     name: productName,
