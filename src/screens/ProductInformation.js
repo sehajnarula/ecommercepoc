@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import Modal from 'react-native-modal';
 import * as progress from 'react-native-progress';
 import {
   SafeAreaProvider,
@@ -32,6 +33,7 @@ import QuantityMinus from '../../assets/images/quantityminusicon.svg';
 import QuantityPlus from '../../assets/images/quantityplusicon.svg';
 import SaveMoreWithBulk from '../../assets/images/savemorewithbulkicon.svg';
 import SearchIcon from '../../assets/images/searchinproductinfo.svg';
+import CartAnimation from '../components/CartAnimation';
 import MoreFromBrandFlatList from '../components/MoreFromBrandFlatList';
 import { fontFamilies } from '../constants/fonts';
 import { addItemsInCart } from '../redu/actions/CartActions';
@@ -74,6 +76,8 @@ const ProductInformation = ({ route }) => {
   const reducedNumber = originalPriceNumber - reducedPriceNumber;
   const [state, dispatch] = useReducer(reducer, { count: 0 });
   const [loading, setLoading] = useState(false);
+  const [showAddProductAnimation, setAddProductAnimation] = useState(false);
+  const productAnimationMessage = `Product Added To Cart`;
 
   const addInCartBtn = async () => {
     setLoading(true);
@@ -88,13 +92,7 @@ const ProductInformation = ({ route }) => {
         ),
       );
       setLoading(false);
-      Toast.show({
-        type: 'success',
-        text1: 'Added To Cart.',
-        autoHide: true,
-        position: 'bottom',
-        visibilityTime: 3000,
-      });
+      setAddProductAnimation(true);
     } else {
       setLoading(false);
       Toast.show({
@@ -131,6 +129,24 @@ const ProductInformation = ({ route }) => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1, backgroundColor: '#0E0E0E' }}>
+        {showAddProductAnimation && (
+          <Modal
+            isVisible={true}
+            onBackdropPress={() => setAddProductAnimation(false)}
+            animationIn="slideInUp"
+            animationOut="slideOutDown"
+            backdropTransitionOutTiming={0}
+            useNativeDriver
+            hideModalContentWhileAnimating
+            style={{ margin: 0, justifyContent: 'center' }}
+          >
+            <CartAnimation
+              onCompletion={() => setAddProductAnimation(false)}
+              message={productAnimationMessage}
+            />
+          </Modal>
+        )}
+
         <StatusBar backgroundColor="#171717" />
         {loading && (
           <View style={ProductInfoStyle.progressLoaderOverlayBg}>
@@ -1081,6 +1097,7 @@ const ProductInformation = ({ route }) => {
                   style={{
                     color: '#000000',
                     fontSize: 14,
+                    includeFontPadding: false,
                     fontFamily: fontFamilies.INTER.bold,
                   }}
                 >
