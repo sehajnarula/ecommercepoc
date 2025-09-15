@@ -29,7 +29,7 @@ import {
 
 const Login = () => {
   const navigation = useNavigation();
-  const [passwordVisibility, setPasswordVisibility] = useState(false);
+  const [passwordVisibility, setPasswordVisibility] = useState(true);
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const dispatched = useDispatch();
@@ -276,11 +276,7 @@ const Login = () => {
                   }}
                   activeOpacity={1}
                   onPress={() => {
-                    if (passwordVisibility) {
-                      setPasswordVisibility(false);
-                    } else {
-                      setPasswordVisibility(true);
-                    }
+                    setPasswordVisibility(!passwordVisibility);
                   }}
                 >
                   {passwordVisibility ? (

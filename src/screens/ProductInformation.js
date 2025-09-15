@@ -1139,9 +1139,6 @@ const ProductInformation = ({ route }) => {
                 borderColor: '#F0DCBC',
                 padding: 10,
               }}
-              onPress={() => {
-                setOrderPlacedAnimation(true);
-              }}
             >
               <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                 <Text

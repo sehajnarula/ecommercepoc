@@ -1,7 +1,14 @@
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Modal from 'react-native-modal';
 import * as progress from 'react-native-progress';
 import {
@@ -35,6 +42,36 @@ const AddProducts = () => {
   const [showAddProductAnimation, setAddProductAnimation] = useState(false);
   const navigation = useNavigation();
   const productAnimationMessage = `Product Added Successfully`;
+  const [tagsTextInput, setTagsTextInput] = useState(['']);
+  const deviceWidth = Dimensions.get('window').width;
+
+  // const incrementTextInputTagsArray = (text, index) => {
+  //   const updatedTagsArray = [...tagsTextInput];
+  //   updatedTagsArray[index] = text;
+
+  //   if (index === tagsTextInput.length - 1 && text.trim() !== '') {
+  //     updatedTagsArray.push('');
+  //   }
+
+  //   setTagsTextInput(updatedTagsArray);
+  // };
+
+  const incrementTextInputTagsArray = (text, index) => {
+    const updatedTagsArray = [...tagsTextInput];
+    updatedTagsArray[index] = text;
+
+    if (index === tagsTextInput.length - 1 && text.trim() !== '') {
+      updatedTagsArray.push('');
+    } else if (
+      text.trim() === '' &&
+      index > 0 &&
+      updatedTagsArray[index + 1] === ''
+    ) {
+      updatedTagsArray.splice(index, 1);
+    }
+
+    setTagsTextInput(updatedTagsArray);
+  };
 
   // const getUserStateLocally = async () => {
   //   try {
@@ -200,7 +237,48 @@ const AddProducts = () => {
             </View>
           </View>
         )}
+        <View style={{ flex: 1, paddingHorizontal: 16, paddingVertical: 16 }}>
+          {tagsTextInput.map((tag, index) => (
+            <TextInput
+              style={{
+                width: deviceWidth * 0.9,
+                paddingLeft: 10,
+                paddingRight: 10,
+                paddingBottom: 10,
+                marginTop: 10,
+                color: '#FFFFFF8F',
+                borderColor: '#ffffff',
+                borderWidth: 1,
+                fontFamily: fontFamilies.INTER.regular,
+                includeFontPadding: false,
+              }}
+              key={index}
+              placeholder="Product Tag"
+              placeholderTextColor={'#FFFFFF8F'}
+              autoCorrect={false}
+              autoCapitalize="none"
+              onChangeText={text => incrementTextInputTagsArray(text, index)}
+              value={tag}
+            ></TextInput>
+          ))}
 
+          <TouchableOpacity
+            activeOpacity={0.9}
+            style={{ alignItems: 'center' }}
+          >
+            <Text
+              style={{
+                textAlign: 'center',
+                color: colors.black,
+                fontSize: 16,
+                fontFamily: fontFamilies.INTER.medium,
+                includeFontPadding: false,
+              }}
+            >
+              {'Add Tag'}
+            </Text>
+          </TouchableOpacity>
+        </View>
         <View
           style={{ flexDirection: 'column', marginBottom: insets.bottom + 10 }}
         >
