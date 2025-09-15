@@ -6,11 +6,12 @@ import { fontFamilies } from '../constants/fonts';
 const ProductAnimation = props => {
   const [animationText, setAnimationText] = useState(false);
   const [isLowEnd, setIsLowEnd] = useState(false);
-  const productFadeAnim = useRef(new Animated.Value(0)).current;
-  const messageFadeAnim = useRef(new Animated.Value(0)).current;
+  const cartFadeAnim = useRef(new Animated.Value(0)).current;
+  const [letters, setLetters] = useState([]);
+  const animatedValues = useRef([]);
 
   const triggerAnimations = () => {
-    Animated.timing(productFadeAnim, {
+    Animated.timing(cartFadeAnim, {
       toValue: 1,
       duration: 700,
       useNativeDriver: true,
@@ -18,39 +19,41 @@ const ProductAnimation = props => {
 
     setTimeout(() => {
       setAnimationText(true);
-      Animated.timing(messageFadeAnim, {
-        toValue: 1,
-        duration: 700,
-        useNativeDriver: true,
-      }).start();
+
+      if (props.message) {
+        const splitLetters = props.message.split('');
+        setLetters(splitLetters);
+        animatedValues.current = splitLetters.map(() => new Animated.Value(0));
+
+        const animations = splitLetters.map((_, i) =>
+          Animated.timing(animatedValues.current[i], {
+            toValue: 1,
+            duration: 120,
+            delay: i * 40,
+            useNativeDriver: true,
+          }),
+        );
+
+        Animated.stagger(30, animations).start();
+      }
     }, 500);
   };
 
   const onLottieFinish = () => {
     triggerAnimations();
-    if (props.onCompletion) {
+
+    if (props.onCompletion && props.message) {
+      const messageLength = props.message.length;
+      const totalTime =
+        messageLength * 40 + // staggered delay per char
+        120 + // fade duration of last char
+        1500; // pause before hiding
+
       setTimeout(() => {
         props.onCompletion();
-      }, 5000);
+      }, totalTime);
     }
   };
-
-  // useEffect(() => {
-  //   let fallbackTimer;
-  //   if (Platform.OS === 'android') {
-  //     fallbackTimer = setTimeout(() => {
-  //       if (!animationText) {
-  //         triggerAnimations();
-  //         if (props.onCompletion) {
-  //           props.onCompletion();
-  //         }
-  //       }
-  //     }, 5000);
-  //   }
-  //   return () => {
-  //     if (fallbackTimer) clearTimeout(fallbackTimer);
-  //   };
-  // }, []);
 
   useEffect(() => {
     if (Platform.OS === 'android') {
@@ -59,26 +62,11 @@ const ProductAnimation = props => {
         setIsLowEnd(true);
       }
     }
-
-    let fallbackTimer;
-    if (Platform.OS === 'android') {
-      fallbackTimer = setTimeout(() => {
-        if (!animationText) {
-          triggerAnimations();
-          if (props.onCompletion) {
-            props.onCompletion();
-          }
-        }
-      }, 5000);
-    }
-    return () => {
-      if (fallbackTimer) clearTimeout(fallbackTimer);
-    };
   }, []);
 
   return (
-    <View style={productAnimationStyle.productAnimationOverlayBg}>
-      <View style={productAnimationStyle.productLottieAnimationbg}>
+    <View style={cartAnimationStyle.cartAnimationOverlayBg}>
+      <View style={cartAnimationStyle.cartLottieAnimationBg}>
         {isLowEnd ? (
           <Image
             source={require('../../assets/images/addproductanimation.gif')}
@@ -97,26 +85,36 @@ const ProductAnimation = props => {
       </View>
 
       {animationText && (
-        <Animated.Text
+        <View
           style={{
-            textAlign: 'center',
-            marginTop: 4,
-            color: '#FFFFFF',
-            fontFamily: fontFamilies.INTER.regular,
-            alignSelf: 'center',
-            fontSize: 18,
-            opacity: messageFadeAnim,
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
           }}
         >
-          {props.message}
-        </Animated.Text>
+          {letters.map((letter, i) => (
+            <Animated.Text
+              key={`${letter}-${i}`}
+              style={{
+                textAlign: 'center',
+                marginTop: 4,
+                color: '#FFFFFF',
+                fontFamily: fontFamilies.INTER.bold,
+                fontSize: 18,
+                opacity: animatedValues.current[i] || 0,
+              }}
+            >
+              {letter}
+            </Animated.Text>
+          ))}
+        </View>
       )}
     </View>
   );
 };
 
-const productAnimationStyle = StyleSheet.create({
-  productAnimationOverlayBg: {
+const cartAnimationStyle = StyleSheet.create({
+  cartAnimationOverlayBg: {
     position: 'absolute',
     top: 0,
     bottom: 0,
@@ -126,7 +124,7 @@ const productAnimationStyle = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'transparent',
   },
-  productLottieAnimationbg: {
+  cartLottieAnimationBg: {
     justifyContent: 'center',
     alignItems: 'center',
     padding: 5,

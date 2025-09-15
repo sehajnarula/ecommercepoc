@@ -7,8 +7,9 @@ const CartAnimation = props => {
   const [animationText, setAnimationText] = useState(false);
   const [isLowEnd, setIsLowEnd] = useState(false);
   const cartFadeAnim = useRef(new Animated.Value(0)).current;
-  const messageFadeAnim = useRef(new Animated.Value(0)).current;
-  const thisLottieRef = useRef(null);
+  const [letters, setLetters] = useState([]);
+  const animatedValues = useRef([]);
+
   const triggerAnimations = () => {
     Animated.timing(cartFadeAnim, {
       toValue: 1,
@@ -18,11 +19,22 @@ const CartAnimation = props => {
 
     setTimeout(() => {
       setAnimationText(true);
-      Animated.timing(messageFadeAnim, {
-        toValue: 1,
-        duration: 700,
-        useNativeDriver: true,
-      }).start();
+
+      if (props.message) {
+        const splitLetters = props.message.split('');
+        setLetters(splitLetters);
+        animatedValues.current = splitLetters.map(() => new Animated.Value(0));
+
+        const animations = splitLetters.map((_, i) =>
+          Animated.timing(animatedValues.current[i], {
+            toValue: 1,
+            duration: 120,
+            delay: i * 25,
+            useNativeDriver: true,
+          }),
+        );
+        Animated.stagger(30, animations).start();
+      }
     }, 500);
   };
 
@@ -74,29 +86,35 @@ const CartAnimation = props => {
             autoPlay
             loop={false}
             style={{ width: 150, height: 150 }}
-            onAnimationFinish={() => {
-              // thisLottieRef.current?.play(0, 50);
-              onLottieFinish();
-            }}
-            // ref={thisLottieRef}
+            onAnimationFinish={onLottieFinish}
           />
         )}
       </View>
 
       {animationText && (
-        <Animated.Text
+        <View
           style={{
-            textAlign: 'center',
-            marginTop: 4,
-            color: '#FFFFFF',
-            fontFamily: fontFamilies.INTER.bold,
-            alignSelf: 'center',
-            fontSize: 18,
-            opacity: messageFadeAnim,
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
           }}
         >
-          {props.message}
-        </Animated.Text>
+          {letters.map((letter, i) => (
+            <Animated.Text
+              key={`${letter}-${i}`}
+              style={{
+                textAlign: 'center',
+                marginTop: 4,
+                color: '#FFFFFF',
+                fontFamily: fontFamilies.INTER.bold,
+                fontSize: 18,
+                opacity: animatedValues.current[i] || 0,
+              }}
+            >
+              {letter}
+            </Animated.Text>
+          ))}
+        </View>
       )}
     </View>
   );
