@@ -35,6 +35,7 @@ import SaveMoreWithBulk from '../../assets/images/savemorewithbulkicon.svg';
 import SearchIcon from '../../assets/images/searchinproductinfo.svg';
 import CartAnimation from '../components/CartAnimation';
 import MoreFromBrandFlatList from '../components/MoreFromBrandFlatList';
+import OrderPlacedAnimation from '../components/OrderPlacedAnimation';
 import { fontFamilies } from '../constants/fonts';
 import { addItemsInCart } from '../redu/actions/CartActions';
 
@@ -77,6 +78,7 @@ const ProductInformation = ({ route }) => {
   const [state, dispatch] = useReducer(reducer, { count: 0 });
   const [loading, setLoading] = useState(false);
   const [showAddProductAnimation, setAddProductAnimation] = useState(false);
+  const [showOrderPlacedAnimation, setOrderPlacedAnimation] = useState(false);
   const productAnimationMessage = `Product Added To Cart`;
 
   const addInCartBtn = async () => {
@@ -142,6 +144,24 @@ const ProductInformation = ({ route }) => {
           >
             <CartAnimation
               onCompletion={() => setAddProductAnimation(false)}
+              message={productAnimationMessage}
+            />
+          </Modal>
+        )}
+
+        {showOrderPlacedAnimation && (
+          <Modal
+            isVisible={true}
+            onBackdropPress={() => setOrderPlacedAnimation(false)}
+            animationIn="slideInUp"
+            animationOut="slideOutDown"
+            backdropTransitionOutTiming={0}
+            useNativeDriver
+            hideModalContentWhileAnimating
+            style={{ margin: 0, justifyContent: 'center' }}
+          >
+            <OrderPlacedAnimation
+              onCompletion={() => setOrderPlacedAnimation(false)}
               message={productAnimationMessage}
             />
           </Modal>
@@ -1118,6 +1138,9 @@ const ProductInformation = ({ route }) => {
                 borderWidth: 1,
                 borderColor: '#F0DCBC',
                 padding: 10,
+              }}
+              onPress={() => {
+                setOrderPlacedAnimation(true);
               }}
             >
               <View style={{ justifyContent: 'center', alignItems: 'center' }}>

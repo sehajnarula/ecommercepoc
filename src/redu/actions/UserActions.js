@@ -3,6 +3,7 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import axios from 'axios';
+import keys from '../../constants/keys';
 
 export const SIGNIN_REQUEST = 'user/SIGNIN_REQUEST';
 export const SIGNIN_SUCCESS = 'user/SIGNIN_SUCCESS';
@@ -21,8 +22,6 @@ export const GOOGLE_SIGNIN_SUCCESS = 'user/GOOGLE_SIGNIN_SUCCESS';
 export const GOOGLE_SIGNIN_FAILURE = 'user/GOOGLE_SIGNIN_FAILURE';
 
 export const SIGNOUT = 'user/SIGNOUT';
-
-const baseUrl = `https://shoping-sk37.onrender.com/`;
 
 const saveUserLocally = async user => {
   try {
@@ -109,7 +108,7 @@ const signOutAction = () => ({ type: SIGNOUT });
 export const userSignIn = (email, password) => async dispatch => {
   dispatch(signInRequest());
   try {
-    const response = await axios.post(`${baseUrl}api/auth/login`, {
+    const response = await axios.post(`${keys.appApiBaseUrl}api/auth/login`, {
       email: email,
       password: password,
     });
@@ -138,13 +137,16 @@ export const userSignUp =
   async dispatch => {
     dispatch(signUpRequest());
     try {
-      const response = await axios.post(`${baseUrl}api/auth/register`, {
-        name: userName,
-        email: email,
-        password: password,
-        phone: phoneNumber,
-        address: deliveryAddress,
-      });
+      const response = await axios.post(
+        `${keys.appApiBaseUrl}api/auth/register`,
+        {
+          name: userName,
+          email: email,
+          password: password,
+          phone: phoneNumber,
+          address: deliveryAddress,
+        },
+      );
 
       console.log('userregisterapiresponse', response);
 
@@ -170,7 +172,7 @@ export const userUpdate =
     dispatch(updateRequest());
     try {
       const response = await axios.put(
-        `${baseUrl}api/auth/profile`,
+        `${keys.appApiBaseUrl}api/auth/profile`,
         {
           name: userName,
           phone: userPhoneNumber,

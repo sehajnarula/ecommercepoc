@@ -3,14 +3,14 @@ import { useEffect, useRef, useState } from 'react';
 import { Animated, Image, Platform, StyleSheet, View } from 'react-native';
 import { fontFamilies } from '../constants/fonts';
 
-const ProductAnimation = props => {
+const OrderPlacedAnimation = props => {
   const [animationText, setAnimationText] = useState(false);
   const [isLowEnd, setIsLowEnd] = useState(false);
-  const productFadeAnim = useRef(new Animated.Value(0)).current;
+  const orderPlacedFadeAnim = useRef(new Animated.Value(0)).current;
   const messageFadeAnim = useRef(new Animated.Value(0)).current;
-
+  const thisLottieRef = useRef(null);
   const triggerAnimations = () => {
-    Animated.timing(productFadeAnim, {
+    Animated.timing(orderPlacedFadeAnim, {
       toValue: 1,
       duration: 700,
       useNativeDriver: true,
@@ -34,23 +34,6 @@ const ProductAnimation = props => {
       }, 5000);
     }
   };
-
-  // useEffect(() => {
-  //   let fallbackTimer;
-  //   if (Platform.OS === 'android') {
-  //     fallbackTimer = setTimeout(() => {
-  //       if (!animationText) {
-  //         triggerAnimations();
-  //         if (props.onCompletion) {
-  //           props.onCompletion();
-  //         }
-  //       }
-  //     }, 5000);
-  //   }
-  //   return () => {
-  //     if (fallbackTimer) clearTimeout(fallbackTimer);
-  //   };
-  // }, []);
 
   useEffect(() => {
     if (Platform.OS === 'android') {
@@ -77,21 +60,25 @@ const ProductAnimation = props => {
   }, []);
 
   return (
-    <View style={productAnimationStyle.productAnimationOverlayBg}>
-      <View style={productAnimationStyle.productLottieAnimationbg}>
+    <View style={orderPlacedAnimationStyle.orderPlacedAnimationOverlayBg}>
+      <View style={orderPlacedAnimationStyle.orderPlacedLottieAnimationbg}>
         {isLowEnd ? (
           <Image
-            source={require('../../assets/images/addproductanimation.gif')}
+            source={require('../../assets/images/orderplacedanimation.gif')}
             style={{ width: 150, height: 150 }}
             resizeMode="contain"
           />
         ) : (
           <LottieView
-            source={require('../../assets/animations/addproductanimationllottie.json')}
+            source={require('../../assets/animations/orderplacedlottie.json')}
             autoPlay
             loop={false}
             style={{ width: 150, height: 150 }}
-            onAnimationFinish={onLottieFinish}
+            onAnimationFinish={() => {
+              // thisLottieRef.current?.play(0, 50);
+              onLottieFinish();
+            }}
+            // ref={thisLottieRef}
           />
         )}
       </View>
@@ -102,7 +89,7 @@ const ProductAnimation = props => {
             textAlign: 'center',
             marginTop: 4,
             color: '#FFFFFF',
-            fontFamily: fontFamilies.INTER.regular,
+            fontFamily: fontFamilies.INTER.bold,
             alignSelf: 'center',
             fontSize: 18,
             opacity: messageFadeAnim,
@@ -115,8 +102,8 @@ const ProductAnimation = props => {
   );
 };
 
-const productAnimationStyle = StyleSheet.create({
-  productAnimationOverlayBg: {
+const orderPlacedAnimationStyle = StyleSheet.create({
+  orderPlacedAnimationOverlayBg: {
     position: 'absolute',
     top: 0,
     bottom: 0,
@@ -126,11 +113,11 @@ const productAnimationStyle = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'transparent',
   },
-  productLottieAnimationbg: {
+  orderPlacedLottieAnimationbg: {
     justifyContent: 'center',
     alignItems: 'center',
     padding: 5,
   },
 });
 
-export default ProductAnimation;
+export default OrderPlacedAnimation;

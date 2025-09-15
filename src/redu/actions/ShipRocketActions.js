@@ -74,10 +74,13 @@ const shiprocketAddOrderFailure = error => ({
 export const shiprocketAuthCall = () => async dispatch => {
   dispatch(shiprocketAuthRequest());
   try {
-    const response = await axios.post(`${baseUrl}auth/login`, {
-      email: keys.shipRocketAuthEmail,
-      password: keys.shipRocketAuthPassword,
-    });
+    const response = await axios.post(
+      `${keys.shiprocketApiBaseUrl}auth/login`,
+      {
+        email: keys.shipRocketAuthEmail,
+        password: keys.shipRocketAuthPassword,
+      },
+    );
     const authToken = response.data.token;
     dispatch(shiprocketAuthSuccess(authToken));
     console.log('showtokeninshiprocketapi', authToken);
@@ -90,11 +93,15 @@ export const shiprocketAuthCall = () => async dispatch => {
 export const shiprocketAddOrderApiCall = (token, order) => async dispatch => {
   dispatch(shiprocketAddOrderRequest());
   try {
-    const response = await axios.post(`${baseUrl}orders/create/adhoc`, order, {
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const response = await axios.post(
+      `${keys.shiprocketApiBaseUrl}orders/create/adhoc`,
+      order,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
 
     const responseData = response.data;
     dispatch(shiprocketAddOrderSuccess(responseData));

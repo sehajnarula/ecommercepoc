@@ -28,6 +28,7 @@ import HorizontalCategoriesHome from '../components/HorizontalCategoriesHome';
 import ShowCategoryProductsOnHome from '../components/ShowCategoryProductsOnHome';
 import { closeApp } from '../constants/commonfunctions';
 import { fontFamilies } from '../constants/fonts';
+import keys from '../constants/keys';
 import { shiprocketAuthCall } from '../redu/actions/ShipRocketActions';
 import { userSignOut } from '../redu/actions/UserActions';
 
@@ -225,6 +226,7 @@ const Home = ({ setShowTab }) => {
       );
       getTokenShipRocketOnScreen();
       requestLocationPermissions();
+      console.log('showbaseurlinkeysfile', keys.appApiBaseUrl);
     }
     return () => {
       if (backHandlerCloseScreen) {

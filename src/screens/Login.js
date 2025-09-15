@@ -315,7 +315,7 @@ const Login = () => {
                 padding: 10,
               }}
               onPress={() => {
-                userFirebaseSignIn();
+                loginButtonPress();
               }}
             >
               <Text

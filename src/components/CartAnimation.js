@@ -60,8 +60,8 @@ const CartAnimation = props => {
   }, []);
 
   return (
-    <View style={cartAnimationStyle.productAnimationOverlayBg}>
-      <View style={cartAnimationStyle.productLottieAnimationbg}>
+    <View style={cartAnimationStyle.cartAnimationOverlayBg}>
+      <View style={cartAnimationStyle.cartLottieAnimationBg}>
         {isLowEnd ? (
           <Image
             source={require('../../assets/images/addtocartanimation.gif')}
@@ -73,7 +73,7 @@ const CartAnimation = props => {
             source={require('../../assets/animations/addtocartlottie.json')}
             autoPlay
             loop={false}
-            style={{ width: 250, height: 250 }}
+            style={{ width: 150, height: 150 }}
             onAnimationFinish={() => {
               // thisLottieRef.current?.play(0, 50);
               onLottieFinish();
@@ -103,7 +103,7 @@ const CartAnimation = props => {
 };
 
 const cartAnimationStyle = StyleSheet.create({
-  productAnimationOverlayBg: {
+  cartAnimationOverlayBg: {
     position: 'absolute',
     top: 0,
     bottom: 0,
@@ -113,7 +113,7 @@ const cartAnimationStyle = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'transparent',
   },
-  productLottieAnimationbg: {
+  cartLottieAnimationBg: {
     justifyContent: 'center',
     alignItems: 'center',
     padding: 5,
