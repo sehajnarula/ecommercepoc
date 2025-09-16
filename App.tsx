@@ -18,6 +18,7 @@ import Store from '../ecommercedemo/src/redu/store/Store';
 import AddProducts from '../ecommercedemo/src/screens/AddProducts';
 import Cart from '../ecommercedemo/src/screens/Cart';
 import Login from '../ecommercedemo/src/screens/Login';
+import MapScreen from '../ecommercedemo/src/screens/MapScreen';
 import ProductInformation from '../ecommercedemo/src/screens/ProductInformation';
 import Register from '../ecommercedemo/src/screens/Register';
 import Splash from '../ecommercedemo/src/screens/Splash';
@@ -52,6 +53,7 @@ function App() {
           <Stack.Screen name="Cart" component={Cart} />
           <Stack.Screen name="ProductInfo" component={ProductInformation} />
           <Stack.Screen name="AddProductScreen" component={AddProducts} />
+          <Stack.Screen name="ShowMaps" component={MapScreen} />
         </Stack.Navigator>
         <Toast />
       </NavigationContainer>
