@@ -129,7 +129,7 @@ const MapScreen = () => {
                 alignItems: 'center',
               }}
             >
-              <Text>{`Loading Maps`}</Text>
+              <Text>{`Loading Maps...`}</Text>
             </View>
           )}
         </ScrollView>
