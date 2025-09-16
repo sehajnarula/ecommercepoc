@@ -1,6 +1,6 @@
 import MapboxGL from '@rnmapbox/maps';
 import React, { useEffect, useState } from 'react';
-import { Platform, ScrollView, Text, View } from 'react-native';
+import { Platform, ScrollView, StatusBar, Text, View } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -104,7 +104,8 @@ const MapScreen = () => {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={{ flex: 1, backgroundColor: 'red' }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#0E0E0E' }}>
+        <StatusBar backgroundColor="#171717" />
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
           {deviceLocation.latitude && deviceLocation.longitude ? (
             <MapboxGL.MapView style={{ flex: 1 }}>
