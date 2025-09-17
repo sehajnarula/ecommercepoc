@@ -17,6 +17,7 @@ import Tabs from '../ecommercedemo/src/navigation/tabs/Tabs';
 import Store from '../ecommercedemo/src/redu/store/Store';
 import AddProducts from '../ecommercedemo/src/screens/AddProducts';
 import Cart from '../ecommercedemo/src/screens/Cart';
+import GetUserProfile from '../ecommercedemo/src/screens/GetUserProfile';
 import Login from '../ecommercedemo/src/screens/Login';
 import MapScreen from '../ecommercedemo/src/screens/MapScreen';
 import ProductInformation from '../ecommercedemo/src/screens/ProductInformation';
@@ -54,6 +55,7 @@ function App() {
           <Stack.Screen name="ProductInfo" component={ProductInformation} />
           <Stack.Screen name="AddProductScreen" component={AddProducts} />
           <Stack.Screen name="ShowMaps" component={MapScreen} />
+          <Stack.Screen name="GetUserProfileByApi" component={GetUserProfile} />
         </Stack.Navigator>
         <Toast />
       </NavigationContainer>

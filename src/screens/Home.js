@@ -465,6 +465,7 @@ const Home = ({ setShowTab }) => {
                   style={{ marginRight: 5 }}
                   onPress={() => {
                     navigation.navigate('UserScreen');
+                    // navigation.navigate('GetUserProfileByApi');
                   }}
                 >
                   <UserIcon width={32} height={32} />

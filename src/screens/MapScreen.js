@@ -59,7 +59,6 @@ const MapScreen = () => {
           };
         }
       } else if (Platform.OS === 'ios') {
-        // iOS permission check
         let whenInUse = await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
         if (whenInUse !== RESULTS.GRANTED) {
           whenInUse = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
