@@ -3,6 +3,9 @@ import React, { useEffect, useState } from 'react';
 import {
   BackHandler,
   Image,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -161,275 +164,287 @@ const Login = () => {
             </View>
           </View>
         )}
-        <View style={{ flex: 1 }}>
-          <Text
-            style={{
-              fontFamily: fontFamilies.INTER.bold,
-              color: '#FFFFFF',
-              fontSize: 36,
-              marginLeft: 12,
-              includeFontPadding: false,
-              marginTop: 12,
-            }}
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+        >
+          <ScrollView
+            contentContainerStyle={{ flexGrow: 1 }}
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
           >
-            {'Welcome'}
-          </Text>
-          <View style={{ top: 100 }}>
-            <Text
-              style={{
-                color: '#FFFFFF',
-                fontFamily: fontFamilies.INTER.bold,
-                includeFontPadding: false,
-                fontSize: 16,
-                marginLeft: 12,
-              }}
-            >
-              {'Email'}
-            </Text>
-            <View
-              style={{
-                paddingBottom: 10,
-                borderRadius: 10,
-                backgroundColor: '#323130',
-                marginHorizontal: 12,
-                marginTop: 12,
-              }}
-            >
-              <View style={{ flexDirection: 'row' }}>
-                <Image
-                  width={24}
-                  height={24}
-                  source={require('../../assets/images/emailsmall.png')}
-                  tintColor={'#FFFFFF8F'}
-                  marginTop={18}
-                  marginLeft={5}
-                />
-                <TextInput
-                  onChangeText={text => setUserEmail(text.trim())}
-                  style={{
-                    color: '#FFFFFF8F',
-                    fontFamily: fontFamilies.INTER.regular,
-                    includeFontPadding: false,
-                    marginTop: 12,
-                    marginLeft: 5,
-                  }}
-                  placeholder="Enter Email"
-                  placeholderTextColor={'#FFFFFF8F'}
-                  value={userEmail}
-                  autoCorrect={false}
-                  autoCapitalize="none"
-                />
-              </View>
-            </View>
-            <Text
-              style={{
-                color: '#FFFFFF',
-                fontFamily: fontFamilies.INTER.bold,
-                includeFontPadding: false,
-                fontSize: 16,
-                marginLeft: 12,
-                marginTop: 20,
-              }}
-            >
-              {'Password'}
-            </Text>
-            <View
-              style={{
-                paddingBottom: 10,
-                borderRadius: 10,
-                backgroundColor: '#323130',
-                marginHorizontal: 12,
-                marginTop: 12,
-              }}
-            >
-              <View style={{ flexDirection: 'row' }}>
-                <Image
-                  width={24}
-                  height={24}
-                  source={require('../../assets/images/passwordlock.png')}
-                  tintColor={'#FFFFFF8F'}
-                  marginTop={17}
-                  marginLeft={8}
-                />
-                <TextInput
-                  onChangeText={text => setUserPassword(text.trim())}
-                  value={userPassword}
-                  style={{
-                    color: '#FFFFFF8F',
-                    fontFamily: fontFamilies.INTER.regular,
-                    includeFontPadding: false,
-                    marginTop: 12,
-                    marginLeft: 10,
-                  }}
-                  placeholder="Enter Password"
-                  placeholderTextColor={'#FFFFFF8F'}
-                  autoCorrect={false}
-                  secureTextEntry={passwordVisibility}
-                  autoCapitalize="none"
-                />
-                <TouchableOpacity
-                  style={{
-                    position: 'absolute',
-                    right: 0,
-                    marginTop: 20,
-                    marginRight: 10,
-                  }}
-                  activeOpacity={1}
-                  onPress={() => {
-                    setPasswordVisibility(!passwordVisibility);
-                  }}
-                >
-                  {passwordVisibility ? (
-                    <VisibilityOff width={20} height={20} />
-                  ) : (
-                    <VisibilityOn width={20} height={20} />
-                  )}
-                </TouchableOpacity>
-              </View>
-            </View>
-            <Text
-              style={{
-                color: '#FFFFFF',
-                fontFamily: fontFamilies.INTER.medium,
-                fontSize: 12,
-                marginTop: 12,
-                textAlign: 'right',
-                marginEnd: 12,
-              }}
-            >
-              {'Forget Password?'}
-            </Text>
-            <TouchableOpacity
-              activeOpacity={0.9}
-              style={{
-                marginTop: 20,
-                backgroundColor: '#F0DCBC',
-                marginHorizontal: 12,
-                borderRadius: 4,
-                justifyContent: 'center',
-                alignItems: 'center',
-                padding: 10,
-              }}
-              onPress={() => {
-                loginButtonPress();
-              }}
-            >
+            <View style={{ flex: 1 }}>
               <Text
                 style={{
-                  textAlign: 'center',
-                  color: '#000000',
-                  fontSize: 16,
-                  fontFamily: fontFamilies.INTER.medium,
-                  includeFontPadding: false,
-                }}
-              >
-                {'Login'}
-              </Text>
-            </TouchableOpacity>
-            <Text
-              style={{
-                color: '#FFFFFF',
-                fontFamily: fontFamilies.INTER.medium,
-                fontSize: 12,
-                marginTop: 12,
-                textAlign: 'center',
-              }}
-            >
-              {'Or'}
-            </Text>
-            <View
-              style={{
-                justifyContent: 'space-evenly',
-                alignItems: 'center',
-                flexDirection: 'row',
-                marginTop: 20,
-              }}
-            >
-              <TouchableOpacity
-                activeOpacity={1}
-                onPress={() => {
-                  googleSignInButtonPress();
-                }}
-              >
-                <View
-                  style={{
-                    padding: 14,
-                    justifyContent: 'center',
-                    width: 54,
-                    height: 54,
-                    borderRadius: 40,
-                    borderColor: '#FFFFFF8F',
-                    borderWidth: 1,
-                    backgroundColor: '#F0DCBC',
-                  }}
-                >
-                  <GoogleLogin width={24} height={24} />
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity activeOpacity={1}>
-                <View
-                  style={{
-                    padding: 14,
-                    justifyContent: 'center',
-                    width: 54,
-                    height: 54,
-                    borderRadius: 40,
-                    borderColor: '#FFFFFF8F',
-                    borderWidth: 1,
-                    backgroundColor: '#F0DCBC',
-                  }}
-                >
-                  <AppleLogin width={24} height={24} />
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity activeOpacity={1}>
-                <View
-                  style={{
-                    padding: 14,
-                    justifyContent: 'center',
-                    width: 54,
-                    height: 54,
-                    borderRadius: 40,
-                    borderColor: '#FFFFFF8F',
-                    borderWidth: 1,
-                    backgroundColor: '#F0DCBC',
-                  }}
-                >
-                  <FacebookLogin width={24} height={24} />
-                </View>
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginTop: 20,
-              }}
-            >
-              <Text
-                style={{
-                  color: '#FFFFFF',
-                  fontFamily: fontFamilies.INTER.regular,
-                  fontSize: 16,
-                }}
-              >
-                {"Don't Have An Account?"}
-              </Text>
-              <Text
-                style={{
-                  color: '#FFFFFF',
                   fontFamily: fontFamilies.INTER.bold,
-                  fontSize: 16,
-                  marginLeft: 6,
+                  color: '#FFFFFF',
+                  fontSize: 36,
+                  marginLeft: 12,
+                  includeFontPadding: false,
+                  marginTop: 12,
                 }}
-                onPress={() => navigation.navigate('RegisterScreen')}
               >
-                {'Sign Up'}
+                {'Welcome'}
               </Text>
+              <View style={{ top: 100 }}>
+                <Text
+                  style={{
+                    color: '#FFFFFF',
+                    fontFamily: fontFamilies.INTER.bold,
+                    includeFontPadding: false,
+                    fontSize: 16,
+                    marginLeft: 12,
+                  }}
+                >
+                  {'Email'}
+                </Text>
+                <View
+                  style={{
+                    paddingBottom: 10,
+                    borderRadius: 10,
+                    backgroundColor: '#323130',
+                    marginHorizontal: 12,
+                    marginTop: 12,
+                  }}
+                >
+                  <View style={{ flexDirection: 'row' }}>
+                    <Image
+                      width={24}
+                      height={24}
+                      source={require('../../assets/images/emailsmall.png')}
+                      tintColor={'#FFFFFF8F'}
+                      marginTop={18}
+                      marginLeft={5}
+                    />
+                    <TextInput
+                      onChangeText={text => setUserEmail(text.trim())}
+                      style={{
+                        color: '#FFFFFF8F',
+                        fontFamily: fontFamilies.INTER.regular,
+                        includeFontPadding: false,
+                        marginTop: 12,
+                        marginLeft: 5,
+                      }}
+                      placeholder="Enter Email"
+                      placeholderTextColor={'#FFFFFF8F'}
+                      value={userEmail}
+                      autoCorrect={false}
+                      autoCapitalize="none"
+                    />
+                  </View>
+                </View>
+                <Text
+                  style={{
+                    color: '#FFFFFF',
+                    fontFamily: fontFamilies.INTER.bold,
+                    includeFontPadding: false,
+                    fontSize: 16,
+                    marginLeft: 12,
+                    marginTop: 20,
+                  }}
+                >
+                  {'Password'}
+                </Text>
+                <View
+                  style={{
+                    paddingBottom: 10,
+                    borderRadius: 10,
+                    backgroundColor: '#323130',
+                    marginHorizontal: 12,
+                    marginTop: 12,
+                  }}
+                >
+                  <View style={{ flexDirection: 'row' }}>
+                    <Image
+                      width={24}
+                      height={24}
+                      source={require('../../assets/images/passwordlock.png')}
+                      tintColor={'#FFFFFF8F'}
+                      marginTop={17}
+                      marginLeft={8}
+                    />
+                    <TextInput
+                      onChangeText={text => setUserPassword(text.trim())}
+                      value={userPassword}
+                      style={{
+                        color: '#FFFFFF8F',
+                        fontFamily: fontFamilies.INTER.regular,
+                        includeFontPadding: false,
+                        marginTop: 12,
+                        marginLeft: 10,
+                      }}
+                      placeholder="Enter Password"
+                      placeholderTextColor={'#FFFFFF8F'}
+                      autoCorrect={false}
+                      secureTextEntry={passwordVisibility}
+                      autoCapitalize="none"
+                    />
+                    <TouchableOpacity
+                      style={{
+                        position: 'absolute',
+                        right: 0,
+                        marginTop: 20,
+                        marginRight: 10,
+                      }}
+                      activeOpacity={1}
+                      onPress={() => {
+                        setPasswordVisibility(!passwordVisibility);
+                      }}
+                    >
+                      {passwordVisibility ? (
+                        <VisibilityOff width={20} height={20} />
+                      ) : (
+                        <VisibilityOn width={20} height={20} />
+                      )}
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <Text
+                  style={{
+                    color: '#FFFFFF',
+                    fontFamily: fontFamilies.INTER.medium,
+                    fontSize: 12,
+                    marginTop: 12,
+                    textAlign: 'right',
+                    marginEnd: 12,
+                  }}
+                >
+                  {'Forget Password?'}
+                </Text>
+                <TouchableOpacity
+                  activeOpacity={0.9}
+                  style={{
+                    marginTop: 20,
+                    backgroundColor: '#F0DCBC',
+                    marginHorizontal: 12,
+                    borderRadius: 4,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    padding: 10,
+                  }}
+                  onPress={() => {
+                    loginButtonPress();
+                  }}
+                >
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      color: '#000000',
+                      fontSize: 16,
+                      fontFamily: fontFamilies.INTER.medium,
+                      includeFontPadding: false,
+                    }}
+                  >
+                    {'Login'}
+                  </Text>
+                </TouchableOpacity>
+                <Text
+                  style={{
+                    color: '#FFFFFF',
+                    fontFamily: fontFamilies.INTER.medium,
+                    fontSize: 12,
+                    marginTop: 12,
+                    textAlign: 'center',
+                  }}
+                >
+                  {'Or'}
+                </Text>
+                <View
+                  style={{
+                    justifyContent: 'space-evenly',
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    marginTop: 20,
+                  }}
+                >
+                  <TouchableOpacity
+                    activeOpacity={1}
+                    onPress={() => {
+                      googleSignInButtonPress();
+                    }}
+                  >
+                    <View
+                      style={{
+                        padding: 14,
+                        justifyContent: 'center',
+                        width: 54,
+                        height: 54,
+                        borderRadius: 40,
+                        borderColor: '#FFFFFF8F',
+                        borderWidth: 1,
+                        backgroundColor: '#F0DCBC',
+                      }}
+                    >
+                      <GoogleLogin width={24} height={24} />
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity activeOpacity={1}>
+                    <View
+                      style={{
+                        padding: 14,
+                        justifyContent: 'center',
+                        width: 54,
+                        height: 54,
+                        borderRadius: 40,
+                        borderColor: '#FFFFFF8F',
+                        borderWidth: 1,
+                        backgroundColor: '#F0DCBC',
+                      }}
+                    >
+                      <AppleLogin width={24} height={24} />
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity activeOpacity={1}>
+                    <View
+                      style={{
+                        padding: 14,
+                        justifyContent: 'center',
+                        width: 54,
+                        height: 54,
+                        borderRadius: 40,
+                        borderColor: '#FFFFFF8F',
+                        borderWidth: 1,
+                        backgroundColor: '#F0DCBC',
+                      }}
+                    >
+                      <FacebookLogin width={24} height={24} />
+                    </View>
+                  </TouchableOpacity>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginTop: 20,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: '#FFFFFF',
+                      fontFamily: fontFamilies.INTER.regular,
+                      fontSize: 16,
+                    }}
+                  >
+                    {"Don't Have An Account?"}
+                  </Text>
+                  <Text
+                    style={{
+                      color: '#FFFFFF',
+                      fontFamily: fontFamilies.INTER.bold,
+                      fontSize: 16,
+                      marginLeft: 6,
+                    }}
+                    onPress={() => navigation.navigate('RegisterScreen')}
+                  >
+                    {'Sign Up'}
+                  </Text>
+                </View>
+              </View>
             </View>
-          </View>
-        </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     </SafeAreaProvider>
   );
