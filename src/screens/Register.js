@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import {
   Image,
+  KeyboardAvoidingView,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -298,9 +299,18 @@ const Register = () => {
           </Text>
         </View>
 
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-          <View style={{ flex: 1, padding: 4 }}>
-            {/* <Text
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+        >
+          <ScrollView
+            contentContainerStyle={{ flexGrow: 1 }}
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+          >
+            <View style={{ flex: 1, padding: 4 }}>
+              {/* <Text
               style={{
                 fontFamily: fontFamilies.INTER.bold,
                 color: '#FFFFFF',
@@ -312,369 +322,371 @@ const Register = () => {
             >
               {'Sign Up'}
             </Text> */}
-            <Text
-              style={{
-                color: '#FFFFFF',
-                fontFamily: fontFamilies.INTER.bold,
-                includeFontPadding: false,
-                fontSize: 16,
-                marginLeft: 8,
-                marginTop: 20,
-              }}
-            >
-              {'Full Name'}
-            </Text>
-            <View
-              style={{
-                paddingBottom: 10,
-                borderRadius: 10,
-                backgroundColor: '#323130',
-                marginHorizontal: 8,
-                marginTop: 12,
-              }}
-            >
-              <View style={{ flexDirection: 'row' }}>
-                <Image
-                  width={24}
-                  height={24}
-                  source={require('../../assets/images/user.png')}
-                  tintColor={'#FFFFFF8F'}
-                  marginTop={17}
-                  marginLeft={5}
-                />
-                <TextInput
-                  onChangeText={text => setUserName(text.trim())}
-                  style={{
-                    color: '#FFFFFF8F',
-                    fontFamily: fontFamilies.INTER.regular,
-                    includeFontPadding: false,
-                    marginTop: 12,
-                    marginLeft: 5,
-                  }}
-                  placeholder="Enter Full Name"
-                  placeholderTextColor={'#FFFFFF8F'}
-                  value={userName}
-                  autoCorrect={false}
-                  autoCapitalize="none"
-                />
-              </View>
-            </View>
-            <Text
-              style={{
-                color: '#FFFFFF',
-                fontFamily: fontFamilies.INTER.bold,
-                includeFontPadding: false,
-                fontSize: 16,
-                marginLeft: 8,
-                marginTop: 12,
-              }}
-            >
-              {'Email'}
-            </Text>
-            <View
-              style={{
-                paddingBottom: 10,
-                borderRadius: 10,
-                backgroundColor: '#323130',
-                marginHorizontal: 8,
-                marginTop: 12,
-              }}
-            >
-              <View style={{ flexDirection: 'row' }}>
-                <Image
-                  width={24}
-                  height={24}
-                  source={require('../../assets/images/emailsmall.png')}
-                  tintColor={'#FFFFFF8F'}
-                  marginTop={18}
-                  marginLeft={5}
-                />
-                <TextInput
-                  onChangeText={text => setUserEmail(text.trim())}
-                  style={{
-                    color: '#FFFFFF8F',
-                    fontFamily: fontFamilies.INTER.regular,
-                    includeFontPadding: false,
-                    marginTop: 12,
-                    marginLeft: 5,
-                  }}
-                  placeholder="Enter Email"
-                  placeholderTextColor={'#FFFFFF8F'}
-                  value={userEmail}
-                  autoCorrect={false}
-                  autoCapitalize="none"
-                />
-              </View>
-            </View>
-
-            <Text
-              style={{
-                color: '#FFFFFF',
-                fontFamily: fontFamilies.INTER.bold,
-                includeFontPadding: false,
-                fontSize: 16,
-                marginLeft: 8,
-                marginTop: 12,
-              }}
-            >
-              {'Phone Number'}
-            </Text>
-            <View
-              style={{
-                paddingBottom: 10,
-                borderRadius: 10,
-                backgroundColor: '#323130',
-                marginHorizontal: 8,
-                marginTop: 12,
-              }}
-            >
-              <View style={{ flexDirection: 'row' }}>
-                <Image
-                  width={24}
-                  height={24}
-                  source={require('../../assets/images/phoneiconsmall.png')}
-                  tintColor={'#FFFFFF8F'}
-                  marginTop={17}
-                  marginLeft={5}
-                />
-                <TextInput
-                  onChangeText={text => setUserNumber(text.trim())}
-                  style={{
-                    color: '#FFFFFF8F',
-                    fontFamily: fontFamilies.INTER.regular,
-                    includeFontPadding: false,
-                    marginTop: 12,
-                    marginLeft: 5,
-                  }}
-                  placeholder="Enter Phone Number"
-                  placeholderTextColor={'#FFFFFF8F'}
-                  value={userNumber}
-                  maxLength={10}
-                  autoCorrect={false}
-                  autoCapitalize="none"
-                />
-              </View>
-            </View>
-
-            <Text
-              style={{
-                color: '#FFFFFF',
-                fontFamily: fontFamilies.INTER.bold,
-                includeFontPadding: false,
-                fontSize: 16,
-                marginLeft: 8,
-                marginTop: 12,
-              }}
-            >
-              {'Delivery Address'}
-            </Text>
-            <View
-              style={{
-                paddingBottom: 10,
-                borderRadius: 10,
-                backgroundColor: '#323130',
-                marginHorizontal: 8,
-                marginTop: 12,
-              }}
-            >
-              <View style={{ flexDirection: 'row' }}>
-                <Image
-                  width={24}
-                  height={24}
-                  source={require('../../assets/images/addresssmall.png')}
-                  tintColor={'#FFFFFF8F'}
-                  marginTop={17}
-                  marginLeft={5}
-                />
-                <TextInput
-                  onChangeText={text => setUserDeliveryAddress(text.trim())}
-                  style={{
-                    color: '#FFFFFF8F',
-                    fontFamily: fontFamilies.INTER.regular,
-                    includeFontPadding: false,
-                    marginTop: 12,
-                    marginLeft: 5,
-                  }}
-                  placeholder="Enter Delivery Address"
-                  placeholderTextColor={'#FFFFFF8F'}
-                  value={userDeliveryAddress}
-                  autoCorrect={false}
-                  multiline={true}
-                  autoCapitalize="none"
-                />
-              </View>
-            </View>
-
-            <Text
-              style={{
-                color: '#FFFFFF',
-                fontFamily: fontFamilies.INTER.bold,
-                includeFontPadding: false,
-                fontSize: 16,
-                marginLeft: 8,
-                marginTop: 20,
-              }}
-            >
-              {'Password'}
-            </Text>
-            <View
-              style={{
-                paddingBottom: 10,
-                borderRadius: 10,
-                backgroundColor: '#323130',
-                marginHorizontal: 8,
-                marginTop: 12,
-              }}
-            >
-              <View style={{ flexDirection: 'row' }}>
-                <Image
-                  width={24}
-                  height={24}
-                  source={require('../../assets/images/passwordlock.png')}
-                  tintColor={'#FFFFFF8F'}
-                  marginTop={17}
-                  marginLeft={8}
-                />
-                <TextInput
-                  onChangeText={text => setUserPassword(text.trim())}
-                  value={userPassword}
-                  style={{
-                    color: '#FFFFFF8F',
-                    fontFamily: fontFamilies.INTER.regular,
-                    includeFontPadding: false,
-                    marginTop: 12,
-                    marginLeft: 10,
-                  }}
-                  placeholder="Enter Password"
-                  placeholderTextColor={'#FFFFFF8F'}
-                  autoCorrect={false}
-                  secureTextEntry={passwordVisibility}
-                  autoCapitalize="none"
-                />
-                <TouchableOpacity
-                  style={{
-                    position: 'absolute',
-                    right: 0,
-                    marginTop: 20,
-                    marginRight: 10,
-                  }}
-                  activeOpacity={1}
-                  onPress={() => {
-                    if (passwordVisibility) {
-                      setPasswordVisibility(false);
-                    } else {
-                      setPasswordVisibility(true);
-                    }
-                  }}
-                >
-                  {passwordVisibility ? (
-                    <VisibilityOff width={20} height={20} />
-                  ) : (
-                    <VisibilityOn width={20} height={20} />
-                  )}
-                </TouchableOpacity>
-              </View>
-            </View>
-            <Text
-              style={{
-                color: '#FFFFFF',
-                fontFamily: fontFamilies.INTER.bold,
-                includeFontPadding: false,
-                fontSize: 16,
-                marginLeft: 8,
-                marginTop: 20,
-              }}
-            >
-              {'Retype Password'}
-            </Text>
-            <View
-              style={{
-                paddingBottom: 10,
-                borderRadius: 10,
-                backgroundColor: '#323130',
-                marginHorizontal: 8,
-                marginTop: 12,
-              }}
-            >
-              <View style={{ flexDirection: 'row' }}>
-                <Image
-                  width={24}
-                  height={24}
-                  source={require('../../assets/images/passwordlock.png')}
-                  tintColor={'#FFFFFF8F'}
-                  marginTop={17}
-                  marginLeft={8}
-                />
-                <TextInput
-                  onChangeText={text => setUserRePassword(text.trim())}
-                  value={userRePassword}
-                  style={{
-                    color: '#FFFFFF8F',
-                    fontFamily: fontFamilies.INTER.regular,
-                    includeFontPadding: false,
-                    marginTop: 12,
-                    marginLeft: 10,
-                  }}
-                  placeholder="Retype Password"
-                  placeholderTextColor={'#FFFFFF8F'}
-                  autoCorrect={false}
-                  secureTextEntry={rePasswordVisibility}
-                  autoCapitalize="none"
-                />
-                <TouchableOpacity
-                  style={{
-                    position: 'absolute',
-                    right: 0,
-                    marginTop: 20,
-                    marginRight: 10,
-                  }}
-                  activeOpacity={1}
-                  onPress={() => {
-                    if (rePasswordVisibility) {
-                      setRePasswordVisibility(false);
-                    } else {
-                      setRePasswordVisibility(true);
-                    }
-                  }}
-                >
-                  {rePasswordVisibility ? (
-                    <VisibilityOff width={20} height={20} />
-                  ) : (
-                    <VisibilityOn width={20} height={20} />
-                  )}
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            <TouchableOpacity
-              activeOpacity={0.9}
-              onPress={() => {
-                registerButtonFirebaseClick();
-              }}
-              style={{
-                backgroundColor: '#F0DCBC',
-                marginHorizontal: 10,
-                marginTop: 5,
-                borderRadius: 4,
-                justifyContent: 'center',
-                alignItems: 'center',
-                padding: 10,
-              }}
-            >
               <Text
                 style={{
-                  textAlign: 'center',
-                  color: '#000000',
-                  fontSize: 16,
-                  fontFamily: fontFamilies.INTER.medium,
+                  color: '#FFFFFF',
+                  fontFamily: fontFamilies.INTER.bold,
                   includeFontPadding: false,
+                  fontSize: 16,
+                  marginLeft: 8,
+                  marginTop: 20,
                 }}
               >
-                {'Register'}
+                {'Full Name'}
               </Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
+              <View
+                style={{
+                  paddingBottom: 10,
+                  borderRadius: 10,
+                  backgroundColor: '#323130',
+                  marginHorizontal: 8,
+                  marginTop: 12,
+                }}
+              >
+                <View style={{ flexDirection: 'row' }}>
+                  <Image
+                    width={24}
+                    height={24}
+                    source={require('../../assets/images/user.png')}
+                    tintColor={'#FFFFFF8F'}
+                    marginTop={17}
+                    marginLeft={5}
+                  />
+                  <TextInput
+                    onChangeText={text => setUserName(text.trim())}
+                    style={{
+                      color: '#FFFFFF8F',
+                      fontFamily: fontFamilies.INTER.regular,
+                      includeFontPadding: false,
+                      marginTop: 12,
+                      marginLeft: 5,
+                    }}
+                    placeholder="Enter Full Name"
+                    placeholderTextColor={'#FFFFFF8F'}
+                    value={userName}
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                  />
+                </View>
+              </View>
+              <Text
+                style={{
+                  color: '#FFFFFF',
+                  fontFamily: fontFamilies.INTER.bold,
+                  includeFontPadding: false,
+                  fontSize: 16,
+                  marginLeft: 8,
+                  marginTop: 12,
+                }}
+              >
+                {'Email'}
+              </Text>
+              <View
+                style={{
+                  paddingBottom: 10,
+                  borderRadius: 10,
+                  backgroundColor: '#323130',
+                  marginHorizontal: 8,
+                  marginTop: 12,
+                }}
+              >
+                <View style={{ flexDirection: 'row' }}>
+                  <Image
+                    width={24}
+                    height={24}
+                    source={require('../../assets/images/emailsmall.png')}
+                    tintColor={'#FFFFFF8F'}
+                    marginTop={18}
+                    marginLeft={5}
+                  />
+                  <TextInput
+                    onChangeText={text => setUserEmail(text.trim())}
+                    style={{
+                      color: '#FFFFFF8F',
+                      fontFamily: fontFamilies.INTER.regular,
+                      includeFontPadding: false,
+                      marginTop: 12,
+                      marginLeft: 5,
+                    }}
+                    placeholder="Enter Email"
+                    placeholderTextColor={'#FFFFFF8F'}
+                    value={userEmail}
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                  />
+                </View>
+              </View>
+
+              <Text
+                style={{
+                  color: '#FFFFFF',
+                  fontFamily: fontFamilies.INTER.bold,
+                  includeFontPadding: false,
+                  fontSize: 16,
+                  marginLeft: 8,
+                  marginTop: 12,
+                }}
+              >
+                {'Phone Number'}
+              </Text>
+              <View
+                style={{
+                  paddingBottom: 10,
+                  borderRadius: 10,
+                  backgroundColor: '#323130',
+                  marginHorizontal: 8,
+                  marginTop: 12,
+                }}
+              >
+                <View style={{ flexDirection: 'row' }}>
+                  <Image
+                    width={24}
+                    height={24}
+                    source={require('../../assets/images/phoneiconsmall.png')}
+                    tintColor={'#FFFFFF8F'}
+                    marginTop={17}
+                    marginLeft={5}
+                  />
+                  <TextInput
+                    onChangeText={text => setUserNumber(text.trim())}
+                    style={{
+                      color: '#FFFFFF8F',
+                      fontFamily: fontFamilies.INTER.regular,
+                      includeFontPadding: false,
+                      marginTop: 12,
+                      marginLeft: 5,
+                    }}
+                    placeholder="Enter Phone Number"
+                    placeholderTextColor={'#FFFFFF8F'}
+                    value={userNumber}
+                    maxLength={10}
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                  />
+                </View>
+              </View>
+
+              <Text
+                style={{
+                  color: '#FFFFFF',
+                  fontFamily: fontFamilies.INTER.bold,
+                  includeFontPadding: false,
+                  fontSize: 16,
+                  marginLeft: 8,
+                  marginTop: 12,
+                }}
+              >
+                {'Delivery Address'}
+              </Text>
+              <View
+                style={{
+                  paddingBottom: 10,
+                  borderRadius: 10,
+                  backgroundColor: '#323130',
+                  marginHorizontal: 8,
+                  marginTop: 12,
+                }}
+              >
+                <View style={{ flexDirection: 'row' }}>
+                  <Image
+                    width={24}
+                    height={24}
+                    source={require('../../assets/images/addresssmall.png')}
+                    tintColor={'#FFFFFF8F'}
+                    marginTop={17}
+                    marginLeft={5}
+                  />
+                  <TextInput
+                    onChangeText={text => setUserDeliveryAddress(text.trim())}
+                    style={{
+                      color: '#FFFFFF8F',
+                      fontFamily: fontFamilies.INTER.regular,
+                      includeFontPadding: false,
+                      marginTop: 12,
+                      marginLeft: 5,
+                    }}
+                    placeholder="Enter Delivery Address"
+                    placeholderTextColor={'#FFFFFF8F'}
+                    value={userDeliveryAddress}
+                    autoCorrect={false}
+                    multiline={true}
+                    autoCapitalize="none"
+                  />
+                </View>
+              </View>
+
+              <Text
+                style={{
+                  color: '#FFFFFF',
+                  fontFamily: fontFamilies.INTER.bold,
+                  includeFontPadding: false,
+                  fontSize: 16,
+                  marginLeft: 8,
+                  marginTop: 20,
+                }}
+              >
+                {'Password'}
+              </Text>
+              <View
+                style={{
+                  paddingBottom: 10,
+                  borderRadius: 10,
+                  backgroundColor: '#323130',
+                  marginHorizontal: 8,
+                  marginTop: 12,
+                }}
+              >
+                <View style={{ flexDirection: 'row' }}>
+                  <Image
+                    width={24}
+                    height={24}
+                    source={require('../../assets/images/passwordlock.png')}
+                    tintColor={'#FFFFFF8F'}
+                    marginTop={17}
+                    marginLeft={8}
+                  />
+                  <TextInput
+                    onChangeText={text => setUserPassword(text.trim())}
+                    value={userPassword}
+                    style={{
+                      color: '#FFFFFF8F',
+                      fontFamily: fontFamilies.INTER.regular,
+                      includeFontPadding: false,
+                      marginTop: 12,
+                      marginLeft: 10,
+                    }}
+                    placeholder="Enter Password"
+                    placeholderTextColor={'#FFFFFF8F'}
+                    autoCorrect={false}
+                    secureTextEntry={passwordVisibility}
+                    autoCapitalize="none"
+                  />
+                  <TouchableOpacity
+                    style={{
+                      position: 'absolute',
+                      right: 0,
+                      marginTop: 20,
+                      marginRight: 10,
+                    }}
+                    activeOpacity={1}
+                    onPress={() => {
+                      if (passwordVisibility) {
+                        setPasswordVisibility(false);
+                      } else {
+                        setPasswordVisibility(true);
+                      }
+                    }}
+                  >
+                    {passwordVisibility ? (
+                      <VisibilityOff width={20} height={20} />
+                    ) : (
+                      <VisibilityOn width={20} height={20} />
+                    )}
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <Text
+                style={{
+                  color: '#FFFFFF',
+                  fontFamily: fontFamilies.INTER.bold,
+                  includeFontPadding: false,
+                  fontSize: 16,
+                  marginLeft: 8,
+                  marginTop: 20,
+                }}
+              >
+                {'Retype Password'}
+              </Text>
+              <View
+                style={{
+                  paddingBottom: 10,
+                  borderRadius: 10,
+                  backgroundColor: '#323130',
+                  marginHorizontal: 8,
+                  marginTop: 12,
+                }}
+              >
+                <View style={{ flexDirection: 'row' }}>
+                  <Image
+                    width={24}
+                    height={24}
+                    source={require('../../assets/images/passwordlock.png')}
+                    tintColor={'#FFFFFF8F'}
+                    marginTop={17}
+                    marginLeft={8}
+                  />
+                  <TextInput
+                    onChangeText={text => setUserRePassword(text.trim())}
+                    value={userRePassword}
+                    style={{
+                      color: '#FFFFFF8F',
+                      fontFamily: fontFamilies.INTER.regular,
+                      includeFontPadding: false,
+                      marginTop: 12,
+                      marginLeft: 10,
+                    }}
+                    placeholder="Retype Password"
+                    placeholderTextColor={'#FFFFFF8F'}
+                    autoCorrect={false}
+                    secureTextEntry={rePasswordVisibility}
+                    autoCapitalize="none"
+                  />
+                  <TouchableOpacity
+                    style={{
+                      position: 'absolute',
+                      right: 0,
+                      marginTop: 20,
+                      marginRight: 10,
+                    }}
+                    activeOpacity={1}
+                    onPress={() => {
+                      if (rePasswordVisibility) {
+                        setRePasswordVisibility(false);
+                      } else {
+                        setRePasswordVisibility(true);
+                      }
+                    }}
+                  >
+                    {rePasswordVisibility ? (
+                      <VisibilityOff width={20} height={20} />
+                    ) : (
+                      <VisibilityOn width={20} height={20} />
+                    )}
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <TouchableOpacity
+                activeOpacity={0.9}
+                onPress={() => {
+                  registerButtonFirebaseClick();
+                }}
+                style={{
+                  backgroundColor: '#F0DCBC',
+                  marginHorizontal: 10,
+                  marginTop: 5,
+                  borderRadius: 4,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  padding: 10,
+                }}
+              >
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: '#000000',
+                    fontSize: 16,
+                    fontFamily: fontFamilies.INTER.medium,
+                    includeFontPadding: false,
+                  }}
+                >
+                  {'Register'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+
         {/* <View style={{ flexDirection: 'column' }}>
           <TouchableOpacity
             activeOpacity={0.9}
